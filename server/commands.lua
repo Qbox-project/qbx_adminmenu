@@ -14,10 +14,11 @@ QBCore.Commands.Add('blips', 'help text here', {}, false, function(source)
     TriggerClientEvent('qb-admin:client:blips', source)
 end)
 
-QBCore.Commands.Add('setmodel', 'help text here', {}, false, function(source, args)
+QBCore.Commands.Add('setmodel', 'help text here', {}, true, function(source, args)
     local model = args[1]
     local Target = tonumber(args[2]) or source
-    if not model then return end
+
     if not QBCore.Functions.GetPlayer(Target) then return end
+
     TriggerClientEvent('qb-admin:client:setmodel', Target, tostring(model))
 end)

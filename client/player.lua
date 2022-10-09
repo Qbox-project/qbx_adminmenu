@@ -1,11 +1,7 @@
 local SelectedPlayer
-local GeneralOptions = {
-
-}
 local PlayerOptions = {
-    function()
-        lib.showMenu('player_general_menu')
-    end,
+    function() lib.showMenu('player_general_menu') end,
+    function() lib.showMenu('player_administration_menu') end,
 }
 
 function GeneratePlayersMenu()
@@ -65,8 +61,49 @@ lib.registerMenu({
         {label = Lang:t('player_options.general.labelgoto'), description = Lang:t('player_options.general.descgoto'), icon = 'fas fa-arrow-right-long', close = false},
         {label = Lang:t('player_options.general.labelbring'), description = Lang:t('player_options.general.descbring'), icon = 'fas fa-arrow-left-long', close = false},
         {label = Lang:t('player_options.general.labelsitinveh'), description = Lang:t('player_options.general.descsitinveh'), icon = 'fas fa-chair', close = false},
-        {label = Lang:t('player_options.general.labelrouting'), description = Lang:t('player_options.general.descrouting'), icon = 'fas fa-bucket', close = false},
+        {label = Lang:t('player_options.general.labelrouting'), description = Lang:t('player_options.general.descrouting'), icon = 'fas fa-bucket'},
     }
 }, function(selected)
-    TriggerServerEvent('qb-admin:server:playeroptionsgeneral', selected, SelectedPlayer)
+    if selected == 7 then
+        local Input = lib.inputDialog(SelectedPlayer.name, {
+            { type = 'number', label = Lang:t('player_options.general.labelrouting'), placeholder = '25'}
+        })
+        if not Input then return end if not Input[1] then return end
+        TriggerServerEvent('qb-admin:server:playeroptionsgeneral', selected, SelectedPlayer, Input[1])
+        lib.showMenu('player_menu')
+    else
+        TriggerServerEvent('qb-admin:server:playeroptionsgeneral', selected, SelectedPlayer)
+    end
+end)
+
+lib.registerMenu({
+    id = 'player_administration_menu',
+    title = Lang:t('player_options.label2'),
+    position = 'top-right',
+    options = {
+        {label = Lang:t('player_options.administration.labelkick'), description = Lang:t('player_options.administration.desckick'), icon = 'fas fa-plane-departure'},
+        {label = Lang:t('player_options.administration.labelban'), description = Lang:t('player_options.administration.descban'), icon = 'fas fa-gavel'},
+        {label = Lang:t('player_options.administration.labelperm'), description = Lang:t('player_options.administration.descperm'), values = {Lang:t('player_options.administration.permvalue1'),
+        Lang:t('player_options.administration.permvalue2'), Lang:t('player_options.administration.permvalue3'), Lang:t('player_options.administration.permvalue4')}, args = {'remove', 'mod', 'admin', 'god'}, icon = 'fas fa-book-bookmark'},
+    }
+}, function(selected, scrollIndex, args)
+    if selected == 1 then
+        local Input = lib.inputDialog(SelectedPlayer.name, {Lang:t('player_options.administration.inputkick')})
+        if not Input then lib.showMenu('player_administration_menu') return end if not Input[1] then return end
+        TriggerServerEvent('qb-admin:server:playeradministration', selected, SelectedPlayer, Input[1])
+        lib.showMenu('player_administration_menu')
+    elseif selected == 2 then
+        local Input = lib.inputDialog(SelectedPlayer.name, {
+            { type = 'input', label = Lang:t('player_options.administration.inputkick'), placeholder = 'VDM'},
+            { type = 'number', label = Lang:t('player_options.administration.input1ban')},
+            { type = 'number', label = Lang:t('player_options.administration.input2ban')},
+            { type = 'number', label = Lang:t('player_options.administration.input3ban')}
+        })
+        if not Input then lib.showMenu('player_administration_menu') return end if not Input[1] or not Input[2] and not Input[3] and not Input[4] then return end
+        TriggerServerEvent('qb-admin:server:playeradministration', selected, SelectedPlayer, Input)
+        lib.showMenu('player_administration_menu')
+    else
+        TriggerServerEvent('qb-admin:server:playeradministration', selected, SelectedPlayer, args[scrollIndex])
+        lib.showMenu('player_administration_menu')
+    end
 end)

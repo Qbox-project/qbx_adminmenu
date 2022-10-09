@@ -117,6 +117,23 @@ local Translations = {
             labelrouting = 'Routingbucket',
             descrouting = 'Routingbucket the currently selected player',
         },
+        administration = {
+            labelkick = 'Kick',
+            desckick = 'Yeet this player from the server',
+            inputkick = 'Reason',
+            labelban = 'Ban',
+            descban = 'Perm yeet this player from the server',
+            input1ban = 'Hours',
+            input2ban = 'Days',
+            input3ban = 'Months',
+            banreason = 'Reason: %{reason}, until %{lenght}',
+            labelperm = 'Permission',
+            descperm = 'Change someone\'s permission level',
+            permvalue1 = 'Remove',
+            permvalue2 = 'Mod',
+            permvalue3 = 'Admin',
+            permvalue4 = 'God',
+        },
         admin = {
 
         },

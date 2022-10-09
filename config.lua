@@ -4,6 +4,10 @@ Config.Events = {
     ['giveallweapons'] = 'god',
     ['getradiolist'] = 'mod',
     ['usemenu'] = 'mod',
+    ['playeroptionsgeneral'] = 'mod',
+    ['kick'] = 'mod',
+    ['ban'] = 'admin',
+    ['changeperms'] = 'god',
 }
 
 Config.Weaponlist = {
