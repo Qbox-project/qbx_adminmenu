@@ -2,6 +2,7 @@ local SelectedPlayer
 local PlayerOptions = {
     function() lib.showMenu('qb_adminmenu_player_general_menu', MenuIndexes['qb_adminmenu_player_general_menu']) end,
     function() lib.showMenu('qb_adminmenu_player_administration_menu', MenuIndexes['qb_adminmenu_player_administration_menu']) end,
+    --function() end,
 }
 
 function GeneratePlayersMenu()
@@ -40,7 +41,7 @@ function GeneratePlayersMenu()
                 options = {
                     {label = Lang:t('player_options.label1'), description = Lang:t('player_options.desc1'), icon = 'fas fa-wrench',},
                     {label = Lang:t('player_options.label2'), description = Lang:t('player_options.desc2'), icon = 'fas fa-file-invoice',},
-                    {label = Lang:t('player_options.label3'), description = Lang:t('player_options.desc3'), icon = 'fas fa-gamepad',},
+                    --{label = Lang:t('player_options.label3'), description = Lang:t('player_options.desc3'), icon = 'fas fa-gamepad',},
                     {label = string.format('Name: %s', args.name)},
                     {label = string.format('Food: %s', args.food)},
                     {label = string.format('Water: %s', args.water)},
@@ -58,6 +59,7 @@ function GeneratePlayersMenu()
                     {label = string.format('%s', args.steam), description = 'Steam'}
                 }
             }, function(selected)
+                if not PlayerOptions[selected] then return end
                 PlayerOptions[selected]()
             end)
             SelectedPlayer = args
