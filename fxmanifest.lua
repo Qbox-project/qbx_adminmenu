@@ -11,6 +11,12 @@ shared_scripts {
     'config.lua'
 }
 
+server_scripts {
+	'@oxmysql/lib/MySQL.lua',
+    'server/main.lua',
+    'server/commands.lua'
+}
+
 client_scripts {
     'client/main.lua',
     'client/admin.lua',
@@ -19,10 +25,5 @@ client_scripts {
     'client/player.lua'
 }
 
-server_scripts {
-	'@oxmysql/lib/MySQL.lua',
-    'server/main.lua',
-    'server/commands.lua'
-}
-
 lua54 'yes'
+use_experiment_fxv2_oal 'yes'

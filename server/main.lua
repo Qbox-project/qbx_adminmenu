@@ -29,12 +29,12 @@ local GeneralOptions = {
     function(SelectedPlayer, source, _)
         local Coords = GetEntityCoords(GetPlayerPed(SelectedPlayer.id))
         CheckRoutingbucket(source, SelectedPlayer.id)
-        SetEntityCoords(GetPlayerPed(source), Coords.x, Coords.y, Coords.z)
+        SetEntityCoords(GetPlayerPed(source), Coords.x, Coords.y, Coords.z, false, false, false, false)
     end,
     function(SelectedPlayer, source, _)
         local Coords = GetEntityCoords(GetPlayerPed(source))
         CheckRoutingbucket(SelectedPlayer.id, source)
-        SetEntityCoords(GetPlayerPed(SelectedPlayer.id), Coords.x, Coords.y, Coords.z)
+        SetEntityCoords(GetPlayerPed(SelectedPlayer.id), Coords.x, Coords.y, Coords.z, false, false, false, false)
     end,
     function(SelectedPlayer, source, _)
         local Vehicle = GetVehiclePedIsIn(GetPlayerPed(SelectedPlayer.id), false)

@@ -119,9 +119,9 @@ function toggleNoclip()
 
         FreezeEntityPosition(ent, true)
         SetEntityCollision(ent, false, false)
-        SetEntityAlpha(ent, 0)
+        SetEntityAlpha(ent, 0, false)
         SetPedCanRagdoll(ped, false)
-        SetEntityVisible(ent, false)
+        SetEntityVisible(ent, false, false)
         if not inVehicle then
             ClearPedTasksImmediately(ped)
         end
@@ -129,8 +129,8 @@ function toggleNoclip()
         if inVehicle then
             FreezeEntityPosition(ped, true)
             SetEntityCollision(ped, false, false)
-            SetEntityAlpha(ped, 0)
-            SetEntityVisible(ped, false)
+            SetEntityAlpha(ped, 0, false)
+            SetEntityVisible(ped, false, false)
         end
 
         while noClipEnabled do
@@ -155,53 +155,53 @@ function toggleNoclip()
             -- Forward and Backward
             if IsDisabledControlPressed(2, 32) then -- W
                 local setpos = GetEntityCoords(ent) + fv * (speed * multiplier)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 33) then -- S
                 local setpos = GetEntityCoords(ent) - fv * (speed * multiplier)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             end
 
             -- Left and Right
             if IsDisabledControlPressed(2, 34) then -- A
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, -speed * multiplier, 0.0, 0.0)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 35) then -- D
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, speed * multiplier, 0.0, 0.0)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 end
             end
 
             -- Up and Down
             if IsDisabledControlPressed(2, 22) then -- E
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * speed / 2)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 52) then
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * -speed / 2) -- Q
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             end
 
             local camrot = GetCamRot(noClipCam, 2)
             SetEntityHeading(ent, (360 + camrot.z) % 360.0)
-            SetEntityVisible(ent, false)
+            SetEntityVisible(ent, false, false)
             if inVehicle then
-                SetEntityVisible(ped, false)
+                SetEntityVisible(ped, false, false)
             end
 
             DisableControlAction(2, 32, true)
@@ -226,14 +226,14 @@ function toggleNoclip()
         SetEntityCollision(ent, true, true)
         ResetEntityAlpha(ent)
         SetPedCanRagdoll(ped, true)
-        SetEntityVisible(ent, not Invisible)
+        SetEntityVisible(ent, not Invisible, false)
         ClearPedTasksImmediately(ped)
 
         if inVehicle then
         FreezeEntityPosition(ped, false)
         SetEntityCollision(ped, true, true)
         ResetEntityAlpha(ped)
-        SetEntityVisible(ped, true)
+        SetEntityVisible(ped, true, false)
         SetPedIntoVehicle(ped, ent, -1)
         end
     end)
