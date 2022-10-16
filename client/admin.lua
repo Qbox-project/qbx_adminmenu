@@ -61,11 +61,14 @@ local Options = {
 }
 
 lib.registerMenu({
-    id = 'admin_menu',
+    id = 'qb_adminmenu_admin_menu',
     title = Lang:t('title.admin_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
         CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+    end,
+    onSelected = function(selected)
+        MenuIndexes['qb_adminmenu_admin_menu'] = selected
     end,
     options = {
         {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
