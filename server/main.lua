@@ -133,3 +133,29 @@ lib.callback.register('qb-admin:server:getplayers', function(source)
     table.sort(Players, function(a, b) return a.id < b.id end)
     return Players
 end)
+
+lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
+    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
+
+    local playerData = QBCore.Functions.GetQBPlayers()[playerToGet]
+    local player = {
+        id = playerToGet,
+        cid = playerData.PlayerData.citizenid,
+        name = playerData.PlayerData.charinfo.firstname .. ' ' .. playerData.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(playerToGet) .. ')',
+        food = playerData.PlayerData.metadata['hunger'],
+        water = playerData.PlayerData.metadata['thirst'],
+        stress = playerData.PlayerData.metadata['stress'],
+        armor = playerData.PlayerData.metadata['armor'],
+        phone = playerData.PlayerData.charinfo.phone,
+        craftingrep = playerData.PlayerData.metadata['craftingrep'],
+        dealerrep = playerData.PlayerData.metadata['dealerrep'],
+        cash = playerData.PlayerData.money['cash'],
+        bank = playerData.PlayerData.money['bank'],
+        job = playerData.PlayerData.job.label .. ' | ' .. playerData.PlayerData.job.grade.level,
+        gang = playerData.PlayerData.gang.label,
+        license = QBCore.Functions.GetIdentifier(playerToGet, 'license') or 'Unknown',
+        discord = QBCore.Functions.GetIdentifier(playerToGet, 'discord') or 'Not Linked',
+        steam = QBCore.Functions.GetIdentifier(playerToGet, 'steam') or 'Not Linked',
+    }
+    return player
+end)
