@@ -1,8 +1,9 @@
 local Invisible = false
 local Godmode = false
 local InfiniteAmmo = false
+local VehicleGodmode = false
 local Options = {
-    function(T) toggleNoClipMode() end,
+    function() toggleNoClipMode() end,
     function() TriggerEvent('hospital:client:Revive') end,
     function()
         Invisible = not Invisible
@@ -85,8 +86,10 @@ lib.registerMenu({
     }
 }, function(selected, scrollIndex, args)
     if selected == 10 then
+        ---@diagnostic disable-next-line: redundant-parameter
         Options[selected](args[scrollIndex])
     else
+        ---@diagnostic disable-next-line: redundant-parameter
         Options[selected](scrollIndex)
     end
 end)
@@ -96,7 +99,6 @@ end)
 --- Needs cleanup
 local noClipEnabled = false
 local ent
-local Invisible = nil
 local noClipCam = nil
 local speed = 1.0
 local maxSpeed = 32.0
