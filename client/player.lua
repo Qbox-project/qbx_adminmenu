@@ -1,8 +1,14 @@
 local SelectedPlayer
 local PlayerOptions = {
-    function() lib.showMenu('qb_adminmenu_player_general_menu', MenuIndexes['qb_adminmenu_player_general_menu']) end,
-    function() lib.showMenu('qb_adminmenu_player_administration_menu', MenuIndexes['qb_adminmenu_player_administration_menu']) end,
-    --function() end,
+    function()
+        lib.showMenu('qb_adminmenu_player_general_menu', MenuIndexes['qb_adminmenu_player_general_menu'])
+    end,
+    function()
+        lib.showMenu('qb_adminmenu_player_administration_menu', MenuIndexes['qb_adminmenu_player_administration_menu'])
+    end,
+    function()
+        lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
+    end,
 }
 
 function GeneratePlayersMenu()
@@ -29,19 +35,19 @@ function GeneratePlayersMenu()
             options = OptionsList
         }, function(_, _, args)
             lib.registerMenu({
-                id = 'qb_adminmenu_player_menu',
+                id = ('qb_adminmenu_player_menu_%s'):format(args.id),
                 title = args.name,
                 position = 'top-right',
                 onClose = function(keyPressed)
                     CloseMenu(false, keyPressed, 'qb_adminmenu_players_menu')
                 end,
                 onSelected = function(selected)
-                    MenuIndexes['qb_adminmenu_player_menu'] = selected
+                    MenuIndexes[('qb_adminmenu_player_menu_%s'):format(args.id)] = selected
                 end,
                 options = {
-                    {label = Lang:t('player_options.label1'), description = Lang:t('player_options.desc1'), icon = 'fas fa-wrench',},
-                    {label = Lang:t('player_options.label2'), description = Lang:t('player_options.desc2'), icon = 'fas fa-file-invoice',},
-                    --{label = Lang:t('player_options.label3'), description = Lang:t('player_options.desc3'), icon = 'fas fa-gamepad',},
+                    {label = Lang:t('player_options.label1'), description = Lang:t('player_options.desc1'), icon = 'fas fa-wrench'},
+                    {label = Lang:t('player_options.label2'), description = Lang:t('player_options.desc2'), icon = 'fas fa-file-invoice'},
+                    {label = Lang:t('player_options.label3'), description = Lang:t('player_options.desc3'), icon = 'fas fa-gamepad'},
                     {label = string.format('Name: %s', args.name), close = false},
                     {label = string.format('Food: %s', args.food), close = false},
                     {label = string.format('Water: %s', args.water), close = false},
@@ -63,7 +69,7 @@ function GeneratePlayersMenu()
                 PlayerOptions[selected]()
             end)
             SelectedPlayer = args
-            lib.showMenu('qb_adminmenu_player_menu', MenuIndexes['qb_adminmenu_player_menu'])
+            lib.showMenu(('qb_adminmenu_player_menu_%s'):format(args.id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(args.id)])
         end)
         lib.showMenu('qb_adminmenu_players_menu', MenuIndexes['qb_adminmenu_players_menu'])
     end)
@@ -74,7 +80,7 @@ lib.registerMenu({
     title = Lang:t('player_options.label1'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qb_adminmenu_player_menu')
+        CloseMenu(false, keyPressed, ('qb_adminmenu_player_menu_%s'):format(SelectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes['qb_adminmenu_player_general_menu'] = selected
@@ -95,7 +101,7 @@ lib.registerMenu({
         })
         if not Input then return end if not Input[1] then return end
         TriggerServerEvent('qb-admin:server:playeroptionsgeneral', selected, SelectedPlayer, Input[1])
-        lib.showMenu('qb_adminmenu_player_menu', MenuIndexes['qb_adminmenu_player_menu'])
+        lib.showMenu(('qb_adminmenu_player_menu_%s'):format(SelectedPlayer?.id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(SelectedPlayer?.id)])
     else
         TriggerServerEvent('qb-admin:server:playeroptionsgeneral', selected, SelectedPlayer)
     end
@@ -106,7 +112,7 @@ lib.registerMenu({
     title = Lang:t('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qb_adminmenu_player_menu')
+        CloseMenu(false, keyPressed, ('qb_adminmenu_player_menu_%s'):format(SelectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes['qb_adminmenu_player_administration_menu'] = selected
@@ -137,4 +143,21 @@ lib.registerMenu({
         TriggerServerEvent('qb-admin:server:playeradministration', selected, SelectedPlayer, args[scrollIndex])
         lib.showMenu('qb_adminmenu_player_administration_menu', MenuIndexes['qb_adminmenu_player_administration_menu'])
     end
+end)
+
+lib.registerMenu({
+    id = 'qb_adminmenu_player_extra_menu',
+    title = Lang:t('player_options.label2'),
+    position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, ('qb_adminmenu_player_menu_%s'):format(SelectedPlayer?.id))
+    end,
+    onSelected = function(selected)
+        MenuIndexes['qb_adminmenu_player_extra_menu'] = selected
+    end,
+    options = {
+
+    }
+}, function(selected, scrollIndex, args)
+
 end)
