@@ -6,7 +6,11 @@ local PlayerOptions = {
 
 function GeneratePlayersMenu()
     lib.callback('qb-admin:server:getplayers', false, function(Players)
-        if not Players then return end
+        if not Players then
+            Wait(200)
+            lib.showMenu('qb_adminmenu_main_menu', MenuIndexes['qb_adminmenu_main_menu'])
+            return
+        end
         local OptionsList = {}
         for i = 1, #Players do
             OptionsList[#OptionsList + 1] = {label = string.format('ID: %s | Name: %s', Players[i].id, Players[i].name), description = string.format('CID: %s | %s', Players[i].cid, Players[i].license), args = Players[i]}
