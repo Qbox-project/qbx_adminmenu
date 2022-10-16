@@ -38,6 +38,9 @@ lib.registerMenu({
     id = 'dev_menu',
     title = Lang:t('title.dev_menu'),
     position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+    end,
     options = {
         {label = Lang:t('dev_options.label1'), description = Lang:t('dev_options.desc1'), icon = 'fas fa-compass'},
         {label = Lang:t('dev_options.label2'), description = Lang:t('dev_options.desc2'), icon = 'fas fa-compass'},

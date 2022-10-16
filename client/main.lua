@@ -4,6 +4,9 @@ lib.registerMenu({
     id = 'main_menu',
     title = Lang:t('title.main_menu'),
     position = 'top-right',
+    onClose = function()
+        CloseMenu(true)
+    end,
     options = {
         {label = Lang:t('main_options.label1'), description = Lang:t('main_options.desc1'), icon = 'fas fa-hammer', args = 'admin_menu'},
         {label = Lang:t('main_options.label2'), description = Lang:t('main_options.desc2'), icon = 'fas fa-user', args = 'players_menu'},
@@ -34,6 +37,15 @@ function Draw2DText(content, font, colour, scale, x, y)
     SetTextOutline()
     AddTextComponentSubstringPlayerName(content)
     EndTextCommandDisplayText(x, y)
+end
+
+function CloseMenu(isFullMenuClose, keyPressed, previousMenu)
+    if isFullMenuClose or not keyPressed or keyPressed == 'Escape' then
+        lib.hideMenu(false)
+        return
+    end
+
+    lib.showMenu(previousMenu)
 end
 
 RegisterNetEvent('qb-admin:client:openmenu', function()

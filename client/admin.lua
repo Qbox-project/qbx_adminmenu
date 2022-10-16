@@ -64,6 +64,9 @@ lib.registerMenu({
     id = 'admin_menu',
     title = Lang:t('title.admin_menu'),
     position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+    end,
     options = {
         {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
         {label = Lang:t('admin_options.label2'), description = Lang:t('admin_options.desc2'), icon = 'fas fa-hospital', close = false},
