@@ -161,8 +161,135 @@ lib.registerMenu({
         MenuIndexes['qb_adminmenu_player_extra_menu'] = selected
     end,
     options = {
-
+        {label = 'Open Inventory'},
+        {label = 'Give Clothing Menu'},
+        {label = 'Give Item'},
+        {label = 'Play Sound'},
+        {label = 'Mute'}
     }
-}, function(selected, scrollIndex, args)
+}, function(selected)
+    if selected == 1 then
+        TriggerServerEvent('inventory:server:OpenInventory', 'otherplayer', selectedPlayer.id)
+    elseif selected == 2 then
+        local succeeded = lib.callback.await('qb-admin:server:clothingMenu', false, selectedPlayer.id)
+        if succeeded then return end
+        Wait(200)
+        lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
+    elseif selected == 3 then
+        local dialog = lib.inputDialog('Give Item', {
+            {type = 'input', label = 'Item', placeholder = 'phone'},
+            {type = 'number', label = 'Amount', default = 1}
+        })
+        if not dialog or not dialog[1] or dialog[1] == '' or not dialog[2] or dialog[2] < 1 then
+            Wait(200)
+            lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
+            return
+        end
+        TriggerServerEvent('QBCore:CallCommand', 'giveitem', {selectedPlayer.id, dialog[1], dialog[2]})
+    elseif selected == 4 then
+        local sounds = lib.callback.await('qb-admin:server:getSounds', false)
+        if not sounds then
+            Wait(200)
+            lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
+            return
+        end
 
+        for i = 1, #sounds do
+            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = sounds[i], description = 'Press enter to play this sound', args = sounds[i], close = false}, i + 2)
+        end
+
+        lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+    elseif selected == 5 then
+        exports['pma-voice']:toggleMutePlayer(selectedPlayer.id)
+    end
+end)
+
+local volume = {1, 0.1}
+local radius = {1, 10}
+
+lib.registerMenu({
+    id = 'qb_adminmenu_play_sounds_menu',
+    title = 'Play Sounds',
+    position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, 'qb_adminmenu_player_extra_menu')
+    end,
+    onSelected = function(selected)
+        MenuIndexes['qb_adminmenu_play_sounds_menu'] = selected
+    end,
+    onSideScroll = function(_, scrollIndex, args)
+        if args == 'volume' then
+            if scrollIndex == 11 then return end
+            volume[2] = scrollIndex / 10
+            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Volume', args = 'volume', values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
+        elseif args == 'radius' then
+            if scrollIndex == 11 then return end
+            radius[2] = scrollIndex * 10
+            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Radius', args = 'radius', values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
+        end
+    end,
+    options = {
+        {label = 'Volume', description = 'Volume to play the sound at', args = 'volume', values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = volume[1], close = false},
+        {label = 'Radius', description = 'The higher this number, the further away the sound can be heard from', args = 'radius', values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = radius[1], close = false}
+    }
+}, function(_, scrollIndex, args)
+    if args == 'volume' then
+        if scrollIndex ~= 11 then return end
+        lib.hideMenu(false)
+        Wait(200)
+        local dialog = lib.inputDialog('Set Volume Manually', {'Volume (0.00 - 1.00'})
+        if not dialog or not dialog[1] or dialog[1] == '' or not tonumber(dialog[1]) then
+            Wait(200)
+            lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+            return
+        end
+
+        local result = tonumber(dialog[1])
+
+        if result < 0 or result > 1 then
+            lib.notify({
+                description = 'The number has to be between 0.00 and 1.00',
+                type = 'error'
+            })
+            Wait(200)
+            lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+            return
+        end
+
+        volume[2] = result --[[@as number]]
+        lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Volume', args = 'volume', values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
+        Wait(200)
+        lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+        return
+    elseif args == 'radius' then
+        if scrollIndex ~= 11 then return end
+        lib.hideMenu(false)
+        Wait(200)
+        local dialog = lib.inputDialog('Set Radius Manually', {'Radius (1 - 100'})
+        if not dialog or not dialog[1] or dialog[1] == '' or not tonumber(dialog[1]) then
+            Wait(200)
+            lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+            return
+        end
+
+        local result = tonumber(dialog[1])
+
+        if result < 1 or result > 100 then
+            lib.notify({
+                description = 'The number has to be between 1 and 100',
+                type = 'error'
+            })
+            Wait(200)
+            lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+            return
+        end
+
+        radius[2] = result --[[@as number]]
+        lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Radius', args = 'radius', values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
+        Wait(200)
+        lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
+        return
+    end
+
+    TriggerServerEvent('InteractSound_SV:PlayWithinDistance', radius[2], args, volume[2])
 end)

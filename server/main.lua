@@ -1,7 +1,10 @@
 QBCore = exports['qb-core']:GetCoreObject()
-local IsFrozen = {}
+local isFrozen = {}
+local sounds = {}
 
-function NoPerms(source) QBCore.Functions.Notify(source, Lang:t('error.no_perms'), 'error') end
+function NoPerms(source)
+    QBCore.Functions.Notify(source, Lang:t('error.no_perms'), 'error')
+end
 
 --- Checks if the source is inside of the target's routingbucket
 --- if not set the source's routingbucket to the target's
@@ -14,29 +17,28 @@ function CheckRoutingbucket(source, target)
 end
 
 local GeneralOptions = {
-        function(SelectedPlayer, _, _) TriggerClientEvent('hospital:client:KillPlayer', SelectedPlayer.id) end,
-        function(SelectedPlayer, _, _) TriggerClientEvent('hospital:client:Revive', SelectedPlayer.id) end,
-        function(SelectedPlayer, _, _)
-
-        if IsFrozen[SelectedPlayer.id] then
+    function(SelectedPlayer) TriggerClientEvent('hospital:client:KillPlayer', SelectedPlayer.id) end,
+    function(SelectedPlayer) TriggerClientEvent('hospital:client:Revive', SelectedPlayer.id) end,
+    function(SelectedPlayer)
+        if isFrozen[SelectedPlayer.id] then
             FreezeEntityPosition(GetPlayerPed(SelectedPlayer.id), false)
-            IsFrozen[SelectedPlayer.id] = false
+            isFrozen[SelectedPlayer.id] = false
         else
             FreezeEntityPosition(GetPlayerPed(SelectedPlayer.id), true)
-            IsFrozen[SelectedPlayer.id] = true
+            isFrozen[SelectedPlayer.id] = true
         end
     end,
-    function(SelectedPlayer, source, _)
+    function(SelectedPlayer, source)
         local Coords = GetEntityCoords(GetPlayerPed(SelectedPlayer.id))
         CheckRoutingbucket(source, SelectedPlayer.id)
         SetEntityCoords(GetPlayerPed(source), Coords.x, Coords.y, Coords.z, false, false, false, false)
     end,
-    function(SelectedPlayer, source, _)
+    function(SelectedPlayer, source)
         local Coords = GetEntityCoords(GetPlayerPed(source))
         CheckRoutingbucket(SelectedPlayer.id, source)
         SetEntityCoords(GetPlayerPed(SelectedPlayer.id), Coords.x, Coords.y, Coords.z, false, false, false, false)
     end,
-    function(SelectedPlayer, source, _)
+    function(SelectedPlayer, source)
         local Vehicle = GetVehiclePedIsIn(GetPlayerPed(SelectedPlayer.id), false)
         local Seat = -1
         if Vehicle == 0 then return end
@@ -51,6 +53,7 @@ local GeneralOptions = {
 RegisterNetEvent('qb-admin:server:playeroptionsgeneral', function(Selected, SelectedPlayer, Input)
     if not QBCore.Functions.HasPermission(source, Config.Events['playeroptionsgeneral']) then NoPerms(source) return end
 
+    ---@diagnostic disable-next-line: redundant-parameter
     GeneralOptions[Selected](SelectedPlayer, source, Input)
 end)
 
@@ -81,7 +84,7 @@ RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID
     local src = PlayerID or source
     local Target = QBCore.Functions.GetPlayer(src)
 
-    if not QBCore.Functions.HasPermission(source, Config.Events['giveallweapons']) then NoPerms(source) return end
+    if not QBCore.Functions.HasPermission(source, Config.Events['giveallweapons']) then NoPerms(src) return end
 
     for i = 1, #Config.Weaponlist[Weapontype], 1 do
         if not QBCore.Shared.Items[Config.Weaponlist[Weapontype][i]] then return end
@@ -137,7 +140,7 @@ end)
 lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
     if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
 
-    local playerData = QBCore.Functions.GetQBPlayers()[playerToGet]
+    local playerData = QBCore.Functions.GetPlayer(playerToGet)
     local player = {
         id = playerToGet,
         cid = playerData.PlayerData.citizenid,
@@ -158,4 +161,37 @@ lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
         steam = QBCore.Functions.GetIdentifier(playerToGet, 'steam') or 'Not Linked',
     }
     return player
+end)
+
+lib.callback.register('qb-admin:server:clothingMenu', function(source, target)
+    if not QBCore.Functions.HasPermission(source, Config.Events['clothing menu']) then
+        NoPerms(source)
+        return false
+    end
+
+    TriggerClientEvent('qb-clothing:client:openMenu', target)
+
+    return true
+end)
+
+lib.callback.register('qb-admin:server:getSounds', function(source)
+    if not QBCore.Functions.HasPermission(source, Config.Events['play sounds']) then
+        NoPerms(source)
+        return
+    end
+    return sounds
+end)
+
+CreateThread(function()
+    local path = GetResourcePath(Config.SoundScriptName)
+    local directory = ('%s%s'):format(path:gsub('//', '/'), Config.SoundPath)
+    if not Config.Linux then
+        for filename in io.popen(('dir "%s" /b'):format(directory)):lines() do
+            sounds[#sounds + 1] = filename:match('(.+)%..+$')
+        end
+    else
+        for filename in io.popen(('ls "%s" /b'):format(directory)):lines() do
+            sounds[#sounds + 1] = filename:match('(.+)%..+$')
+        end
+    end
 end)

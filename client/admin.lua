@@ -121,7 +121,7 @@ function toggleNoclip()
         local pos = GetEntityCoords(ent)
         local rot = GetEntityRotation(ent)
 
-        noClipCam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x, pos.y, pos.z, 0.0, 0.0, rot.z, 75.0, true, 2)
+        noClipCam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', pos.x, pos.y, pos.z, 0.0, 0.0, rot.z, 75.0, true, 2)
         AttachCamToEntity(noClipCam, ent, 0.0, 0.0, 0.0, true)
         RenderScriptCams(true, false, 3000, true, false)
 
@@ -309,10 +309,16 @@ RegisterNetEvent('qb-admin:client:blips', function()
     if not ShowBlips then
         ShowBlips = true
         NetCheck1 = true
-        QBCore.Functions.Notify(Lang:t("success.blips_activated"), "success")
+        lib.notify({
+            description = Lang:t('success.blips_activated'),
+            type = 'success'
+        })
     else
         ShowBlips = false
-        QBCore.Functions.Notify(Lang:t("error.blips_deactivated"), "error")
+        lib.notify({
+            description = Lang:t('error.blips_deactivated'),
+            type = 'error'
+        })
     end
 end)
 
@@ -320,10 +326,16 @@ RegisterNetEvent('qb-admin:client:names', function()
     if not ShowNames then
         ShowNames = true
         NetCheck2 = true
-        QBCore.Functions.Notify(Lang:t("success.names_activated"), "success")
+        lib.notify({
+            description = Lang:t('success.names_activated'),
+            type = 'success'
+        })
     else
         ShowNames = false
-        QBCore.Functions.Notify(Lang:t("error.names_deactivated"), "error")
+        lib.notify({
+            description = Lang:t('error.names_deactivated'),
+            type = 'error'
+        })
     end
 end)
 
@@ -334,11 +346,11 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
         local blip = GetBlipFromEntity(ped)
         local name = 'ID: '..player.id..' | '..player.name
 
-        local Tag = CreateFakeMpGamerTag(ped, name, false, false, "", 0)
-        SetMpGamerTagAlpha(Tag, 0, 255) -- Sets "MP_TAG_GAMER_NAME" bar alpha to 100% (not needed just as a fail safe)
-        SetMpGamerTagAlpha(Tag, 2, 255) -- Sets "MP_TAG_HEALTH_ARMOUR" bar alpha to 100%
-        SetMpGamerTagAlpha(Tag, 4, 255) -- Sets "MP_TAG_AUDIO_ICON" bar alpha to 100%
-        SetMpGamerTagAlpha(Tag, 6, 255) -- Sets "MP_TAG_PASSIVE_MODE" bar alpha to 100%
+        local Tag = CreateFakeMpGamerTag(ped, name, false, false, '', 0)
+        SetMpGamerTagAlpha(Tag, 0, 255) -- Sets 'MP_TAG_GAMER_NAME' bar alpha to 100% (not needed just as a fail safe)
+        SetMpGamerTagAlpha(Tag, 2, 255) -- Sets 'MP_TAG_HEALTH_ARMOUR' bar alpha to 100%
+        SetMpGamerTagAlpha(Tag, 4, 255) -- Sets 'MP_TAG_AUDIO_ICON' bar alpha to 100%
+        SetMpGamerTagAlpha(Tag, 6, 255) -- Sets 'MP_TAG_PASSIVE_MODE' bar alpha to 100%
         SetMpGamerTagHealthBarColour(Tag, 25)  --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
 
         if ShowNames then
