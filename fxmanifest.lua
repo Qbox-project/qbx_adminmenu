@@ -22,7 +22,8 @@ client_scripts {
     'client/admin.lua',
     'client/server.lua',
     'client/dev.lua',
-    'client/player.lua'
+    'client/player.lua',
+    'client/vehicle.lua'
 }
 
 lua54 'yes'

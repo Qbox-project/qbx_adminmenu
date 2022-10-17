@@ -14,7 +14,6 @@ local playerOptions = {
 function GeneratePlayersMenu()
     local players = lib.callback.await('qb-admin:server:getplayers', false)
     if not players then
-        Wait(200)
         lib.showMenu('qb_adminmenu_main_menu', MenuIndexes['qb_adminmenu_main_menu'])
         return
     end
@@ -36,7 +35,6 @@ function GeneratePlayersMenu()
     }, function(_, _, args)
         local player = lib.callback.await('qb-admin:server:getplayer', false, args.id)
         if not player then
-            Wait(200)
             lib.showMenu('qb_adminmenu_main_menu', MenuIndexes['qb_adminmenu_main_menu'])
             return
         end
@@ -173,7 +171,6 @@ lib.registerMenu({
     elseif selected == 2 then
         local succeeded = lib.callback.await('qb-admin:server:clothingMenu', false, selectedPlayer.id)
         if succeeded then return end
-        Wait(200)
         lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
     elseif selected == 3 then
         local dialog = lib.inputDialog('Give Item', {
@@ -181,7 +178,6 @@ lib.registerMenu({
             {type = 'number', label = 'Amount', default = 1}
         })
         if not dialog or not dialog[1] or dialog[1] == '' or not dialog[2] or dialog[2] < 1 then
-            Wait(200)
             lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
             return
         end
@@ -189,7 +185,6 @@ lib.registerMenu({
     elseif selected == 4 then
         local sounds = lib.callback.await('qb-admin:server:getSounds', false)
         if not sounds then
-            Wait(200)
             lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
             return
         end
@@ -236,7 +231,6 @@ lib.registerMenu({
     if args == 'volume' then
         if scrollIndex ~= 11 then return end
         lib.hideMenu(false)
-        Wait(200)
         local dialog = lib.inputDialog('Set Volume Manually', {'Volume (0.00 - 1.00'})
         if not dialog or not dialog[1] or dialog[1] == '' or not tonumber(dialog[1]) then
             Wait(200)
@@ -264,7 +258,6 @@ lib.registerMenu({
     elseif args == 'radius' then
         if scrollIndex ~= 11 then return end
         lib.hideMenu(false)
-        Wait(200)
         local dialog = lib.inputDialog('Set Radius Manually', {'Radius (1 - 100'})
         if not dialog or not dialog[1] or dialog[1] == '' or not tonumber(dialog[1]) then
             Wait(200)

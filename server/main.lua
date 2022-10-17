@@ -182,6 +182,27 @@ lib.callback.register('qb-admin:server:getSounds', function(source)
     return sounds
 end)
 
+lib.callback.register('qb-admin:server:canUseMenu', function(source)
+    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then
+        NoPerms(source)
+        return false
+    end
+
+    return true
+end)
+
+lib.callback.register('qb-admin:server:spawnVehicle', function(source, model)
+    local hash = joaat(model)
+    local tempVehicle = CreateVehicle(hash, 0, 0, 0, 0, true, false)
+    while not DoesEntityExist(tempVehicle) do Wait(100) end
+    local vehicleType = GetVehicleType(tempVehicle)
+    DeleteEntity(tempVehicle)
+    local ply = GetPlayerPed(source)
+    local plyCoords = GetEntityCoords(ply)
+    local veh = QBCore.Functions.CreateVehicle(source, hash, vehicleType, vec4(plyCoords.x, plyCoords.y, plyCoords.z, GetEntityHeading(ply)), true)
+    return NetworkGetNetworkIdFromEntity(veh)
+end)
+
 CreateThread(function()
     local path = GetResourcePath(Config.SoundScriptName)
     local directory = ('%s%s'):format(path:gsub('//', '/'), Config.SoundPath)
