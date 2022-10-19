@@ -1,5 +1,20 @@
 Config = {}
 
+if lib.context == 'server' then
+    Config.SoundScriptName = 'interact-sound'
+    Config.SoundPath = '/client/html/sounds'
+end
+
+Config.Linux = false
+
+Config.Commands = {
+    ['usemenu'] = 'mod',
+    ['noclip'] = 'mod',
+    ['names'] = 'mod',
+    ['blips'] = 'mod',
+    ['setmodel'] = 'god'
+}
+
 Config.Events = {
     ['giveallweapons'] = 'god',
     ['getradiolist'] = 'mod',
@@ -8,6 +23,9 @@ Config.Events = {
     ['kick'] = 'mod',
     ['ban'] = 'admin',
     ['changeperms'] = 'god',
+    ['clothing menu'] = 'admin',
+    ['play sounds'] = 'admin',
+    ['changeplayerdata'] = 'god'
 }
 
 Config.Weaponlist = {

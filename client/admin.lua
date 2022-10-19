@@ -1,8 +1,9 @@
 local Invisible = false
 local Godmode = false
 local InfiniteAmmo = false
+local VehicleGodmode = false
 local Options = {
-    function(T) toggleNoClipMode() end,
+    function() toggleNoClipMode() end,
     function() TriggerEvent('hospital:client:Revive') end,
     function()
         Invisible = not Invisible
@@ -61,9 +62,15 @@ local Options = {
 }
 
 lib.registerMenu({
-    id = 'admin_menu',
+    id = 'qb_adminmenu_admin_menu',
     title = Lang:t('title.admin_menu'),
     position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+    end,
+    onSelected = function(selected)
+        MenuIndexes['qb_adminmenu_admin_menu'] = selected
+    end,
     options = {
         {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
         {label = Lang:t('admin_options.label2'), description = Lang:t('admin_options.desc2'), icon = 'fas fa-hospital', close = false},
@@ -79,8 +86,10 @@ lib.registerMenu({
     }
 }, function(selected, scrollIndex, args)
     if selected == 10 then
+        ---@diagnostic disable-next-line: redundant-parameter
         Options[selected](args[scrollIndex])
     else
+        ---@diagnostic disable-next-line: redundant-parameter
         Options[selected](scrollIndex)
     end
 end)
@@ -90,7 +99,6 @@ end)
 --- Needs cleanup
 local noClipEnabled = false
 local ent
-local Invisible = nil
 local noClipCam = nil
 local speed = 1.0
 local maxSpeed = 32.0
@@ -113,15 +121,15 @@ function toggleNoclip()
         local pos = GetEntityCoords(ent)
         local rot = GetEntityRotation(ent)
 
-        noClipCam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x, pos.y, pos.z, 0.0, 0.0, rot.z, 75.0, true, 2)
+        noClipCam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', pos.x, pos.y, pos.z, 0.0, 0.0, rot.z, 75.0, true, 2)
         AttachCamToEntity(noClipCam, ent, 0.0, 0.0, 0.0, true)
         RenderScriptCams(true, false, 3000, true, false)
 
         FreezeEntityPosition(ent, true)
         SetEntityCollision(ent, false, false)
-        SetEntityAlpha(ent, 0)
+        SetEntityAlpha(ent, 0, false)
         SetPedCanRagdoll(ped, false)
-        SetEntityVisible(ent, false)
+        SetEntityVisible(ent, false, false)
         if not inVehicle then
             ClearPedTasksImmediately(ped)
         end
@@ -129,8 +137,8 @@ function toggleNoclip()
         if inVehicle then
             FreezeEntityPosition(ped, true)
             SetEntityCollision(ped, false, false)
-            SetEntityAlpha(ped, 0)
-            SetEntityVisible(ped, false)
+            SetEntityAlpha(ped, 0, false)
+            SetEntityVisible(ped, false, false)
         end
 
         while noClipEnabled do
@@ -155,53 +163,53 @@ function toggleNoclip()
             -- Forward and Backward
             if IsDisabledControlPressed(2, 32) then -- W
                 local setpos = GetEntityCoords(ent) + fv * (speed * multiplier)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 33) then -- S
                 local setpos = GetEntityCoords(ent) - fv * (speed * multiplier)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             end
 
             -- Left and Right
             if IsDisabledControlPressed(2, 34) then -- A
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, -speed * multiplier, 0.0, 0.0)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 35) then -- D
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, speed * multiplier, 0.0, 0.0)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 end
             end
 
             -- Up and Down
             if IsDisabledControlPressed(2, 22) then -- E
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * speed / 2)
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 52) then
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * -speed / 2) -- Q
-                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z)
+                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             end
 
             local camrot = GetCamRot(noClipCam, 2)
             SetEntityHeading(ent, (360 + camrot.z) % 360.0)
-            SetEntityVisible(ent, false)
+            SetEntityVisible(ent, false, false)
             if inVehicle then
-                SetEntityVisible(ped, false)
+                SetEntityVisible(ped, false, false)
             end
 
             DisableControlAction(2, 32, true)
@@ -226,14 +234,14 @@ function toggleNoclip()
         SetEntityCollision(ent, true, true)
         ResetEntityAlpha(ent)
         SetPedCanRagdoll(ped, true)
-        SetEntityVisible(ent, not Invisible)
+        SetEntityVisible(ent, not Invisible, false)
         ClearPedTasksImmediately(ped)
 
         if inVehicle then
         FreezeEntityPosition(ped, false)
         SetEntityCollision(ped, true, true)
         ResetEntityAlpha(ped)
-        SetEntityVisible(ped, true)
+        SetEntityVisible(ped, true, false)
         SetPedIntoVehicle(ped, ent, -1)
         end
     end)
@@ -301,10 +309,16 @@ RegisterNetEvent('qb-admin:client:blips', function()
     if not ShowBlips then
         ShowBlips = true
         NetCheck1 = true
-        QBCore.Functions.Notify(Lang:t("success.blips_activated"), "success")
+        lib.notify({
+            description = Lang:t('success.blips_activated'),
+            type = 'success'
+        })
     else
         ShowBlips = false
-        QBCore.Functions.Notify(Lang:t("error.blips_deactivated"), "error")
+        lib.notify({
+            description = Lang:t('error.blips_deactivated'),
+            type = 'error'
+        })
     end
 end)
 
@@ -312,10 +326,16 @@ RegisterNetEvent('qb-admin:client:names', function()
     if not ShowNames then
         ShowNames = true
         NetCheck2 = true
-        QBCore.Functions.Notify(Lang:t("success.names_activated"), "success")
+        lib.notify({
+            description = Lang:t('success.names_activated'),
+            type = 'success'
+        })
     else
         ShowNames = false
-        QBCore.Functions.Notify(Lang:t("error.names_deactivated"), "error")
+        lib.notify({
+            description = Lang:t('error.names_deactivated'),
+            type = 'error'
+        })
     end
 end)
 
@@ -326,11 +346,11 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
         local blip = GetBlipFromEntity(ped)
         local name = 'ID: '..player.id..' | '..player.name
 
-        local Tag = CreateFakeMpGamerTag(ped, name, false, false, "", 0)
-        SetMpGamerTagAlpha(Tag, 0, 255) -- Sets "MP_TAG_GAMER_NAME" bar alpha to 100% (not needed just as a fail safe)
-        SetMpGamerTagAlpha(Tag, 2, 255) -- Sets "MP_TAG_HEALTH_ARMOUR" bar alpha to 100%
-        SetMpGamerTagAlpha(Tag, 4, 255) -- Sets "MP_TAG_AUDIO_ICON" bar alpha to 100%
-        SetMpGamerTagAlpha(Tag, 6, 255) -- Sets "MP_TAG_PASSIVE_MODE" bar alpha to 100%
+        local Tag = CreateFakeMpGamerTag(ped, name, false, false, '', 0)
+        SetMpGamerTagAlpha(Tag, 0, 255) -- Sets 'MP_TAG_GAMER_NAME' bar alpha to 100% (not needed just as a fail safe)
+        SetMpGamerTagAlpha(Tag, 2, 255) -- Sets 'MP_TAG_HEALTH_ARMOUR' bar alpha to 100%
+        SetMpGamerTagAlpha(Tag, 4, 255) -- Sets 'MP_TAG_AUDIO_ICON' bar alpha to 100%
+        SetMpGamerTagAlpha(Tag, 6, 255) -- Sets 'MP_TAG_PASSIVE_MODE' bar alpha to 100%
         SetMpGamerTagHealthBarColour(Tag, 25)  --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
 
         if ShowNames then

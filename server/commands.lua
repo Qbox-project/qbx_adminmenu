@@ -1,24 +1,24 @@
-QBCore.Commands.Add('admin', 'help text here', {}, false, function(source)
+QBCore.Commands.Add('admin', 'Pog menu', {}, false, function(source)
     TriggerClientEvent('qb-admin:client:openmenu', source)
-end)
+end, Config.Commands['usemenu'])
 
-QBCore.Commands.Add('noclip', 'help text here', {}, false, function(source)
+QBCore.Commands.Add('noclip', 'Zoom', {}, false, function(source)
     TriggerClientEvent('qb-admin:client:noclip', source)
-end)
+end, Config.Commands['noclip'])
 
-QBCore.Commands.Add('names', 'help text here', {}, false, function(source)
+QBCore.Commands.Add('names', 'Awesome names', {}, false, function(source)
     TriggerClientEvent('qb-admin:client:names', source)
-end)
+end, Config.Commands['noclip'])
 
-QBCore.Commands.Add('blips', 'help text here', {}, false, function(source)
+QBCore.Commands.Add('blips', 'Basically UAV', {}, false, function(source)
     TriggerClientEvent('qb-admin:client:blips', source)
-end)
+end, Config.Commands['blips'])
 
-QBCore.Commands.Add('setmodel', 'help text here', {}, true, function(source, args)
+QBCore.Commands.Add('setmodel', 'NPC', {}, false, function(source, args)
     local model = args[1]
     local Target = tonumber(args[2]) or source
 
     if not QBCore.Functions.GetPlayer(Target) then return end
 
     TriggerClientEvent('qb-admin:client:setmodel', Target, tostring(model))
-end)
+end, Config.Commands['setmodel'])

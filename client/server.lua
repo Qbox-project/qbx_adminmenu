@@ -22,9 +22,15 @@ local Options = {
 }
 
 lib.registerMenu({
-    id = 'server_menu',
+    id = 'qb_adminmenu_server_menu',
     title = Lang:t('title.server_menu'),
     position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+    end,
+    onSelected = function(selected)
+        MenuIndexes['qb_adminmenu_server_menu'] = selected
+    end,
     options = {
         {label = Lang:t('server_options.label1'), description = Lang:t('server_options.desc1'), icon = 'fas fa-cloud', values = {Lang:t('server_options.value1_1'), Lang:t('server_options.value1_2'), Lang:t('server_options.value1_3'), Lang:t('server_options.value1_4'), Lang:t('server_options.value1_5'), Lang:t('server_options.value1_6'),
         Lang:t('server_options.value1_7'), Lang:t('server_options.value1_8'), Lang:t('server_options.value1_9'), Lang:t('server_options.value1_10'), Lang:t('server_options.value1_11'), Lang:t('server_options.value1_12'), Lang:t('server_options.value1_13'), Lang:t('server_options.value1_14'), Lang:t('server_options.value1_15')},

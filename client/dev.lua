@@ -2,10 +2,10 @@ local ShowCoords = false
 local VehicleDev = false
 local VehicleTypes = {'Compacts', 'Sedans', 'SUVs', 'Coupes', 'Muscle', 'Sports Classics', 'Sports', 'Super', 'Motorcycles', 'Off-road', 'Industrial', 'Utility', 'Vans', 'Cycles', 'Boats', 'Helicopters', 'Planes', 'Service', 'Emergency', 'Military', 'Commercial', 'Trains', 'Open Wheel'}
 local Options = {
-    function() local Coords = GetEntityCoords(cache.ped) lib.setClipboard(string.format('vector2(%s, %s)', Round(Coords.x, 2), Round(Coords.y, 2))) lib.showMenu('dev_menu') end,
-    function() local Coords = GetEntityCoords(cache.ped) lib.setClipboard(string.format('vector3(%s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2))) lib.showMenu('dev_menu') end,
-    function() local Coords = GetEntityCoords(cache.ped) local Heading = GetEntityHeading(cache.ped) lib.setClipboard(string.format('vector4(%s, %s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2), Round(Heading, 2))) lib.showMenu('dev_menu') end,
-    function() local Heading = GetEntityHeading(cache.ped) lib.setClipboard(string.format('%s', Round(Heading, 2))) lib.showMenu('dev_menu') end,
+    function() local Coords = GetEntityCoords(cache.ped) lib.setClipboard(string.format('vector2(%s, %s)', Round(Coords.x, 2), Round(Coords.y, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() local Coords = GetEntityCoords(cache.ped) lib.setClipboard(string.format('vector3(%s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() local Coords = GetEntityCoords(cache.ped) local Heading = GetEntityHeading(cache.ped) lib.setClipboard(string.format('vector4(%s, %s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2), Round(Heading, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() local Heading = GetEntityHeading(cache.ped) lib.setClipboard(string.format('%s', Round(Heading, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
     function()
         ShowCoords = not ShowCoords
         while ShowCoords do
@@ -35,9 +35,15 @@ local Options = {
 }
 
 lib.registerMenu({
-    id = 'dev_menu',
+    id = 'qb_adminmenu_dev_menu',
     title = Lang:t('title.dev_menu'),
     position = 'top-right',
+    onClose = function(keyPressed)
+        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+    end,
+    onSelected = function(selected)
+        MenuIndexes['qb_adminmenu_dev_menu'] = selected
+    end,
     options = {
         {label = Lang:t('dev_options.label1'), description = Lang:t('dev_options.desc1'), icon = 'fas fa-compass'},
         {label = Lang:t('dev_options.label2'), description = Lang:t('dev_options.desc2'), icon = 'fas fa-compass'},

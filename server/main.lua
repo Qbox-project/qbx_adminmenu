@@ -1,7 +1,10 @@
 QBCore = exports['qb-core']:GetCoreObject()
-local IsFrozen = {}
+local isFrozen = {}
+local sounds = {}
 
-function NoPerms(source) QBCore.Functions.Notify(source, Lang:t('error.no_perms'), 'error') end
+function NoPerms(source)
+    QBCore.Functions.Notify(source, Lang:t('error.no_perms'), 'error')
+end
 
 --- Checks if the source is inside of the target's routingbucket
 --- if not set the source's routingbucket to the target's
@@ -14,29 +17,28 @@ function CheckRoutingbucket(source, target)
 end
 
 local GeneralOptions = {
-        function(SelectedPlayer, _, _) TriggerClientEvent('hospital:client:KillPlayer', SelectedPlayer.id) end,
-        function(SelectedPlayer, _, _) TriggerClientEvent('hospital:client:Revive', SelectedPlayer.id) end,
-        function(SelectedPlayer, _, _)
-
-        if IsFrozen[SelectedPlayer.id] then
+    function(SelectedPlayer) TriggerClientEvent('hospital:client:KillPlayer', SelectedPlayer.id) end,
+    function(SelectedPlayer) TriggerClientEvent('hospital:client:Revive', SelectedPlayer.id) end,
+    function(SelectedPlayer)
+        if isFrozen[SelectedPlayer.id] then
             FreezeEntityPosition(GetPlayerPed(SelectedPlayer.id), false)
-            IsFrozen[SelectedPlayer.id] = false
+            isFrozen[SelectedPlayer.id] = false
         else
             FreezeEntityPosition(GetPlayerPed(SelectedPlayer.id), true)
-            IsFrozen[SelectedPlayer.id] = true
+            isFrozen[SelectedPlayer.id] = true
         end
     end,
-    function(SelectedPlayer, source, _)
+    function(SelectedPlayer, source)
         local Coords = GetEntityCoords(GetPlayerPed(SelectedPlayer.id))
         CheckRoutingbucket(source, SelectedPlayer.id)
-        SetEntityCoords(GetPlayerPed(source), Coords.x, Coords.y, Coords.z)
+        SetEntityCoords(GetPlayerPed(source), Coords.x, Coords.y, Coords.z, false, false, false, false)
     end,
-    function(SelectedPlayer, source, _)
+    function(SelectedPlayer, source)
         local Coords = GetEntityCoords(GetPlayerPed(source))
         CheckRoutingbucket(SelectedPlayer.id, source)
-        SetEntityCoords(GetPlayerPed(SelectedPlayer.id), Coords.x, Coords.y, Coords.z)
+        SetEntityCoords(GetPlayerPed(SelectedPlayer.id), Coords.x, Coords.y, Coords.z, false, false, false, false)
     end,
-    function(SelectedPlayer, source, _)
+    function(SelectedPlayer, source)
         local Vehicle = GetVehiclePedIsIn(GetPlayerPed(SelectedPlayer.id), false)
         local Seat = -1
         if Vehicle == 0 then return end
@@ -51,6 +53,7 @@ local GeneralOptions = {
 RegisterNetEvent('qb-admin:server:playeroptionsgeneral', function(Selected, SelectedPlayer, Input)
     if not QBCore.Functions.HasPermission(source, Config.Events['playeroptionsgeneral']) then NoPerms(source) return end
 
+    ---@diagnostic disable-next-line: redundant-parameter
     GeneralOptions[Selected](SelectedPlayer, source, Input)
 end)
 
@@ -75,6 +78,49 @@ local AdministrationOptions = {
 }
 RegisterNetEvent('qb-admin:server:playeradministration', function(Selected, SelectedPlayer, Input)
     AdministrationOptions[Selected](source, SelectedPlayer, Input)
+end)
+
+local PlayerDataOptions = {
+    ['name'] = function(Target, Input)
+        if Input[1] then Target.PlayerData.charinfo.firstname = Input[1] end
+        if Input[2] then Target.PlayerData.charinfo.lastname = Input[2] end
+        Target.Functions.SetPlayerData('charinfo', Target.PlayerData.charinfo)
+    end,
+    ['food'] = function(Target, Input) Target.Functions.SetMetaData('hunger', Input[1]) end,
+    ['thirst'] = function(Target, Input) Target.Functions.SetMetaData('thirst', Input[1]) end,
+    ['stress'] = function(Target, Input) Target.Functions.SetMetaData('stress', Input[1]) end,
+    ['armor'] = function(Target, Input) Target.Functions.SetMetaData('armor', Input[1]) SetPedArmour(GetPlayerPed(Target.PlayerData.source), Input[1]) end,
+    ['phone'] = function(Target, Input)
+        Target.PlayerData.charinfo.phone = Input[1]
+        Target.Functions.SetPlayerData('charinfo', Target.PlayerData.charinfo)
+    end,
+    ['crafting'] = function(Target, Input) Target.Functions.SetMetaData('craftingrep', Input[1]) end,
+    ['dealer'] = function(Target, Input) Target.Functions.SetMetaData('dealerrep', Input[1]) end,
+    ['cash'] = function(Target, Input)
+        Target.PlayerData.money['cash'] = Input[1]
+        Target.Functions.SetPlayerData('money', Target.PlayerData.money)
+    end,
+    ['bank'] = function(Target, Input)
+        Target.PlayerData.money['bank'] = Input[1]
+        Target.Functions.SetPlayerData('money', Target.PlayerData.money)
+    end,
+    ['job'] = function(Target, Input)
+        Target.Functions.SetJob(Input[1], Input[2])
+    end,
+    ['gang'] = function(Target, Input)
+        Target.Functions.SetGang(Input[1], Input[2])
+    end,
+    ['radio'] = function(Target, Input)
+        exports['pma-voice']:setPlayerRadio(Target.PlayerData.source, Input[1])
+    end,
+}
+RegisterNetEvent('qb-admin:server:changeplayerdata', function(Selected, SelectedPlayer, Input)
+    local Target = QBCore.Functions.GetPlayer(SelectedPlayer.id)
+
+    if not QBCore.Functions.HasPermission(source, Config.Events['changeplayerdata']) then NoPerms(source) return end
+    if not Target then return end
+
+    PlayerDataOptions[Selected](Target, Input)
 end)
 
 RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID)
@@ -132,4 +178,84 @@ lib.callback.register('qb-admin:server:getplayers', function(source)
     end
     table.sort(Players, function(a, b) return a.id < b.id end)
     return Players
+end)
+
+lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
+    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
+
+    local playerData = QBCore.Functions.GetPlayer(playerToGet)
+    local player = {
+        id = playerToGet,
+        cid = playerData.PlayerData.citizenid,
+        name = playerData.PlayerData.charinfo.firstname .. ' ' .. playerData.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(playerToGet) .. ')',
+        food = playerData.PlayerData.metadata['hunger'],
+        water = playerData.PlayerData.metadata['thirst'],
+        stress = playerData.PlayerData.metadata['stress'],
+        armor = playerData.PlayerData.metadata['armor'],
+        phone = playerData.PlayerData.charinfo.phone,
+        craftingrep = playerData.PlayerData.metadata['craftingrep'],
+        dealerrep = playerData.PlayerData.metadata['dealerrep'],
+        cash = playerData.PlayerData.money['cash'],
+        bank = playerData.PlayerData.money['bank'],
+        job = playerData.PlayerData.job.label .. ' | ' .. playerData.PlayerData.job.grade.level,
+        gang = playerData.PlayerData.gang.label,
+        license = QBCore.Functions.GetIdentifier(playerToGet, 'license') or 'Unknown',
+        discord = QBCore.Functions.GetIdentifier(playerToGet, 'discord') or 'Not Linked',
+        steam = QBCore.Functions.GetIdentifier(playerToGet, 'steam') or 'Not Linked',
+    }
+    return player
+end)
+
+lib.callback.register('qb-admin:server:clothingMenu', function(source, target)
+    if not QBCore.Functions.HasPermission(source, Config.Events['clothing menu']) then
+        NoPerms(source)
+        return false
+    end
+
+    TriggerClientEvent('qb-clothing:client:openMenu', target)
+
+    return true
+end)
+
+lib.callback.register('qb-admin:server:getSounds', function(source)
+    if not QBCore.Functions.HasPermission(source, Config.Events['play sounds']) then
+        NoPerms(source)
+        return
+    end
+    return sounds
+end)
+
+lib.callback.register('qb-admin:server:canUseMenu', function(source)
+    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then
+        NoPerms(source)
+        return false
+    end
+
+    return true
+end)
+
+lib.callback.register('qb-admin:server:spawnVehicle', function(source, model)
+    local hash = joaat(model)
+    local tempVehicle = CreateVehicle(hash, 0, 0, 0, 0, true, false)
+    while not DoesEntityExist(tempVehicle) do Wait(100) end
+    local vehicleType = GetVehicleType(tempVehicle)
+    DeleteEntity(tempVehicle)
+    local ply = GetPlayerPed(source)
+    local plyCoords = GetEntityCoords(ply)
+    local veh = QBCore.Functions.CreateVehicle(source, hash, vehicleType, vec4(plyCoords.x, plyCoords.y, plyCoords.z, GetEntityHeading(ply)), true)
+    return NetworkGetNetworkIdFromEntity(veh)
+end)
+
+CreateThread(function()
+    local path = GetResourcePath(Config.SoundScriptName)
+    local directory = ('%s%s'):format(path:gsub('//', '/'), Config.SoundPath)
+    if not Config.Linux then
+        for filename in io.popen(('dir "%s" /b'):format(directory)):lines() do
+            sounds[#sounds + 1] = filename:match('(.+)%..+$')
+        end
+    else
+        for filename in io.popen(('ls "%s" /b'):format(directory)):lines() do
+            sounds[#sounds + 1] = filename:match('(.+)%..+$')
+        end
+    end
 end)
