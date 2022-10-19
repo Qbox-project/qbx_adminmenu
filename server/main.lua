@@ -80,11 +80,54 @@ RegisterNetEvent('qb-admin:server:playeradministration', function(Selected, Sele
     AdministrationOptions[Selected](source, SelectedPlayer, Input)
 end)
 
+local PlayerDataOptions = {
+    ['name'] = function(Target, Input)
+        if Input[1] then Target.PlayerData.charinfo.firstname = Input[1] end
+        if Input[2] then Target.PlayerData.charinfo.lastname = Input[2] end
+        Target.Functions.SetPlayerData('charinfo', Target.PlayerData.charinfo)
+    end,
+    ['food'] = function(Target, Input) Target.Functions.SetMetaData('hunger', Input[1]) end,
+    ['thirst'] = function(Target, Input) Target.Functions.SetMetaData('thirst', Input[1]) end,
+    ['stress'] = function(Target, Input) Target.Functions.SetMetaData('stress', Input[1]) end,
+    ['armor'] = function(Target, Input) Target.Functions.SetMetaData('armor', Input[1]) SetPedArmour(GetPlayerPed(Target.PlayerData.source), Input[1]) end,
+    ['phone'] = function(Target, Input)
+        Target.PlayerData.charinfo.phone = Input[1]
+        Target.Functions.SetPlayerData('charinfo', Target.PlayerData.charinfo)
+    end,
+    ['crafting'] = function(Target, Input) Target.Functions.SetMetaData('craftingrep', Input[1]) end,
+    ['dealer'] = function(Target, Input) Target.Functions.SetMetaData('dealerrep', Input[1]) end,
+    ['cash'] = function(Target, Input)
+        Target.PlayerData.money['cash'] = Input[1]
+        Target.Functions.SetPlayerData('money', Target.PlayerData.money)
+    end,
+    ['bank'] = function(Target, Input)
+        Target.PlayerData.money['bank'] = Input[1]
+        Target.Functions.SetPlayerData('money', Target.PlayerData.money)
+    end,
+    ['job'] = function(Target, Input)
+        Target.Functions.SetJob(Input[1], Input[2])
+    end,
+    ['gang'] = function(Target, Input)
+        Target.Functions.SetGang(Input[1], Input[2])
+    end,
+    ['radio'] = function(Target, Input)
+        exports['pma-voice']:setPlayerRadio(Target.PlayerData.source, Input[1])
+    end,
+}
+RegisterNetEvent('qb-admin:server:changeplayerdata', function(Selected, SelectedPlayer, Input)
+    local Target = QBCore.Functions.GetPlayer(SelectedPlayer.id)
+
+    if not QBCore.Functions.HasPermission(source, Config.Events['changeplayerdata']) then NoPerms(source) return end
+    if not Target then return end
+
+    PlayerDataOptions[Selected](Target, Input)
+end)
+
 RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID)
     local src = PlayerID or source
     local Target = QBCore.Functions.GetPlayer(src)
 
-    if not QBCore.Functions.HasPermission(source, Config.Events['giveallweapons']) then NoPerms(src) return end
+    if not QBCore.Functions.HasPermission(source, Config.Events['giveallweapons']) then NoPerms(source) return end
 
     for i = 1, #Config.Weaponlist[Weapontype], 1 do
         if not QBCore.Shared.Items[Config.Weaponlist[Weapontype][i]] then return end

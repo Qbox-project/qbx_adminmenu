@@ -9,6 +9,123 @@ local playerOptions = {
     function()
         lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
     end,
+    function()
+        local Input = lib.inputDialog('Name Change', {'Firstname', 'Lastname'})
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'name', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Food', {
+            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'food', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Thirst', {
+            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'thirst', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Stress', {
+            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'stress', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Armor', {
+            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'armor', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Phone', {'Number'})
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'phone', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Crafting', {
+            { type = 'number', label = 'Reputation' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'crafting', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Dealer', {
+            { type = 'number', label = 'Reputation' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'dealer', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Money', {
+            { type = 'number', label = 'Cash' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'cash', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Money', {
+            { type = 'number', label = 'Bank' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'bank', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Job', {
+            { type = 'input', label = 'Name' },
+            { type = 'number', label = 'Grade' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'job', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Gang', {
+            { type = 'input', label = 'Name' },
+            { type = 'number', label = 'Grade' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'gang', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local Input = lib.inputDialog('Radio', {
+            { type = 'number', label = 'Frequency' }
+        })
+        if not Input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qb-admin:server:changeplayerdata', 'radio', selectedPlayer, Input)
+        GeneratePlayersMenu()
+    end,
+    function()
+        local License = selectedPlayer.license:gsub('license:', '')
+        lib.setClipboard(License)
+        lib.showMenu(('qb_adminmenu_player_menu_%s'):format(selectedPlayer.id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(selectedPlayer.id)])
+    end,
+    function()
+        local Discord = selectedPlayer.discord:gsub('discord:', '')
+        lib.setClipboard(Discord)
+        lib.showMenu(('qb_adminmenu_player_menu_%s'):format(selectedPlayer.id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(selectedPlayer.id)])
+    end,
+    function()
+        local Steam = selectedPlayer.steam:gsub('steam:', '')
+        lib.setClipboard(Steam)
+        lib.showMenu(('qb_adminmenu_player_menu_%s'):format(selectedPlayer.id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(selectedPlayer.id)])
+    end,
 }
 
 function GeneratePlayersMenu()
@@ -52,24 +169,24 @@ function GeneratePlayersMenu()
                 {label = Lang:t('player_options.label1'), description = Lang:t('player_options.desc1'), icon = 'fas fa-wrench'},
                 {label = Lang:t('player_options.label2'), description = Lang:t('player_options.desc2'), icon = 'fas fa-file-invoice'},
                 {label = Lang:t('player_options.label3'), description = Lang:t('player_options.desc3'), icon = 'fas fa-gamepad'},
-                {label = string.format('Name: %s', player.name), close = false},
-                {label = string.format('Food: %s', player.food), close = false},
-                {label = string.format('Water: %s', player.water), close = false},
-                {label = string.format('Stress: %s', player.stress), close = false},
-                {label = string.format('Armor: %s', player.armor), close = false},
-                {label = string.format('Phone: %s', player.phone), close = false},
-                {label = string.format('Crafting Rep: %s', player.craftingrep), close = false},
-                {label = string.format('Dealer Rep: %s', player.dealerrep), close = false},
-                {label = string.format('Cash: %s', player.cash), close = false},
-                {label = string.format('Bank: %s', player.bank), close = false},
-                {label = string.format('Job: %s', player.job), close = false},
-                {label = string.format('Gang: %s', player.gang), close = false},
-                {label = string.format('%s', player.license), close = false},
-                {label = string.format('%s', player.discord), description = 'Discord', close = false},
-                {label = string.format('%s', player.steam), description = 'Steam', close = false}
+                {label = string.format('Name: %s', player.name)},
+                {label = string.format('Food: %s', player.food)},
+                {label = string.format('Water: %s', player.water)},
+                {label = string.format('Stress: %s', player.stress)},
+                {label = string.format('Armor: %s', player.armor)},
+                {label = string.format('Phone: %s', player.phone)},
+                {label = string.format('Crafting Rep: %s', player.craftingrep)},
+                {label = string.format('Dealer Rep: %s', player.dealerrep)},
+                {label = string.format('Cash: %s', player.cash)},
+                {label = string.format('Bank: %s', player.bank)},
+                {label = string.format('Job: %s', player.job)},
+                {label = string.format('Gang: %s', player.gang)},
+                {label = string.format('Radio: %s', Player(args.id).state.radioChannel)},
+                {label = string.format('%s', player.license)},
+                {label = string.format('%s', player.discord), description = 'Discord'},
+                {label = string.format('%s', player.steam), description = 'Steam'}
             }
         }, function(selected)
-            if not playerOptions[selected] then return end
             playerOptions[selected]()
         end)
         selectedPlayer = player

@@ -7,6 +7,14 @@ end
 
 Config.Linux = false
 
+Config.Commands = {
+    ['usemenu'] = 'mod',
+    ['noclip'] = 'mod',
+    ['names'] = 'mod',
+    ['blips'] = 'mod',
+    ['setmodel'] = 'god'
+}
+
 Config.Events = {
     ['giveallweapons'] = 'god',
     ['getradiolist'] = 'mod',
@@ -16,7 +24,8 @@ Config.Events = {
     ['ban'] = 'admin',
     ['changeperms'] = 'god',
     ['clothing menu'] = 'admin',
-    ['play sounds'] = 'admin'
+    ['play sounds'] = 'admin',
+    ['changeplayerdata'] = 'god'
 }
 
 Config.Weaponlist = {
