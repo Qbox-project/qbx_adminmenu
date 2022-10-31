@@ -309,16 +309,10 @@ RegisterNetEvent('qb-admin:client:blips', function()
     if not ShowBlips then
         ShowBlips = true
         NetCheck1 = true
-        lib.notify({
-            description = Lang:t('success.blips_activated'),
-            type = 'success'
-        })
+        lib.notify({ description = Lang:t('success.blips_activated'), type = 'success' })
     else
         ShowBlips = false
-        lib.notify({
-            description = Lang:t('error.blips_deactivated'),
-            type = 'error'
-        })
+        lib.notify({ description = Lang:t('error.blips_deactivated'), type = 'error' })
     end
 end)
 
@@ -326,16 +320,10 @@ RegisterNetEvent('qb-admin:client:names', function()
     if not ShowNames then
         ShowNames = true
         NetCheck2 = true
-        lib.notify({
-            description = Lang:t('success.names_activated'),
-            type = 'success'
-        })
+        lib.notify({ description = Lang:t('success.names_activated'), type = 'success' })
     else
         ShowNames = false
-        lib.notify({
-            description = Lang:t('error.names_deactivated'),
-            type = 'error'
-        })
+        lib.notify({ description = Lang:t('error.names_deactivated'), type = 'error' })
     end
 end)
 
