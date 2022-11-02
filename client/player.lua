@@ -358,10 +358,7 @@ lib.registerMenu({
         local result = tonumber(dialog[1])
 
         if result < 0 or result > 1 then
-            lib.notify({
-                description = 'The number has to be between 0.00 and 1.00',
-                type = 'error'
-            })
+            lib.notify({ description = 'The number has to be between 0.00 and 1.00', type = 'error' })
             Wait(200)
             lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
             return
@@ -385,10 +382,7 @@ lib.registerMenu({
         local result = tonumber(dialog[1])
 
         if result < 1 or result > 100 then
-            lib.notify({
-                description = 'The number has to be between 1 and 100',
-                type = 'error'
-            })
+            lib.notify({ description = 'The number has to be between 1 and 100', type = 'error' })
             Wait(200)
             lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
             return

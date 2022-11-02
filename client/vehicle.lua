@@ -108,10 +108,7 @@ lib.registerMenu({
         TriggerServerEvent('QBCore:CallCommand', "dv", {})
     elseif selected == 5 then
         if not cache.vehicle then
-            lib.notify({
-                description = 'You have to be in a vehicle, to use this',
-                type = 'error'
-            })
+            lib.notify({ description = 'You have to be in a vehicle, to use this', type = 'error' })
             lib.showMenu('qb_adminmenu_vehicles_menu', MenuIndexes['qb_adminmenu_vehicles_menu'])
             return
         end
@@ -138,10 +135,7 @@ lib.registerMenu({
         TriggerEvent('qb-customs:client:EnterCustoms', override)
     elseif selected == 6 then
         if not cache.vehicle then
-            lib.notify({
-                description = 'You have to be in a vehicle, to use this',
-                type = 'error'
-            })
+            lib.notify({ description = 'You have to be in a vehicle, to use this', type = 'error' })
             lib.showMenu('qb_adminmenu_vehicles_menu', MenuIndexes['qb_adminmenu_vehicles_menu'])
             return
         end
@@ -155,10 +149,7 @@ lib.registerMenu({
 
         if #dialog[1] > 8 then
             Wait(200)
-            lib.notify({
-                description = 'You can only enter a maximum of 8 characters',
-                type = 'error'
-            })
+            lib.notify({ description = 'You can only enter a maximum of 8 characters', type = 'error' })
             lib.showMenu('qb_adminmenu_vehicles_menu', MenuIndexes['qb_adminmenu_vehicles_menu'])
             return
         end
