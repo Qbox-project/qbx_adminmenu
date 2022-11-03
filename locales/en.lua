@@ -141,8 +141,14 @@ local Translations = {
 
         },
     },
+    success = {
+        blips_activated = 'Blips activated',
+        names_activated = 'Names activated',
+    },
     error = {
-        no_perms = 'You don\'t have permission to do this'
+        no_perms = 'You don\'t have permission to do this',
+        blips_deactivated = 'Blips deactivated',
+        names_deactivated = 'Names deactivated', 
     }
 }
 
