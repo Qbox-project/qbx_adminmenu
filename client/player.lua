@@ -136,7 +136,7 @@ function GeneratePlayersMenu()
     end
     local optionsList = {}
     for i = 1, #players do
-        optionsList[#optionsList + 1] = {label = string.format('ID: %s | Name: %s', players[i].id, players[i].name), description = string.format('CID: %s | %s', players[i].cid, players[i].license), args = players[i]}
+        optionsList[#optionsList + 1] = {label = string.format('ID: %s | Name: %s', players[i].id, players[i].name), description = string.format('CID: %s | %s', players[i].cid, players[i].license), args = {players[i]}}
     end
     lib.registerMenu({
         id = 'qb_adminmenu_players_menu',
@@ -150,20 +150,20 @@ function GeneratePlayersMenu()
         end,
         options = optionsList
     }, function(_, _, args)
-        local player = lib.callback.await('qb-admin:server:getplayer', false, args.id)
+        local player = lib.callback.await('qb-admin:server:getplayer', false, args[1].id)
         if not player then
             lib.showMenu('qb_adminmenu_main_menu', MenuIndexes['qb_adminmenu_main_menu'])
             return
         end
         lib.registerMenu({
-            id = ('qb_adminmenu_player_menu_%s'):format(args.id),
+            id = ('qb_adminmenu_player_menu_%s'):format(args[1].id),
             title = player.name,
             position = 'top-right',
             onClose = function(keyPressed)
                 CloseMenu(false, keyPressed, 'qb_adminmenu_players_menu')
             end,
             onSelected = function(selected)
-                MenuIndexes[('qb_adminmenu_player_menu_%s'):format(args.id)] = selected
+                MenuIndexes[('qb_adminmenu_player_menu_%s'):format(args[1].id)] = selected
             end,
             options = {
                 {label = Lang:t('player_options.label1'), description = Lang:t('player_options.desc1'), icon = 'fas fa-wrench'},
@@ -181,7 +181,7 @@ function GeneratePlayersMenu()
                 {label = string.format('Bank: %s', player.bank)},
                 {label = string.format('Job: %s', player.job)},
                 {label = string.format('Gang: %s', player.gang)},
-                {label = string.format('Radio: %s', Player(args.id).state.radioChannel)},
+                {label = string.format('Radio: %s', Player(args[1].id).state.radioChannel)},
                 {label = string.format('%s', player.license)},
                 {label = string.format('%s', player.discord), description = 'Discord'},
                 {label = string.format('%s', player.steam), description = 'Steam'}
@@ -190,7 +190,7 @@ function GeneratePlayersMenu()
             playerOptions[selected]()
         end)
         selectedPlayer = player
-        lib.showMenu(('qb_adminmenu_player_menu_%s'):format(args.id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(args.id)])
+        lib.showMenu(('qb_adminmenu_player_menu_%s'):format(args[1].id), MenuIndexes[('qb_adminmenu_player_menu_%s'):format(args[1].id)])
     end)
     lib.showMenu('qb_adminmenu_players_menu', MenuIndexes['qb_adminmenu_players_menu'])
 end
@@ -307,7 +307,7 @@ lib.registerMenu({
         end
 
         for i = 1, #sounds do
-            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = sounds[i], description = 'Press enter to play this sound', args = sounds[i], close = false}, i + 2)
+            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = sounds[i], description = 'Press enter to play this sound', args = {sounds[i]}, close = false}, i + 2)
         end
 
         lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
@@ -333,19 +333,19 @@ lib.registerMenu({
         if args == 'volume' then
             if scrollIndex == 11 then return end
             volume[2] = scrollIndex / 10
-            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Volume', args = 'volume', values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
+            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Volume', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
         elseif args == 'radius' then
             if scrollIndex == 11 then return end
             radius[2] = scrollIndex * 10
-            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Radius', args = 'radius', values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
+            lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Radius', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
         end
     end,
     options = {
-        {label = 'Volume', description = 'Volume to play the sound at', args = 'volume', values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = volume[1], close = false},
-        {label = 'Radius', description = 'The higher this number, the further away the sound can be heard from', args = 'radius', values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = radius[1], close = false}
+        {label = 'Volume', description = 'Volume to play the sound at', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = volume[1], close = false},
+        {label = 'Radius', description = 'The higher this number, the further away the sound can be heard from', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = radius[1], close = false}
     }
 }, function(_, scrollIndex, args)
-    if args == 'volume' then
+    if args[1] == 'volume' then
         if scrollIndex ~= 11 then return end
         lib.hideMenu(false)
         local dialog = lib.inputDialog('Set Volume Manually', {'Volume (0.00 - 1.00'})
@@ -365,11 +365,11 @@ lib.registerMenu({
         end
 
         volume[2] = result --[[@as number]]
-        lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Volume', args = 'volume', values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
+        lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Volume', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
         Wait(200)
         lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
         return
-    elseif args == 'radius' then
+    elseif args[1] == 'radius' then
         if scrollIndex ~= 11 then return end
         lib.hideMenu(false)
         local dialog = lib.inputDialog('Set Radius Manually', {'Radius (1 - 100'})
@@ -389,11 +389,11 @@ lib.registerMenu({
         end
 
         radius[2] = result --[[@as number]]
-        lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Radius', args = 'radius', values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
+        lib.setMenuOptions('qb_adminmenu_play_sounds_menu', {label = 'Radius', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
         Wait(200)
         lib.showMenu('qb_adminmenu_play_sounds_menu', MenuIndexes['qb_adminmenu_play_sounds_menu'])
         return
     end
 
-    TriggerServerEvent('InteractSound_SV:PlayWithinDistance', radius[2], args, volume[2])
+    TriggerServerEvent('InteractSound_SV:PlayWithinDistance', radius[2], args[1], volume[2])
 end)
