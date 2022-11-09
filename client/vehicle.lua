@@ -28,7 +28,7 @@ function GenerateVehiclesSpawnMenu()
 
     for i = 1, #categories do
         vehicles[categories[i]] = {}
-        lib.setMenuOptions('qb_adminmenu_spawn_vehicles_menu', {label = categories[i], args = ('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}, i)
+        lib.setMenuOptions('qb_adminmenu_spawn_vehicles_menu', {label = categories[i], args = {('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}}, i)
 
         lib.registerMenu({
             id = ('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i]),
@@ -42,7 +42,7 @@ function GenerateVehiclesSpawnMenu()
             end,
             options = {}
         }, function(_, _, args)
-            local veh = lib.callback.await('qb-admin:server:spawnVehicle', false, args)
+            local veh = lib.callback.await('qb-admin:server:spawnVehicle', false, args[1])
             if not veh then return end
             while not DoesEntityExist(NetToVeh(veh)) do Wait(100) end
             veh = NetToVeh(veh)
@@ -72,7 +72,7 @@ function GenerateVehiclesSpawnMenu()
     for i = 1, #vehs do
         local v = QBCore.Shared.Vehicles[vehs[i]]
         vehicles[v.category][vehs[i]] = v
-        lib.setMenuOptions(('qb_adminmenu_spawn_vehicles_menu_%s'):format(v.category), {label = v.name, args = v.model}, indexedCategories[v.category])
+        lib.setMenuOptions(('qb_adminmenu_spawn_vehicles_menu_%s'):format(v.category), {label = v.name, args = {v.model}}, indexedCategories[v.category])
         indexedCategories[v.category] += 1
     end
 
@@ -170,5 +170,5 @@ lib.registerMenu({
     end,
     options = {}
 }, function(_, _, args)
-    lib.showMenu(args, MenuIndexes[args])
+    lib.showMenu(args[1], MenuIndexes[args[1]])
 end)
