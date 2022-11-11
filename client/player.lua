@@ -284,7 +284,7 @@ lib.registerMenu({
     }
 }, function(selected)
     if selected == 1 then
-        TriggerServerEvent('inventory:server:OpenInventory', 'otherplayer', selectedPlayer.id)
+        ExecuteCommand(('viewinv %s'):format(selectedPlayer.id))
     elseif selected == 2 then
         local succeeded = lib.callback.await('qb-admin:server:clothingMenu', false, selectedPlayer.id)
         if succeeded then return end
