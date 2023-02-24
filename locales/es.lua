@@ -132,7 +132,7 @@ local Translations = {
             permvalue1 = 'Quitar',
             permvalue2 = 'Mod',
             permvalue3 = 'Admin',
-            permvalue4 = 'God',
+            permvalue4 = 'Dios',
         },
         admin = {
 
