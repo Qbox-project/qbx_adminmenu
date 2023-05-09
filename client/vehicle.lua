@@ -101,11 +101,11 @@ lib.registerMenu({
     if selected == 1 then
         GenerateVehiclesSpawnMenu()
     elseif selected == 2 then
-        TriggerServerEvent('QBCore:CallCommand', "fix", {})
+        ExecuteCommand('fix')
     elseif selected == 3 then
-        TriggerServerEvent('QBCore:CallCommand', "admincar", {})
+        ExecuteCommand('admincar')
     elseif selected == 4 then
-        TriggerServerEvent('QBCore:CallCommand', "dv", {})
+        ExecuteCommand('dv')
     elseif selected == 5 then
         if not cache.vehicle then
             lib.notify({ description = 'You have to be in a vehicle, to use this', type = 'error' })

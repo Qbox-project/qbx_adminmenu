@@ -298,7 +298,7 @@ lib.registerMenu({
             lib.showMenu('qb_adminmenu_player_extra_menu', MenuIndexes['qb_adminmenu_player_extra_menu'])
             return
         end
-        TriggerServerEvent('QBCore:CallCommand', 'giveitem', {selectedPlayer.id, dialog[1], dialog[2]})
+        ExecuteCommand('giveitem ' .. selectedPlayer.id .. ' ' .. dialog[1] .. ' ' .. dialog[2])
     elseif selected == 4 then
         local sounds = lib.callback.await('qb-admin:server:getSounds', false)
         if not sounds then

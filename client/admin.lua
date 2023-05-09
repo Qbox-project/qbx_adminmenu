@@ -15,8 +15,8 @@ local Options = {
         Godmode = not Godmode
         if Godmode then SetPlayerInvincible(cache.playerId, true) else SetPlayerInvincible(cache.playerId, false) end
     end,
-    function() TriggerServerEvent('QBCore:CallCommand', 'names') end,
-    function() TriggerServerEvent('QBCore:CallCommand', 'blips') end,
+    function() ExecuteCommand('names') end,
+    function() ExecuteCommand('blips') end,
     function()
         VehicleGodmode = not VehicleGodmode
         if VehicleGodmode then
@@ -37,7 +37,7 @@ local Options = {
         if Switch == 1 then
             local Input = lib.inputDialog(Lang:t('admin_options.value8_1'), {Lang:t('admin_options.input8label')})
             if not Input then return end
-            TriggerServerEvent('QBCore:CallCommand', 'setmodel', Input)
+            ExecuteCommand('setmodel ' .. Input)
         else
             ExecuteCommand('refreshskin')
         end
