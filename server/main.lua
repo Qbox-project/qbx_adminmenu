@@ -238,12 +238,11 @@ lib.callback.register('qb-admin:server:spawnVehicle', function(source, model)
     local hash = joaat(model)
     local tempVehicle = CreateVehicle(hash, 0, 0, 0, 0, true, false)
     while not DoesEntityExist(tempVehicle) do Wait(100) end
-    local vehicleType = GetVehicleType(tempVehicle)
     DeleteEntity(tempVehicle)
     local ply = GetPlayerPed(source)
     local plyCoords = GetEntityCoords(ply)
-    local veh = QBCore.Functions.CreateVehicle(source, hash, vehicleType, vec4(plyCoords.x, plyCoords.y, plyCoords.z, GetEntityHeading(ply)), true)
-    return NetworkGetNetworkIdFromEntity(veh)
+    local src = source
+    return QBCore.Functions.CreateVehicle(src, hash, vec4(plyCoords.x, plyCoords.y, plyCoords.z, GetEntityHeading(ply)), true)
 end)
 
 CreateThread(function()
