@@ -42,10 +42,13 @@ function GenerateVehiclesSpawnMenu()
             end,
             options = {}
         }, function(_, _, args)
-            local veh = lib.callback.await('qb-admin:server:spawnVehicle', false, args[1])
-            if not veh then return end
-            while not DoesEntityExist(NetToVeh(veh)) do Wait(100) end
-            veh = NetToVeh(veh)
+            local vehNetId = lib.callback.await('qb-admin:server:spawnVehicle', false, args[1])
+            if not vehNetId then return end
+            local veh
+            repeat
+                veh = NetToVeh(vehNetId)
+                Wait(100)
+            until DoesEntityExist(veh)
             TriggerEvent('qb-vehiclekeys:client:AddKeys', QBCore.Functions.GetPlate(veh))
             SetVehicleNeedsToBeHotwired(veh, false)
             SetVehicleHasBeenOwnedByPlayer(veh, true)
