@@ -28,4 +28,4 @@ client_scripts {
 }
 
 lua54 'yes'
-use_experiment_fxv2_oal 'yes'
+use_experimental_fxv2_oal 'yes'
