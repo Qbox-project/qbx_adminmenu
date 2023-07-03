@@ -8,24 +8,24 @@ end
 Config.Linux = false
 
 Config.Commands = {
-    ['usemenu'] = 'mod',
-    ['noclip'] = 'mod',
-    ['names'] = 'mod',
-    ['blips'] = 'mod',
-    ['setmodel'] = 'god'
+    ['usemenu'] = 'group.mod',
+    ['noclip'] = 'group.mod',
+    ['names'] = 'group.mod',
+    ['blips'] = 'group.mod',
+    ['setmodel'] = 'group.god'
 }
 
 Config.Events = {
-    ['giveallweapons'] = 'god',
-    ['getradiolist'] = 'mod',
-    ['usemenu'] = 'mod',
-    ['playeroptionsgeneral'] = 'mod',
-    ['kick'] = 'mod',
-    ['ban'] = 'admin',
-    ['changeperms'] = 'god',
-    ['clothing menu'] = 'admin',
-    ['play sounds'] = 'admin',
-    ['changeplayerdata'] = 'god'
+    ['giveallweapons'] = 'group.god',
+    ['getradiolist'] = 'group.mod',
+    ['usemenu'] = 'group.mod',
+    ['playeroptionsgeneral'] = 'group.mod',
+    ['kick'] = 'group.mod',
+    ['ban'] = 'group.admin',
+    ['changeperms'] = 'group.god',
+    ['clothing menu'] = 'group.admin',
+    ['play sounds'] = 'group.admin',
+    ['changeplayerdata'] = 'group.god'
 }
 
 Config.Weaponlist = {
