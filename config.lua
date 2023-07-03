@@ -12,20 +12,20 @@ Config.Commands = {
     ['noclip'] = 'mod',
     ['names'] = 'mod',
     ['blips'] = 'mod',
-    ['setmodel'] = 'god'
+    ['setmodel'] = 'admin'
 }
 
 Config.Events = {
-    ['giveallweapons'] = 'god',
+    ['giveallweapons'] = 'admin',
     ['getradiolist'] = 'mod',
     ['usemenu'] = 'mod',
     ['playeroptionsgeneral'] = 'mod',
     ['kick'] = 'mod',
     ['ban'] = 'admin',
-    ['changeperms'] = 'god',
+    ['changeperms'] = 'admin',
     ['clothing menu'] = 'admin',
     ['play sounds'] = 'admin',
-    ['changeplayerdata'] = 'god'
+    ['changeplayerdata'] = 'admin'
 }
 
 Config.Weaponlist = {
