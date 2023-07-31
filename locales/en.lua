@@ -144,11 +144,13 @@ local Translations = {
     success = {
         blips_activated = 'Blips activated',
         names_activated = 'Names activated',
+        coords_copied = 'Coordinates copied to clipboard',
+        heading_copied = 'Heading copied to clipboard',
     },
     error = {
         no_perms = 'You don\'t have permission to do this',
         blips_deactivated = 'Blips deactivated',
-        names_deactivated = 'Names deactivated', 
+        names_deactivated = 'Names deactivated',
     }
 }
 

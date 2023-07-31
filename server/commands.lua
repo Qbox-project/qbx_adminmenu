@@ -5,7 +5,6 @@ lib.addCommand('admin', {
     TriggerClientEvent('qb-admin:client:openmenu', source)
 end)
 
-
 lib.addCommand('noclip', {
     help = 'Toggle NoClip',
     restricted = 'admin',
@@ -40,4 +39,32 @@ lib.addCommand('setmodel', {
     if not QBCore.Functions.GetPlayer(Target) then return end
 
     TriggerClientEvent('qb-admin:client:setmodel', Target, args.model)
+end)
+
+lib.addCommand('vec2', {
+    help = 'Copy vector2 to clipboard (Admin only)',
+    restricted = 'admin',
+}, function(source)
+    TriggerClientEvent('qb-admin:client:copyToClipboard', source, 'coords2')
+end)
+
+lib.addCommand('vec3', {
+    help = 'Copy vector3 to clipboard (Admin only)',
+    restricted = 'admin',
+}, function(source)
+    TriggerClientEvent('qb-admin:client:copyToClipboard', source, 'coords3')
+end)
+
+lib.addCommand('vec4', {
+    help = 'Copy vector4 to clipboard (Admin only)',
+    restricted = 'admin',
+}, function(source)
+    TriggerClientEvent('qb-admin:client:copyToClipboard', source, 'coords4')
+end)
+
+lib.addCommand('heading', {
+    help = 'Copy heading to clipboard (Admin only)',
+    restricted = 'admin',
+}, function(source)
+    TriggerClientEvent('qb-admin:client:copyToClipboard', source, 'heading')
 end)
