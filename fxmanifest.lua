@@ -9,7 +9,12 @@ shared_scripts {
     'locales/en.lua',
     'locales/*.lua',
     '@ox_lib/init.lua',
-    'config.lua'
+    'config.lua',
+    '@qbx-core/import.lua'
+}
+
+modules {
+    'qbx-core:utils',
 }
 
 server_scripts {
@@ -24,7 +29,8 @@ client_scripts {
     'client/server.lua',
     'client/dev.lua',
     'client/player.lua',
-    'client/vehicle.lua'
+    'client/vehicle.lua',
+    'client/vectors.lua'
 }
 
 lua54 'yes'

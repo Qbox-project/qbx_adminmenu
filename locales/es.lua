@@ -144,6 +144,8 @@ local Translations = {
     success = {
         blips_activated = 'Blips activados',
         names_activated = 'Names activados',
+        coords_copied = 'Coordenadas copiadas al portapapeles',
+        heading_copied = 'Dirección copiada al portapapeles',
     },
     error = {
         no_perms = 'No tienes permiso para hacer esto',
