@@ -2,10 +2,10 @@ local ShowCoords = false
 local VehicleDev = false
 local VehicleTypes = {'Compacts', 'Sedans', 'SUVs', 'Coupes', 'Muscle', 'Sports Classics', 'Sports', 'Super', 'Motorcycles', 'Off-road', 'Industrial', 'Utility', 'Vans', 'Cycles', 'Boats', 'Helicopters', 'Planes', 'Service', 'Emergency', 'Military', 'Commercial', 'Trains', 'Open Wheel'}
 local Options = {
-    function() TriggerEvent('qb-admin:client:copyToClipboard', 'coords2') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
-    function() TriggerEvent('qb-admin:client:copyToClipboard', 'coords3') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
-    function() TriggerEvent('qb-admin:client:copyToClipboard', 'coords4') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
-    function() TriggerEvent('qb-admin:client:copyToClipboard', 'heading') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('coords2') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('coords3') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('coords4') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('heading') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
     function()
         ShowCoords = not ShowCoords
         while ShowCoords do
