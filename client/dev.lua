@@ -2,10 +2,10 @@ local ShowCoords = false
 local VehicleDev = false
 local VehicleTypes = {'Compacts', 'Sedans', 'SUVs', 'Coupes', 'Muscle', 'Sports Classics', 'Sports', 'Super', 'Motorcycles', 'Off-road', 'Industrial', 'Utility', 'Vans', 'Cycles', 'Boats', 'Helicopters', 'Planes', 'Service', 'Emergency', 'Military', 'Commercial', 'Trains', 'Open Wheel'}
 local Options = {
-    function() local Coords = GetEntityCoords(cache.ped) lib.setClipboard(string.format('vector2(%s, %s)', Round(Coords.x, 2), Round(Coords.y, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
-    function() local Coords = GetEntityCoords(cache.ped) lib.setClipboard(string.format('vector3(%s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
-    function() local Coords = GetEntityCoords(cache.ped) local Heading = GetEntityHeading(cache.ped) lib.setClipboard(string.format('vector4(%s, %s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2), Round(Heading, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
-    function() local Heading = GetEntityHeading(cache.ped) lib.setClipboard(string.format('%s', Round(Heading, 2))) lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('coords2') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('coords3') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('coords4') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
+    function() CopyToClipboard('heading') lib.showMenu('qb_adminmenu_dev_menu', MenuIndexes['qb_adminmenu_dev_menu']) end,
     function()
         ShowCoords = not ShowCoords
         while ShowCoords do

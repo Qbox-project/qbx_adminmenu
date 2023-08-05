@@ -1,4 +1,4 @@
-local function CopyToClipboard(dataType)
+function CopyToClipboard(dataType)
     local ped = cache.ped
     if dataType == 'coords2' then
         local coords = GetEntityCoords(ped)
