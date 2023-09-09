@@ -94,8 +94,6 @@ lib.registerMenu({
     end
 end)
 
-
-
 --- Needs cleanup
 local noClipEnabled = false
 local ent
@@ -108,10 +106,10 @@ local inputRotEnabled = false
 function toggleNoclip()
     CreateThread(function()
         local ped = cache.ped
-        local veh = GetVehiclePedIsIn(ped, false)
+        local veh = cache.vehicle
         local inVehicle = false
 
-        if veh ~= 0 then
+        if veh then
             inVehicle = true
             ent = veh
         else
@@ -142,7 +140,7 @@ function toggleNoclip()
         end
 
         while noClipEnabled do
-            local _, fv, _, _ = GetCamMatrix(noClipCam)
+            local _, fv = GetCamMatrix(noClipCam)
 
             if IsDisabledControlPressed(2, 17) then -- MWheelUp
                 speed = math.min(speed + 0.1, maxSpeed)
@@ -180,28 +178,28 @@ function toggleNoclip()
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, -speed * multiplier, 0.0, 0.0)
                 SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
+                    SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 35) then -- D
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, speed * multiplier, 0.0, 0.0)
                 SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
+                    SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, GetEntityCoords(ent).z, false, false, false)
                 end
             end
 
             -- Up and Down
-            if IsDisabledControlPressed(2, 22) then -- E
+            if IsDisabledControlPressed(2, 38) then -- E
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * speed / 2)
                 SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
+                    SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             elseif IsDisabledControlPressed(2, 52) then
                 local setpos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * -speed / 2) -- Q
                 SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
                 if not inVehicle then
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
+                    SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, setpos.z, false, false, false)
                 end
             end
 
@@ -238,11 +236,11 @@ function toggleNoclip()
         ClearPedTasksImmediately(ped)
 
         if inVehicle then
-        FreezeEntityPosition(ped, false)
-        SetEntityCollision(ped, true, true)
-        ResetEntityAlpha(ped)
-        SetEntityVisible(ped, true, false)
-        SetPedIntoVehicle(ped, ent, -1)
+            FreezeEntityPosition(ped, false)
+            SetEntityCollision(ped, true, true)
+            ResetEntityAlpha(ped)
+            SetEntityVisible(ped, true, false)
+            SetPedIntoVehicle(ped, ent, -1)
         end
     end)
 end
@@ -250,8 +248,8 @@ end
 function checkInputRotation()
     CreateThread(function()
         while inputRotEnabled do
-            while noClipCam == nil do Wait(0) end
-            while IsPauseMenuActive() do Wait(0) end
+            while not noClipCam or IsPauseMenuActive() do Wait(0) end
+
             local axisX = GetDisabledControlNormal(0, 1)
             local axisY = GetDisabledControlNormal(0, 2)
             local sensitivity = GetProfileSetting(14) * 2
@@ -262,7 +260,7 @@ function checkInputRotation()
             if (math.abs(axisX) > 0) or (math.abs(axisY) > 0) then
                 local rotation = GetCamRot(noClipCam, 2)
                 local rotz = rotation.z + (axisX * sensitivity)
-                local yValue = (axisY * sensitivity)
+                local yValue = axisY * sensitivity
                 local rotx = rotation.x
                 if rotx + yValue > minY and rotx + yValue < maxY then
                     rotx = rotation.x + yValue
@@ -275,6 +273,7 @@ function checkInputRotation()
 end
 
 RegisterNetEvent('qb-admin:client:noclip', function()
+    if GetInvokingResource() then return end -- Safety to make sure it is only called from the server
     toggleNoClipMode()
 end)
 
@@ -286,10 +285,6 @@ function toggleNoClipMode()
         checkInputRotation()
     end
 end
-
-
-
-
 
 local ShowBlips = false
 local ShowNames = false
@@ -502,14 +497,10 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
                 if IsPauseMenuActive() then
                     SetBlipAlpha(blip, 255)
                 else
-                    local x1, y1 = table.unpack(GetEntityCoords(PlayerPedId(), true))
-                    local x2, y2 = table.unpack(GetEntityCoords(GetPlayerPed(playeridx), true))
+                    local x1, y1 = table.unpack(GetEntityCoords(cache.ped, true))
+                    local x2, y2 = table.unpack(GetEntityCoords(ped, true))
                     local distance = (math.floor(math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))) / -1)) + 900
-                    if distance < 0 then
-                        distance = 0
-                    elseif distance > 255 then
-                        distance = 255
-                    end
+                    distance = distance < 0 and 0 or distance > 255 and 255 or distance
                     SetBlipAlpha(blip, distance)
                 end
             end
