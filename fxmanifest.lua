@@ -5,16 +5,17 @@ version '1.0.0'
 description 'https://github.com/Qbox-project'
 
 shared_scripts {
-    '@qb-core/shared/locale.lua',
+    '@qbx_core/shared/locale.lua',
     'locales/en.lua',
     'locales/*.lua',
     '@ox_lib/init.lua',
     'config.lua',
-    '@qbx-core/import.lua'
+    '@qbx_core/import.lua'
 }
 
 modules {
-    'qbx-core:utils',
+    'qbx_core:core',
+    'qbx_core:utils',
 }
 
 server_scripts {
