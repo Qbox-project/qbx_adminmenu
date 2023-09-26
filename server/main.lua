@@ -1,9 +1,8 @@
-QBCore = exports['qbx-core']:GetCoreObject()
 local isFrozen = {}
 local sounds = {}
 
 function NoPerms(source)
-    QBCore.Functions.Notify(source, Lang:t('error.no_perms'), 'error')
+    QBX.Functions.Notify(source, Lang:t('error.no_perms'), 'error')
 end
 
 --- Checks if the source is inside of the target's routingbucket
@@ -51,7 +50,7 @@ local GeneralOptions = {
     end,
 }
 RegisterNetEvent('qb-admin:server:playeroptionsgeneral', function(Selected, SelectedPlayer, Input)
-    if not QBCore.Functions.HasPermission(source, Config.Events['playeroptionsgeneral']) then NoPerms(source) return end
+    if not QBX.Functions.HasPermission(source, Config.Events['playeroptionsgeneral']) then NoPerms(source) return end
 
     ---@diagnostic disable-next-line: redundant-parameter
     GeneralOptions[Selected](SelectedPlayer, source, Input)
@@ -59,21 +58,21 @@ end)
 
 local AdministrationOptions = {
     function(Source, SelectedPlayer, Input)
-        if not QBCore.Functions.HasPermission(Source, Config.Events['kick']) then NoPerms(Source) return end
+        if not QBX.Functions.HasPermission(Source, Config.Events['kick']) then NoPerms(Source) return end
         DropPlayer(SelectedPlayer.id, Input)
     end,
     function(Source, SelectedPlayer, Input)
-        if not QBCore.Functions.HasPermission(Source, Config.Events['ban']) then NoPerms(Source) return end
+        if not QBX.Functions.HasPermission(Source, Config.Events['ban']) then NoPerms(Source) return end
         local BanDuration = (Input[2] or 0) * 3600 + (Input[3] or 0) * 86400 + (Input[4] or 0) * 2629743
         DropPlayer(SelectedPlayer.id, Lang:t('player_options.administration.banreason', { reason = Input[1], lenght = os.date('%c', os.time() + BanDuration) }))
         MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
-            GetPlayerName(SelectedPlayer.id), QBCore.Functions.GetIdentifier(SelectedPlayer.id, 'license'), QBCore.Functions.GetIdentifier(SelectedPlayer.id, 'discord'),
-            QBCore.Functions.GetIdentifier(SelectedPlayer.id, 'ip'), Input[1], os.time() + BanDuration, GetPlayerName(Source)
+            GetPlayerName(SelectedPlayer.id), QBX.Functions.GetIdentifier(SelectedPlayer.id, 'license'), QBX.Functions.GetIdentifier(SelectedPlayer.id, 'discord'),
+            QBX.Functions.GetIdentifier(SelectedPlayer.id, 'ip'), Input[1], os.time() + BanDuration, GetPlayerName(Source)
         })
     end,
     function(Source, SelectedPlayer, Input)
-        if not QBCore.Functions.HasPermission(Source, Config.Events['changeperms']) then NoPerms(Source) return end
-        if Input == 'remove' then QBCore.Functions.RemovePermission(SelectedPlayer.id) else QBCore.Functions.AddPermission(SelectedPlayer.id, Input) end
+        if not QBX.Functions.HasPermission(Source, Config.Events['changeperms']) then NoPerms(Source) return end
+        if Input == 'remove' then QBX.Functions.RemovePermission(SelectedPlayer.id) else QBX.Functions.AddPermission(SelectedPlayer.id, Input) end
     end,
 }
 RegisterNetEvent('qb-admin:server:playeradministration', function(Selected, SelectedPlayer, Input)
@@ -115,9 +114,9 @@ local PlayerDataOptions = {
     end,
 }
 RegisterNetEvent('qb-admin:server:changeplayerdata', function(Selected, SelectedPlayer, Input)
-    local Target = QBCore.Functions.GetPlayer(SelectedPlayer.id)
+    local Target = QBX.Functions.GetPlayer(SelectedPlayer.id)
 
-    if not QBCore.Functions.HasPermission(source, Config.Events['changeplayerdata']) then NoPerms(source) return end
+    if not QBX.Functions.HasPermission(source, Config.Events['changeplayerdata']) then NoPerms(source) return end
     if not Target then return end
 
     PlayerDataOptions[Selected](Target, Input)
@@ -125,12 +124,12 @@ end)
 
 RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID)
     local src = PlayerID or source
-    local Target = QBCore.Functions.GetPlayer(src)
+    local Target = QBX.Functions.GetPlayer(src)
 
-    if not QBCore.Functions.HasPermission(source, Config.Events['giveallweapons']) then NoPerms(source) return end
+    if not QBX.Functions.HasPermission(source, Config.Events['giveallweapons']) then NoPerms(source) return end
 
     for i = 1, #Config.Weaponlist[Weapontype], 1 do
-        if not QBCore.Shared.Items[Config.Weaponlist[Weapontype][i]] then return end
+        if not QBX.Shared.Items[Config.Weaponlist[Weapontype][i]] then return end
         Target.Functions.AddItem(Config.Weaponlist[Weapontype][i], 1)
     end
 end)
@@ -139,10 +138,10 @@ lib.callback.register('qb-admin:callback:getradiolist', function(source, Frequen
     local list = exports['pma-voice']:getPlayersInRadioChannel(tonumber(Frequency))
     local Players = {}
 
-    if not QBCore.Functions.HasPermission(source, Config.Events['getradiolist']) then NoPerms(source) return end
+    if not QBX.Functions.HasPermission(source, Config.Events['getradiolist']) then NoPerms(source) return end
 
     for targetSource, _ in pairs(list) do -- cheers Knight who shall not be named
-        local Player = QBCore.Functions.GetPlayer(targetSource)
+        local Player = QBX.Functions.GetPlayer(targetSource)
         Players[#Players + 1] = {
             id = targetSource,
             name = Player.PlayerData.charinfo.firstname .. ' ' .. Player.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(targetSource) .. ')'
@@ -152,10 +151,10 @@ lib.callback.register('qb-admin:callback:getradiolist', function(source, Frequen
 end)
 
 lib.callback.register('qb-admin:server:getplayers', function(source)
-    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
+    if not QBX.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
 
     local Players = {}
-    for k, v in pairs(QBCore.Functions.GetQBPlayers()) do
+    for k, v in pairs(QBX.Functions.GetQBPlayers()) do
         Players[#Players + 1] = {
             id = k,
             cid = v.PlayerData.citizenid,
@@ -171,9 +170,9 @@ lib.callback.register('qb-admin:server:getplayers', function(source)
             bank = v.PlayerData.money['bank'],
             job = v.PlayerData.job.label .. ' | ' .. v.PlayerData.job.grade.level,
             gang = v.PlayerData.gang.label,
-            license = QBCore.Functions.GetIdentifier(k, 'license') or 'Unknown',
-            discord = QBCore.Functions.GetIdentifier(k, 'discord') or 'Not Linked',
-            steam = QBCore.Functions.GetIdentifier(k, 'steam') or 'Not Linked',
+            license = QBX.Functions.GetIdentifier(k, 'license') or 'Unknown',
+            discord = QBX.Functions.GetIdentifier(k, 'discord') or 'Not Linked',
+            steam = QBX.Functions.GetIdentifier(k, 'steam') or 'Not Linked',
         }
     end
     table.sort(Players, function(a, b) return a.id < b.id end)
@@ -181,9 +180,9 @@ lib.callback.register('qb-admin:server:getplayers', function(source)
 end)
 
 lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
-    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
+    if not QBX.Functions.HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
 
-    local playerData = QBCore.Functions.GetPlayer(playerToGet)
+    local playerData = QBX.Functions.GetPlayer(playerToGet)
     local player = {
         id = playerToGet,
         cid = playerData.PlayerData.citizenid,
@@ -199,15 +198,15 @@ lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
         bank = playerData.PlayerData.money['bank'],
         job = playerData.PlayerData.job.label .. ' | ' .. playerData.PlayerData.job.grade.level,
         gang = playerData.PlayerData.gang.label,
-        license = QBCore.Functions.GetIdentifier(playerToGet, 'license') or 'Unknown',
-        discord = QBCore.Functions.GetIdentifier(playerToGet, 'discord') or 'Not Linked',
-        steam = QBCore.Functions.GetIdentifier(playerToGet, 'steam') or 'Not Linked',
+        license = QBX.Functions.GetIdentifier(playerToGet, 'license') or 'Unknown',
+        discord = QBX.Functions.GetIdentifier(playerToGet, 'discord') or 'Not Linked',
+        steam = QBX.Functions.GetIdentifier(playerToGet, 'steam') or 'Not Linked',
     }
     return player
 end)
 
 lib.callback.register('qb-admin:server:clothingMenu', function(source, target)
-    if not QBCore.Functions.HasPermission(source, Config.Events['clothing menu']) then
+    if not QBX.Functions.HasPermission(source, Config.Events['clothing menu']) then
         NoPerms(source)
         return false
     end
@@ -218,7 +217,7 @@ lib.callback.register('qb-admin:server:clothingMenu', function(source, target)
 end)
 
 lib.callback.register('qb-admin:server:getSounds', function(source)
-    if not QBCore.Functions.HasPermission(source, Config.Events['play sounds']) then
+    if not QBX.Functions.HasPermission(source, Config.Events['play sounds']) then
         NoPerms(source)
         return
     end
@@ -226,7 +225,7 @@ lib.callback.register('qb-admin:server:getSounds', function(source)
 end)
 
 lib.callback.register('qb-admin:server:canUseMenu', function(source)
-    if not QBCore.Functions.HasPermission(source, Config.Events['usemenu']) then
+    if not QBX.Functions.HasPermission(source, Config.Events['usemenu']) then
         NoPerms(source)
         return false
     end
@@ -242,7 +241,7 @@ lib.callback.register('qb-admin:server:spawnVehicle', function(source, model)
     local ply = GetPlayerPed(source)
     local plyCoords = GetEntityCoords(ply)
     local src = source
-    return QBCore.Functions.CreateVehicle(src, hash, vec4(plyCoords.x, plyCoords.y, plyCoords.z, GetEntityHeading(ply)), true)
+    return QBX.Functions.CreateVehicle(src, hash, vec4(plyCoords.x, plyCoords.y, plyCoords.z, GetEntityHeading(ply)), true)
 end)
 
 CreateThread(function()

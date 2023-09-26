@@ -9,7 +9,7 @@ function GenerateVehiclesSpawnMenu()
     local indexedCategories = {}
     local categories = {}
     local vehs = {}
-    for _, v in pairs(QBCore.Shared.Vehicles) do
+    for _, v in pairs(QBX.Shared.Vehicles) do
         categories[v.category] = true
     end
 
@@ -49,7 +49,7 @@ function GenerateVehiclesSpawnMenu()
                 veh = NetToVeh(vehNetId)
                 Wait(100)
             until DoesEntityExist(veh)
-            TriggerEvent('qb-vehiclekeys:client:AddKeys', QBCore.Functions.GetPlate(veh))
+            TriggerEvent('qb-vehiclekeys:client:AddKeys', QBX.Functions.GetPlate(veh))
             SetVehicleNeedsToBeHotwired(veh, false)
             SetVehicleHasBeenOwnedByPlayer(veh, true)
             SetEntityAsMissionEntity(veh, true, false)
@@ -64,7 +64,7 @@ function GenerateVehiclesSpawnMenu()
         indexedCategories[categories[i]] = 1
     end
 
-    for k in pairs(QBCore.Shared.Vehicles) do
+    for k in pairs(QBX.Shared.Vehicles) do
         vehs[#vehs + 1] = k
     end
 
@@ -73,7 +73,7 @@ function GenerateVehiclesSpawnMenu()
     end)
 
     for i = 1, #vehs do
-        local v = QBCore.Shared.Vehicles[vehs[i]]
+        local v = QBX.Shared.Vehicles[vehs[i]]
         vehicles[v.category][vehs[i]] = v
         lib.setMenuOptions(('qb_adminmenu_spawn_vehicles_menu_%s'):format(v.category), {label = v.name, args = {v.model}}, indexedCategories[v.category])
         indexedCategories[v.category] += 1
