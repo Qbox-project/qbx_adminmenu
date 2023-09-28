@@ -29,7 +29,7 @@ lib.registerMenu({
         CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
     end,
     onSelected = function(selected)
-        MenuIndexes['qb_adminmenu_server_menu'] = selected
+        MenuIndexes.qb_adminmenu_server_menu = selected
     end,
     options = {
         {label = Lang:t('server_options.label1'), description = Lang:t('server_options.desc1'), icon = 'fas fa-cloud', values = {Lang:t('server_options.value1_1'), Lang:t('server_options.value1_2'), Lang:t('server_options.value1_3'), Lang:t('server_options.value1_4'), Lang:t('server_options.value1_5'), Lang:t('server_options.value1_6'),

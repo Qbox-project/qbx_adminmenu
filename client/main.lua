@@ -8,7 +8,7 @@ lib.registerMenu({
         CloseMenu(true)
     end,
     onSelected = function(selected)
-        MenuIndexes['qb_adminmenu_main_menu'] = selected
+        MenuIndexes.qb_adminmenu_main_menu = selected
     end,
     options = {
         {label = Lang:t('main_options.label1'), description = Lang:t('main_options.desc1'), icon = 'fas fa-hammer', args = {'qb_adminmenu_admin_menu'}},
@@ -52,7 +52,7 @@ function CloseMenu(isFullMenuClose, keyPressed, previousMenu)
 end
 
 RegisterNetEvent('qb-admin:client:openmenu', function()
-    lib.showMenu('qb_adminmenu_main_menu', MenuIndexes['qb_adminmenu_main_menu'])
+    lib.showMenu('qb_adminmenu_main_menu', MenuIndexes.qb_adminmenu_main_menu)
 end)
 
 RegisterNetEvent('qb-admin:client:setmodel', function(skin)

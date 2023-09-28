@@ -1,1 +1,1 @@
-# qb-adminmenu
+# qbx_adminmenu

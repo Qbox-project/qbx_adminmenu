@@ -29,7 +29,7 @@ Config.Events = {
 }
 
 Config.Weaponlist = {
-    ['pistol'] = {
+    pistol = {
         'weapon_pistol',
         'weapon_pistol_mk2',
         'weapon_combatpistol',
@@ -50,7 +50,7 @@ Config.Weaponlist = {
         'weapon_navyrevolver',
         'weapon_gadgetpistol',
     },
-    ['smg'] = {
+    smg = {
         'weapon_microsmg',
         'weapon_smg',
         'weapon_smg_mk2',
@@ -60,7 +60,7 @@ Config.Weaponlist = {
         'weapon_minismg',
         'weapon_raycarbine',
     },
-    ['shotgun'] = {
+    shotgun = {
         'weapon_pumpshotgun',
         'weapon_sawnoffshotgun',
         'weapon_assaultshotgun',
@@ -72,7 +72,7 @@ Config.Weaponlist = {
         'weapon_pumpshotgun_mk2',
         'weapon_combatshotgun',
     },
-    ['assault'] = {
+    assault = {
         'weapon_assaultrifle',
         'weapon_assaultrifle_mk2',
         'weapon_carbinerifle',
@@ -85,13 +85,13 @@ Config.Weaponlist = {
         'weapon_bullpuprifle_mk2',
         'weapon_militaryrifle',
     },
-    ['lmg'] = {
+    lmg = {
         'weapon_mg',
         'weapon_combatmg',
         'weapon_gusenberg',
         'weapon_combatmg_mk2',
     },
-    ['sniper'] = {
+    sniper = {
         'weapon_sniperrifle',
         'weapon_heavysniper',
         'weapon_marksmanrifle',
@@ -99,7 +99,7 @@ Config.Weaponlist = {
         'weapon_heavysniper_mk2',
         'weapon_marksmanrifle_mk2',
     },
-    ['heavy'] = {
+    heavy = {
         'weapon_rpg',
         'weapon_grenadelauncher',
         'weapon_grenadelauncher_smoke',
