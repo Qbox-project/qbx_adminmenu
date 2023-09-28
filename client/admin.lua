@@ -69,7 +69,7 @@ lib.registerMenu({
         CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
     end,
     onSelected = function(selected)
-        MenuIndexes['qb_adminmenu_admin_menu'] = selected
+        MenuIndexes.qb_adminmenu_admin_menu = selected
     end,
     options = {
         {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},

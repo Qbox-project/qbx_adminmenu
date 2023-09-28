@@ -36,7 +36,7 @@ lib.addCommand('setmodel', {
 }, function(source, args)
     local Target = args.id or source
 
-    if not QBX.Functions.GetPlayer(Target) then return end
+    if not exports.qbx_core:GetPlayer(Target) then return end
 
     TriggerClientEvent('qb-admin:client:setmodel', Target, args.model)
 end)
