@@ -1,5 +1,4 @@
 local coreVehicles = exports.qbx_core:GetVehiclesByName()
-local vehicles = {}
 function GenerateVehiclesSpawnMenu()
     local canUseMenu = lib.callback.await('qb-admin:server:canUseMenu', false)
     if not canUseMenu then
@@ -28,7 +27,6 @@ function GenerateVehiclesSpawnMenu()
     end)
 
     for i = 1, #categories do
-        vehicles[categories[i]] = {}
         lib.setMenuOptions('qb_adminmenu_spawn_vehicles_menu', {label = categories[i], args = {('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}}, i)
 
         lib.registerMenu({
@@ -75,7 +73,6 @@ function GenerateVehiclesSpawnMenu()
 
     for i = 1, #vehs do
         local v = coreVehicles[vehs[i]]
-        vehicles[v.category][vehs[i]] = v
         lib.setMenuOptions(('qb_adminmenu_spawn_vehicles_menu_%s'):format(v.category), {label = v.name, args = {v.model}}, indexedCategories[v.category])
         indexedCategories[v.category] += 1
     end

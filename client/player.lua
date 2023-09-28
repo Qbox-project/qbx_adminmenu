@@ -248,7 +248,7 @@ lib.registerMenu({
         local Input = lib.inputDialog(selectedPlayer.name, {Lang:t('player_options.administration.inputkick')})
         if not Input then lib.showMenu('qb_adminmenu_player_administration_menu', MenuIndexes.qb_adminmenu_player_administration_menu) return end if not Input[1] then return end
         TriggerServerEvent('qb-admin:server:playeradministration', selected, selectedPlayer, Input[1])
-        lib.showMenu('qb_adminmenu_player_administration_menu', qb_adminmenu_player_administration_menu)
+        lib.showMenu('qb_adminmenu_player_administration_menu', MenuIndexes.qb_adminmenu_player_administration_menu)
     elseif selected == 2 then
         local Input = lib.inputDialog(selectedPlayer.name, {
             { type = 'input', label = Lang:t('player_options.administration.inputkick'), placeholder = 'VDM'},
