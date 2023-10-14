@@ -243,7 +243,7 @@ function checkInputRotation()
 end
 
 RegisterNetEvent('qb-admin:client:noclip', function()
-    if GetInvokingResource() then return end
+    if GetInvokingResource() then return end -- Safety to make sure it is only called from the server
     toggleNoClipMode()
 end)
 
