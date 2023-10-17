@@ -17,8 +17,7 @@ lib.addCommand('admincar', {
     args = {},
     permission = false,
 }, function(source)
-    local src = source
-    if not (exports.qbx_core:HasPermission(source, 'savecar') then
+    if not (exports.qbx_core:HasPermission(source, 'savecar')) then
         NoPerms(source)
         return
     end
