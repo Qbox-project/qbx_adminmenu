@@ -481,3 +481,22 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
         end
     end
 end)
+
+RegisterNetEvent('qb-admin:client:SaveCar', function()
+    local ped = cache.ped
+    local veh = GetVehiclePedIsIn(ped)
+
+    if veh ~= nil and veh ~= 0 then
+        local plate = GetPlate(veh)
+        local props = lib.GetVehicleProperties(veh)
+        local hash = props.model
+        local vehname = GetDisplayNameFromVehicleModel(hash):lower()
+        if exports.qbx_core:GetVehiclesByName()[vehname] ~= nil and next(exports.qbx_core:GetVehiclesByName()[vehname]) ~= nil then
+            TriggerServerEvent('admin:server:SaveCar', props, exports.qbx_core:GetVehiclesByName()[vehname], plate)
+        else
+            exports.qbx_core:Notify(Lang:t("error.no_store_vehicle_garage"), 'error')
+        end
+    else
+    exports.qbx_core:Notify(Lang:t("error.no_vehicle"), 'error')
+    end
+end)
