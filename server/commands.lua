@@ -18,8 +18,8 @@ lib.addCommand('admincar', {
     permission = false,
 }, function(source)
     local src = source
-    if not (exports.qbx_core:HasPermission(src, 'savecar') or HasPermission(src, 'savecar')) then
-        NoPerms(src)
+    if not (exports.qbx_core:HasPermission(source, 'savecar') then
+        NoPerms(source)
         return
     end
     TriggerClientEvent('qb-admin:client:SaveCar', src)
