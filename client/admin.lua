@@ -488,7 +488,7 @@ RegisterNetEvent('qb-admin:client:SaveCar', function()
 
     if veh ~= nil and veh ~= 0 then
         local plate = GetPlate(veh)
-        local props = lib.GetVehicleProperties(veh)
+        local props = lib.getVehicleProperties(veh)
         local hash = props.model
         local vehname = GetDisplayNameFromVehicleModel(hash):lower()
         if exports.qbx_core:GetVehiclesByName()[vehname] ~= nil and next(exports.qbx_core:GetVehiclesByName()[vehname]) ~= nil then
