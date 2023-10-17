@@ -22,6 +22,7 @@ Config.Events = {
     ['playeroptionsgeneral'] = 'mod',
     ['kick'] = 'mod',
     ['ban'] = 'admin',
+    ['savecar'] = 'god',
     ['changeperms'] = 'admin',
     ['clothing menu'] = 'admin',
     ['play sounds'] = 'admin',
