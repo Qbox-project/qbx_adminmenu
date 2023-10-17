@@ -146,11 +146,13 @@ local Translations = {
         names_activated = 'Names activated',
         coords_copied = 'Coordinates copied to clipboard',
         heading_copied = 'Heading copied to clipboard',
+        success_vehicle_owner = 'The vehicle is now yours!',
     },
     error = {
         no_perms = 'You don\'t have permission to do this',
         blips_deactivated = 'Blips deactivated',
         names_deactivated = 'Names deactivated',
+        failed_vehicle_owner = 'This vehicle is already yours..',
     }
 }
 
