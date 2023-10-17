@@ -22,7 +22,7 @@ lib.addCommand('admincar', {
         NoPerms(source)
         return
     end
-    TriggerClientEvent('qb-admin:client:SaveCar', src)
+    TriggerClientEvent('qb-admin:client:SaveCar', source)
 end)
 
 lib.addCommand('names', {
