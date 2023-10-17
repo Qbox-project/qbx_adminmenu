@@ -12,6 +12,19 @@ lib.addCommand('noclip', {
     TriggerClientEvent('qb-admin:client:noclip', source)
 end)
 
+lib.addCommand('admincar', {
+    help = 'Toggle Admin Car',
+    args = {},
+    permission = false,
+}, function(source)
+    local src = source
+    if not (exports.qbx_core:HasPermission(src, 'savecar') or HasPermission(src, 'savecar')) then
+        NoPerms(src)
+        return
+    end
+    TriggerClientEvent('qb-admin:client:SaveCar', src)
+end)
+
 lib.addCommand('names', {
     help = 'Toggle Player Names',
     restricted = 'admin',
