@@ -51,7 +51,6 @@ lib.registerMenu({
         {label = Lang:t('dev_options.label4'), description = Lang:t('dev_options.desc4'), icon = 'fas fa-compass'},
         {label = Lang:t('dev_options.label5'), description = Lang:t('dev_options.desc5'), icon = 'fas fa-compass-drafting', close = false},
         {label = Lang:t('dev_options.label6'), description = Lang:t('dev_options.desc6'), icon = 'fas fa-car-side', close = false},
-        {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
     }
 }, function(selected)
     Options[selected]()
