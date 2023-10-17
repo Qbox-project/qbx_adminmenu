@@ -128,7 +128,7 @@ RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, plate)
     local result = MySQL.Sync.fetchAll('SELECT plate FROM player_vehicles WHERE plate = ?', { plate })
 
     if result[1] ~= nil then TriggerClientEvent('ox_lib:notify', src, Lang:t("error.failed_vehicle_owner"), 'error', 3000) return end
-    if not (exports.qbx_core:HasPermission(source, Config.Events['savecar'])) or  HasPermission(source, Config.Events['savecar']) then NoPerms(source) return end
+    if not (exports.qbx_core:HasPermission(source, Config.Events['savecar'])) then NoPerms(source) return end
 
     TriggerEvent('qb-log:server:CreateLog', 'admin', 'Admin menu', 'pink', string.format("**%s** (CitizenID: %s | ID: %s) - Saved a car to his garage **%s**",
     GetPlayerName(src), Player.PlayerData.citizenid, src, vehicle.model))
