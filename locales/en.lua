@@ -153,6 +153,8 @@ local Translations = {
         blips_deactivated = 'Blips deactivated',
         names_deactivated = 'Names deactivated',
         failed_vehicle_owner = 'This vehicle is already yours..',
+        no_store_vehicle_garage = 'You cant store this vehicle in your garage..',
+        no_vehicle = 'You are not in a vehicle..',
     }
 }
 
