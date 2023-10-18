@@ -491,7 +491,7 @@ RegisterNetEvent('qb-admin:client:SaveCar', function()
         local props = lib.getVehicleProperties(veh)
         local hash = props.model
         local vehname = GetDisplayNameFromVehicleModel(hash):lower()
-        if exports.qbx_core:GetVehiclesByName()[vehname] ~= nil and next(exports.qbx_core:GetVehiclesByName()[vehname]) ~= nil then
+        if exports.qbx_core:GetVehiclesByName()[vehname] then
             TriggerServerEvent('admin:server:SaveCar', props, exports.qbx_core:GetVehiclesByName()[vehname], plate)
         else
             exports.qbx_core:Notify('You cant store this vehicle in your garage..', 'error')
