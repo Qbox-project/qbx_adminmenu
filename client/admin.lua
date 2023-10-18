@@ -494,9 +494,9 @@ RegisterNetEvent('qb-admin:client:SaveCar', function()
         if exports.qbx_core:GetVehiclesByName()[vehname] then
             TriggerServerEvent('admin:server:SaveCar', props, exports.qbx_core:GetVehiclesByName()[vehname], plate)
         else
-            exports.qbx_core:Notify('You cant store this vehicle in your garage..', 'error')
+            exports.qbx_core:Notify(Lang:t("error.no_store_vehicle_garage"), 'error')
         end
     else
-    exports.qbx_core:Notify('You are not in a vehicle..', 'error')
+    exports.qbx_core:Notify(Lang:t("error.no_vehicle"), 'error')
     end
 end)
