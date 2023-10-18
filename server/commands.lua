@@ -14,8 +14,7 @@ end)
 
 lib.addCommand('admincar', {
     help = 'Toggle Admin Car',
-    args = {},
-    permission = false,
+    restricted = 'admin',
 }, function(source)
     if not (exports.qbx_core:HasPermission(source, Config.Events['savecar'])) then
         NoPerms(source)
