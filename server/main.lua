@@ -125,24 +125,31 @@ end)
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, plate)
     local Player = exports.qbx_core:GetPlayer(source)
     local result = MySQL.Sync.fetchAll('SELECT plate FROM player_vehicles WHERE plate = ?', { plate })
-
-    if result[1] ~= nil then TriggerClientEvent('ox_lib:notify', source, ('This vehicle is already yours..'), 'error', 3000) return end
-    if not (exports.qbx_core:HasPermission(source, Config.Events['savecar'])) then NoPerms(source) return end
-
-    TriggerEvent('qb-log:server:CreateLog', 'admin', 'Admin menu', 'pink', string.format("**%s** (CitizenID: %s | ID: %s) - Saved a car to his garage **%s**",
-    GetPlayerName(source), Player.PlayerData.citizenid, source, vehicle.model))
+    if result[1] ~= nil then
+        TriggerClientEvent('ox_lib:notify', source, 'This vehicle is already yours.', 'error', 3000)
+        return
+    end
+    if not exports.qbx_core:HasPermission(source, Config.Events['savecar']) then
+        NoPerms(source)
+        return
+    end
+    local playerName = GetPlayerName(source)
+    local citizenID = Player.PlayerData.citizenid
+    TriggerEvent('qb-log:server:CreateLog', 'admin', 'Admin menu', 'pink', string.format(
+        "**%s** (CitizenID: %s | ID: %s) - Saved a car to their garage **%s**",
+        playerName, citizenID, source, vehicle.model
+    ))
     MySQL.Async.insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, ?)', {
         Player.PlayerData.license,
-        Player.PlayerData.citizenid,
+        citizenID,
         vehicle.model,
         vehicle.hash,
         json.encode(mods),
         plate,
         0
     })
-    TriggerClientEvent('ox_lib:notify', source, ('The vehicle is now yours!'), 'success', 5000)
+    TriggerClientEvent('ox_lib:notify', source, 'The vehicle is now yours!', 'success', 5000)
 end)
-
 RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID)
     local src = PlayerID or source
     local Target = exports.qbx_core:GetPlayer(src)
