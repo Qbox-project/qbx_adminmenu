@@ -129,10 +129,7 @@ RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, plate)
         TriggerClientEvent('ox_lib:notify', source, 'This vehicle is already yours.', 'error', 3000)
         return
     end
-    if not exports.qbx_core:HasPermission(source, Config.Events['savecar']) then
-        NoPerms(source)
-        return
-    end
+    if not exports.qbx_core:HasPermission(source, Config.Events['savecar']) then NoPerms(source) return end
     local playerName = GetPlayerName(source)
     local citizenID = Player.PlayerData.citizenid
     TriggerEvent('qb-log:server:CreateLog', 'admin', 'Admin menu', 'pink', string.format(
