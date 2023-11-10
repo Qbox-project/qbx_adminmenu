@@ -2,7 +2,8 @@ fx_version 'cerulean'
 game 'gta5'
 
 version '1.0.0'
-description 'https://github.com/Qbox-project'
+description 'QBX_Adminmenu'
+repository 'https://github.com/Qbox-project/qbx_adminmenu'
 
 shared_scripts {
     '@qbx_core/shared/locale.lua',
@@ -13,9 +14,7 @@ shared_scripts {
     '@qbx_core/import.lua'
 }
 
-modules {
-    'qbx_core:utils',
-}
+modules {'qbx_core:utils'}
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
