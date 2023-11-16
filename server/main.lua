@@ -66,8 +66,8 @@ local AdministrationOptions = {
         local BanDuration = (Input[2] or 0) * 3600 + (Input[3] or 0) * 86400 + (Input[4] or 0) * 2629743
         DropPlayer(SelectedPlayer.id, Lang:t('player_options.administration.banreason', { reason = Input[1], lenght = os.date('%c', os.time() + BanDuration) }))
         MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
-            GetPlayerName(SelectedPlayer.id), exports.qbx_core:GetIdentifier(SelectedPlayer.id, 'license'), exports.qbx_core:GetIdentifier(SelectedPlayer.id, 'discord'),
-            exports.qbx_core:GetIdentifier(SelectedPlayer.id, 'ip'), Input[1], os.time() + BanDuration, GetPlayerName(Source)
+            GetPlayerName(SelectedPlayer.id), GetPlayerIdentifierByType(SelectedPlayer.id, 'license'), GetPlayerIdentifierByType(SelectedPlayer.id, 'discord'),
+            GetPlayerIdentifierByType(SelectedPlayer.id, 'ip'), Input[1], os.time() + BanDuration, GetPlayerName(Source)
         })
     end,
     function(Source, SelectedPlayer, Input)
@@ -170,9 +170,9 @@ lib.callback.register('qb-admin:server:getplayers', function(source)
             bank = v.PlayerData.money.bank,
             job = v.PlayerData.job.label .. ' | ' .. v.PlayerData.job.grade.level,
             gang = v.PlayerData.gang.label,
-            license = exports.qbx_core:GetIdentifier(k, 'license') or 'Unknown',
-            discord = exports.qbx_core:GetIdentifier(k, 'discord') or 'Not Linked',
-            steam = exports.qbx_core:GetIdentifier(k, 'steam') or 'Not Linked',
+            license = GetPlayerIdentifierByType(k, 'license') or 'Unknown',
+            discord = GetPlayerIdentifierByType(k, 'discord') or 'Not Linked',
+            steam = GetPlayerIdentifierByType(k, 'steam') or 'Not Linked',
         }
     end
     table.sort(Players, function(a, b) return a.id < b.id end)
@@ -198,9 +198,9 @@ lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
         bank = playerData.money.bank,
         job = playerData.job.label .. ' | ' .. playerData.job.grade.level,
         gang = playerData.gang.label,
-        license = exports.qbx_core:GetIdentifier(playerToGet, 'license') or 'Unknown',
-        discord = exports.qbx_core:GetIdentifier(playerToGet, 'discord') or 'Not Linked',
-        steam = exports.qbx_core:GetIdentifier(playerToGet, 'steam') or 'Not Linked',
+        license = GetPlayerIdentifierByType(playerToGet, 'license') or 'Unknown',
+        discord = GetPlayerIdentifierByType(playerToGet, 'discord') or 'Not Linked',
+        steam = GetPlayerIdentifierByType(playerToGet, 'steam') or 'Not Linked',
     }
     return player
 end)

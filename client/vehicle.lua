@@ -27,7 +27,7 @@ function GenerateVehiclesSpawnMenu()
     end)
 
     for i = 1, #categories do
-        lib.setMenuOptions('qb_adminmenu_spawn_vehicles_menu', {label = categories[i], args = {('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}}, i)
+        lib.setMenuOptions('qb_adminmenu_spawn_vehicles_menu', {label = string.firstToUpper(categories[i]), args = {('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}}, i)
 
         lib.registerMenu({
             id = ('qb_adminmenu_spawn_vehicles_menu_%s'):format(categories[i]),

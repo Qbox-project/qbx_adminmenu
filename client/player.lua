@@ -177,12 +177,12 @@ function GeneratePlayersMenu()
                 {label = string.format('Phone: %s', player.phone)},
                 {label = string.format('Crafting Rep: %s', player.craftingrep)},
                 {label = string.format('Dealer Rep: %s', player.dealerrep)},
-                {label = string.format('Cash: %s', player.cash)},
-                {label = string.format('Bank: %s', player.bank)},
+                {label = string.format('Cash: %s', CommaValue(player.cash))},
+                {label = string.format('Bank: %s', CommaValue(player.bank))},
                 {label = string.format('Job: %s', player.job)},
                 {label = string.format('Gang: %s', player.gang)},
                 {label = string.format('Radio: %s', Player(args[1].id).state.radioChannel)},
-                {label = string.format('%s', player.license)},
+                {label = string.format('%s', player.license), description = 'License'},
                 {label = string.format('%s', player.discord), description = 'Discord'},
                 {label = string.format('%s', player.steam), description = 'Steam'}
             }
