@@ -5,28 +5,21 @@ version '1.0.0'
 description 'https://github.com/Qbox-project'
 
 shared_scripts {
+    '@ox_lib/init.lua',
+    '@qbx_core/modules/utils.lua',
     '@qbx_core/shared/locale.lua',
     'locales/en.lua',
     'locales/*.lua',
-    '@ox_lib/init.lua',
     'config.lua',
-    '@qbx_core/modules/utils.lua',
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'server/main.lua',
-    'server/commands.lua'
+    'server/*.lua',
 }
 
 client_scripts {
-    'client/main.lua',
-    'client/admin.lua',
-    'client/server.lua',
-    'client/dev.lua',
-    'client/player.lua',
-    'client/vehicle.lua',
-    'client/vectors.lua'
+    'client/*.lua',
 }
 
 lua54 'yes'
