@@ -10,11 +10,7 @@ shared_scripts {
     'locales/*.lua',
     '@ox_lib/init.lua',
     'config.lua',
-    '@qbx_core/import.lua'
-}
-
-modules {
-    'qbx_core:utils',
+    '@qbx_core/modules/utils.lua',
 }
 
 server_scripts {
