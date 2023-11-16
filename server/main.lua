@@ -49,7 +49,7 @@ local GeneralOptions = {
         SetPlayerRoutingBucket(SelectedPlayer.id, Input)
     end,
 }
-RegisterNetEvent('qb-admin:server:playeroptionsgeneral', function(Selected, SelectedPlayer, Input)
+RegisterNetEvent('qbx_admin:server:playerOptionsGeneral', function(Selected, SelectedPlayer, Input)
     if not exports.qbx_core:HasPermission(source, Config.Events['playeroptionsgeneral']) then NoPerms(source) return end
 
     ---@diagnostic disable-next-line: redundant-parameter
@@ -75,7 +75,7 @@ local AdministrationOptions = {
         if Input == 'remove' then exports.qbx_core:RemovePermission(SelectedPlayer.id) else exports.qbx_core:AddPermission(SelectedPlayer.id, Input) end
     end,
 }
-RegisterNetEvent('qb-admin:server:playeradministration', function(Selected, SelectedPlayer, Input)
+RegisterNetEvent('qbx_admin:server:playerAdministration', function(Selected, SelectedPlayer, Input)
     AdministrationOptions[Selected](source, SelectedPlayer, Input)
 end)
 
@@ -113,7 +113,7 @@ local PlayerDataOptions = {
         exports['pma-voice']:setPlayerRadio(Target.PlayerData.source, Input[1])
     end,
 }
-RegisterNetEvent('qb-admin:server:changeplayerdata', function(Selected, SelectedPlayer, Input)
+RegisterNetEvent('qbx_admin:server:changePlayerData', function(Selected, SelectedPlayer, Input)
     local Target = exports.qbx_core:GetPlayer(SelectedPlayer.id)
 
     if not exports.qbx_core:HasPermission(source, Config.Events['changeplayerdata']) then NoPerms(source) return end
@@ -122,7 +122,7 @@ RegisterNetEvent('qb-admin:server:changeplayerdata', function(Selected, Selected
     PlayerDataOptions[Selected](Target, Input)
 end)
 
-RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID)
+RegisterNetEvent('qbx_admin:server:giveAllWeapons', function(Weapontype, PlayerID)
     local src = PlayerID or source
     local Target = exports.qbx_core:GetPlayer(src)
 
@@ -134,7 +134,7 @@ RegisterNetEvent('qb-admin:server:giveallweapons', function(Weapontype, PlayerID
     end
 end)
 
-lib.callback.register('qb-admin:callback:getradiolist', function(source, Frequency)
+lib.callback.register('qbx_admin:callback:getradiolist', function(source, Frequency)
     local list = exports['pma-voice']:getPlayersInRadioChannel(tonumber(Frequency))
     local Players = {}
 
@@ -150,7 +150,7 @@ lib.callback.register('qb-admin:callback:getradiolist', function(source, Frequen
     return Players, Frequency
 end)
 
-lib.callback.register('qb-admin:server:getplayers', function(source)
+lib.callback.register('qbx_admin:server:getPlayers', function(source)
     if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
 
     local Players = {}
@@ -179,7 +179,7 @@ lib.callback.register('qb-admin:server:getplayers', function(source)
     return Players
 end)
 
-lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
+lib.callback.register('qbx_admin:server:getPlayer', function(source, playerToGet)
     if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
 
     local playerData = exports.qbx_core:GetPlayer(playerToGet).PlayerData
@@ -205,7 +205,7 @@ lib.callback.register('qb-admin:server:getplayer', function(source, playerToGet)
     return player
 end)
 
-lib.callback.register('qb-admin:server:clothingMenu', function(source, target)
+lib.callback.register('qbx_admin:server:clothingMenu', function(source, target)
     if not exports.qbx_core:HasPermission(source, Config.Events['clothing menu']) then
         NoPerms(source)
         return false
@@ -216,7 +216,7 @@ lib.callback.register('qb-admin:server:clothingMenu', function(source, target)
     return true
 end)
 
-lib.callback.register('qb-admin:server:getSounds', function(source)
+lib.callback.register('qbx_admin:server:getSounds', function(source)
     if not exports.qbx_core:HasPermission(source, Config.Events['play sounds']) then
         NoPerms(source)
         return
@@ -224,7 +224,7 @@ lib.callback.register('qb-admin:server:getSounds', function(source)
     return sounds
 end)
 
-lib.callback.register('qb-admin:server:canUseMenu', function(source)
+lib.callback.register('qbx_admin:server:canUseMenu', function(source)
     if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then
         NoPerms(source)
         return false
@@ -233,7 +233,7 @@ lib.callback.register('qb-admin:server:canUseMenu', function(source)
     return true
 end)
 
-lib.callback.register('qb-admin:server:spawnVehicle', function(source, model)
+lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     local hash = joaat(model)
     return SpawnVehicle(source, hash, nil, true)
 end)

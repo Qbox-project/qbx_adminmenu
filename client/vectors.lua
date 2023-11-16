@@ -42,6 +42,6 @@ function CopyToClipboard(dataType)
     end
 end
 
-RegisterNetEvent('qb-admin:client:copyToClipboard', function(dataType)
+RegisterNetEvent('qbx_admin:client:copyToClipboard', function(dataType)
     CopyToClipboard(dataType)
 end)
