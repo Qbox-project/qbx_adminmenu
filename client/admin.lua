@@ -57,19 +57,19 @@ local Options = {
             SetPedInfiniteAmmo(cache.ped, false, weapon)
         end
     end,
-    function(WeaponType) TriggerServerEvent('qb-admin:server:giveallweapons', WeaponType) end,
+    function(WeaponType) TriggerServerEvent('qbx_admin:server:giveAllWeapons', WeaponType) end,
     function() TriggerEvent('police:client:GetCuffed', cache.serverId, true) end,
 }
 
 lib.registerMenu({
-    id = 'qb_adminmenu_admin_menu',
+    id = 'qbx_adminmenu_admin_menu',
     title = Lang:t('title.admin_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
-        MenuIndexes.qb_adminmenu_admin_menu = selected
+        MenuIndexes.qbx_adminmenu_admin_menu = selected
     end,
     options = {
         {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
@@ -242,7 +242,7 @@ function checkInputRotation()
     end)
 end
 
-RegisterNetEvent('qb-admin:client:noclip', function()
+RegisterNetEvent('qbx_admin:client:noclip', function()
     if GetInvokingResource() then return end -- Safety to make sure it is only called from the server
     toggleNoClipMode()
 end)
@@ -266,12 +266,12 @@ CreateThread(function()
     while true do
         Wait(1000)
         if NetCheck1 or NetCheck2 then
-            TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
+            TriggerServerEvent('qbx_admin:server:getPlayersForBlips')
         end
     end
 end)
 
-RegisterNetEvent('qb-admin:client:blips', function()
+RegisterNetEvent('qbx_admin:client:blips', function()
     if not ShowBlips then
         ShowBlips = true
         NetCheck1 = true
@@ -282,7 +282,7 @@ RegisterNetEvent('qb-admin:client:blips', function()
     end
 end)
 
-RegisterNetEvent('qb-admin:client:names', function()
+RegisterNetEvent('qbx_admin:client:names', function()
     if not ShowNames then
         ShowNames = true
         NetCheck2 = true
@@ -293,7 +293,7 @@ RegisterNetEvent('qb-admin:client:names', function()
     end
 end)
 
-RegisterNetEvent('qb-admin:client:Show', function(players)
+RegisterNetEvent('qbx_admin:client:Show', function(players)
     for _, player in pairs(players) do
         local playeridx = GetPlayerFromServerId(player.id)
         local ped = GetPlayerPed(playeridx)

@@ -6,7 +6,7 @@ local Options = {
             { type = 'number', label = Lang:t('server_options.input3label'), placeholder = '25'}
         })
         if not Input then return end if not Input[1] then return end
-        lib.callback('qb-admin:callback:getradiolist', false, function(Players, Frequency)
+        lib.callback('qbx_admin:callback:getradiolist', false, function(Players, Frequency)
             local OptionsList = {}
             for i = 1, #Players do OptionsList[#OptionsList + 1] = {title = Players[i].name .. ' | ' .. Players[i].id} end
             lib.registerContext({id = 'frequency_list', title = 'Frequency ' .. Frequency, options = OptionsList })
@@ -22,14 +22,14 @@ local Options = {
 }
 
 lib.registerMenu({
-    id = 'qb_adminmenu_server_menu',
+    id = 'qbx_adminmenu_server_menu',
     title = Lang:t('title.server_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qb_adminmenu_main_menu')
+        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
-        MenuIndexes.qb_adminmenu_server_menu = selected
+        MenuIndexes.qbx_adminmenu_server_menu = selected
     end,
     options = {
         {label = Lang:t('server_options.label1'), description = Lang:t('server_options.desc1'), icon = 'fas fa-cloud', values = {Lang:t('server_options.value1_1'), Lang:t('server_options.value1_2'), Lang:t('server_options.value1_3'), Lang:t('server_options.value1_4'), Lang:t('server_options.value1_5'), Lang:t('server_options.value1_6'),
