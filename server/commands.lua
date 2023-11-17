@@ -30,8 +30,8 @@ lib.addCommand('setmodel', {
     help = 'Sets your model to the given model',
     restricted = 'admin',
     params = {
-        { name = 'model', help = 'NPC Model', type = 'string'},
-        { name = 'id', help = 'Player ID', type = 'number', optional = true},
+        {name = 'model', help = 'NPC Model', type = 'string'},
+        {name = 'id', help = 'Player ID', type = 'number', optional = true},
     }
 }, function(source, args)
     local Target = args.id or source

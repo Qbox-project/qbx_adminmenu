@@ -10,120 +10,120 @@ local playerOptions = {
         lib.showMenu('qbx_adminmenu_player_extra_menu', MenuIndexes.qbx_adminmenu_player_extra_menu)
     end,
     function()
-        local Input = lib.inputDialog('Name Change', {'Firstname', 'Lastname'})
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'name', selectedPlayer, Input)
+        local input = lib.inputDialog('Name Change', {'Firstname', 'Lastname'})
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'name', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Food', {
-            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        local input = lib.inputDialog('Food', {
+            {type = 'number', label = 'Percentage', min = 0, max = 100}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'food', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'food', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Thirst', {
-            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        local input = lib.inputDialog('Thirst', {
+            {type = 'number', label = 'Percentage', min = 0, max = 100}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'thirst', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'thirst', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Stress', {
-            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        local input = lib.inputDialog('Stress', {
+            {type = 'number', label = 'Percentage', min = 0, max = 100}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'stress', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'stress', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Armor', {
-            { type = 'number', label = 'Percentage', min = 0, max = 100 }
+        local input = lib.inputDialog('Armor', {
+            {type = 'number', label = 'Percentage', min = 0, max = 100}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'armor', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'armor', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Phone', {'Number'})
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'phone', selectedPlayer, Input)
+        local input = lib.inputDialog('Phone', {'Number'})
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'phone', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Crafting', {
-            { type = 'number', label = 'Reputation' }
+        local input = lib.inputDialog('Crafting', {
+            {type = 'number', label = 'Reputation'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'crafting', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'crafting', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Dealer', {
-            { type = 'number', label = 'Reputation' }
+        local input = lib.inputDialog('Dealer', {
+            {type = 'number', label = 'Reputation'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'dealer', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'dealer', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Money', {
-            { type = 'number', label = 'Cash' }
+        local input = lib.inputDialog('Money', {
+            {type = 'number', label = 'Cash'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'cash', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'cash', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Money', {
-            { type = 'number', label = 'Bank' }
+        local input = lib.inputDialog('Money', {
+            {type = 'number', label = 'Bank'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'bank', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'bank', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Job', {
-            { type = 'input', label = 'Name' },
-            { type = 'number', label = 'Grade' }
+        local input = lib.inputDialog('Job', {
+            {type = 'input', label = 'Name'},
+            {type = 'number', label = 'Grade'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'job', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'job', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Gang', {
-            { type = 'input', label = 'Name' },
-            { type = 'number', label = 'Grade' }
+        local input = lib.inputDialog('Gang', {
+            {type = 'input', label = 'Name'},
+            {type = 'number', label = 'Grade'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'gang', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'gang', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local Input = lib.inputDialog('Radio', {
-            { type = 'number', label = 'Frequency' }
+        local input = lib.inputDialog('Radio', {
+            {type = 'number', label = 'Frequency'}
         })
-        if not Input then GeneratePlayersMenu() return end
-        TriggerServerEvent('qbx_admin:server:changePlayerData', 'radio', selectedPlayer, Input)
+        if not input then GeneratePlayersMenu() return end
+        TriggerServerEvent('qbx_admin:server:changePlayerData', 'radio', selectedPlayer, input)
         GeneratePlayersMenu()
     end,
     function()
-        local License = selectedPlayer.license:gsub('license:', '')
-        lib.setClipboard(License)
+        local license = selectedPlayer.license:gsub('license:', '')
+        lib.setClipboard(license)
         lib.showMenu(('qbx_adminmenu_player_menu_%s'):format(selectedPlayer.id), MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(selectedPlayer.id)])
     end,
     function()
-        local Discord = selectedPlayer.discord:gsub('discord:', '')
-        lib.setClipboard(Discord)
+        local discord = selectedPlayer.discord:gsub('discord:', '')
+        lib.setClipboard(discord)
         lib.showMenu(('qbx_adminmenu_player_menu_%s'):format(selectedPlayer.id), MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(selectedPlayer.id)])
     end,
     function()
-        local Steam = selectedPlayer.steam:gsub('steam:', '')
-        lib.setClipboard(Steam)
+        local steam = selectedPlayer.steam:gsub('steam:', '')
+        lib.setClipboard(steam)
         lib.showMenu(('qbx_adminmenu_player_menu_%s'):format(selectedPlayer.id), MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(selectedPlayer.id)])
     end,
 }
@@ -143,7 +143,7 @@ function GeneratePlayersMenu()
         title = Lang:t('title.players_menu'),
         position = 'top-right',
         onClose = function(keyPressed)
-            CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+            closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
         end,
         onSelected = function(selected)
             MenuIndexes.qbx_adminmenu_players_menu = selected
@@ -160,7 +160,7 @@ function GeneratePlayersMenu()
             title = player.name,
             position = 'top-right',
             onClose = function(keyPressed)
-                CloseMenu(false, keyPressed, 'qbx_adminmenu_players_menu')
+                closeMenu(false, keyPressed, 'qbx_adminmenu_players_menu')
             end,
             onSelected = function(selected)
                 MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(args[1].id)] = selected
@@ -200,7 +200,7 @@ lib.registerMenu({
     title = Lang:t('player_options.label1'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
+        closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_player_general_menu = selected
@@ -216,11 +216,11 @@ lib.registerMenu({
     }
 }, function(selected)
     if selected == 7 then
-        local Input = lib.inputDialog(selectedPlayer.name, {
-            { type = 'number', label = Lang:t('player_options.general.labelrouting'), placeholder = '25'}
+        local input = lib.inputDialog(selectedPlayer.name, {
+            {type = 'number', label = Lang:t('player_options.general.labelrouting'), placeholder = '25'}
         })
-        if not Input then return end if not Input[1] then return end
-        TriggerServerEvent('qbx_admin:server:playerOptionsGeneral', selected, selectedPlayer, Input[1])
+        if not input then return end if not input[1] then return end
+        TriggerServerEvent('qbx_admin:server:playerOptionsGeneral', selected, selectedPlayer, input[1])
         lib.showMenu(('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id), MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id)])
     else
         TriggerServerEvent('qbx_admin:server:playerOptionsGeneral', selected, selectedPlayer)
@@ -232,7 +232,7 @@ lib.registerMenu({
     title = Lang:t('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
+        closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_player_administration_menu = selected
@@ -245,19 +245,19 @@ lib.registerMenu({
     }
 }, function(selected, scrollIndex, args)
     if selected == 1 then
-        local Input = lib.inputDialog(selectedPlayer.name, {Lang:t('player_options.administration.inputkick')})
-        if not Input then lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_administration_menu) return end if not Input[1] then return end
-        TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, Input[1])
+        local input = lib.inputDialog(selectedPlayer.name, {Lang:t('player_options.administration.inputkick')})
+        if not input then lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_administration_menu) return end if not input[1] then return end
+        TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, input[1])
         lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_administration_menu)
     elseif selected == 2 then
-        local Input = lib.inputDialog(selectedPlayer.name, {
+        local input = lib.inputDialog(selectedPlayer.name, {
             { type = 'input', label = Lang:t('player_options.administration.inputkick'), placeholder = 'VDM'},
             { type = 'number', label = Lang:t('player_options.administration.input1ban')},
             { type = 'number', label = Lang:t('player_options.administration.input2ban')},
             { type = 'number', label = Lang:t('player_options.administration.input3ban')}
         })
-        if not Input then lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_general_menu) return end if not Input[1] or not Input[2] and not Input[3] and not Input[4] then return end
-        TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, Input)
+        if not input then lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_general_menu) return end if not input[1] or not input[2] and not input[3] and not input[4] then return end
+        TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, input)
         lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_administration_menu)
     else
         TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, args[scrollIndex])
@@ -270,7 +270,7 @@ lib.registerMenu({
     title = Lang:t('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
+        closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_player_extra_menu = selected
@@ -324,7 +324,7 @@ lib.registerMenu({
     title = 'Play Sounds',
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qbx_adminmenu_player_extra_menu')
+        closeMenu(false, keyPressed, 'qbx_adminmenu_player_extra_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_play_sounds_menu = selected
@@ -333,16 +333,16 @@ lib.registerMenu({
         if args == 'volume' then
             if scrollIndex == 11 then return end
             volume[2] = scrollIndex / 10
-            lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Volume', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
+            lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Volume', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'input'}, defaultIndex = scrollIndex, close = false}, 1)
         elseif args == 'radius' then
             if scrollIndex == 11 then return end
             radius[2] = scrollIndex * 10
-            lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Radius', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
+            lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Radius', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'input'}, defaultIndex = scrollIndex, close = false}, 2)
         end
     end,
     options = {
-        {label = 'Volume', description = 'Volume to play the sound at', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = volume[1], close = false},
-        {label = 'Radius', description = 'The higher this number, the further away the sound can be heard from', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = radius[1], close = false}
+        {label = 'Volume', description = 'Volume to play the sound at', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'input'}, defaultIndex = volume[1], close = false},
+        {label = 'Radius', description = 'The higher this number, the further away the sound can be heard from', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'input'}, defaultIndex = radius[1], close = false}
     }
 }, function(_, scrollIndex, args)
     if args[1] == 'volume' then
@@ -358,14 +358,14 @@ lib.registerMenu({
         local result = tonumber(dialog[1])
 
         if result < 0 or result > 1 then
-            lib.notify({ description = 'The number has to be between 0.00 and 1.00', type = 'error' })
+            exports.qbx_core:Notify('The number has to be between 0.00 and 1.00', 'error')
             Wait(200)
             lib.showMenu('qbx_adminmenu_play_sounds_menu', MenuIndexes.qbx_adminmenu_play_sounds_menu)
             return
         end
 
         volume[2] = result --[[@as number]]
-        lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Volume', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'Input'}, defaultIndex = scrollIndex, close = false}, 1)
+        lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Volume', args = {'volume'}, values = {'0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0', 'input'}, defaultIndex = scrollIndex, close = false}, 1)
         Wait(200)
         lib.showMenu('qbx_adminmenu_play_sounds_menu', MenuIndexes.qbx_adminmenu_play_sounds_menu)
         return
@@ -382,14 +382,14 @@ lib.registerMenu({
         local result = tonumber(dialog[1])
 
         if result < 1 or result > 100 then
-            lib.notify({ description = 'The number has to be between 1 and 100', type = 'error' })
+            exports.qbx_core:Notify('The number has to be between 1 and 100', 'error')
             Wait(200)
             lib.showMenu('qbx_adminmenu_play_sounds_menu', MenuIndexes.qbx_adminmenu_play_sounds_menu)
             return
         end
 
         radius[2] = result --[[@as number]]
-        lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Radius', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'Input'}, defaultIndex = scrollIndex, close = false}, 2)
+        lib.setMenuOptions('qbx_adminmenu_play_sounds_menu', {label = 'Radius', args = {'radius'}, values = {'10', '20', '30', '40', '50', '60', '70', '80', '90', '100', 'input'}, defaultIndex = scrollIndex, close = false}, 2)
         Wait(200)
         lib.showMenu('qbx_adminmenu_play_sounds_menu', MenuIndexes.qbx_adminmenu_play_sounds_menu)
         return

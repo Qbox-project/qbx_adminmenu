@@ -1,10 +1,6 @@
 local isFrozen = {}
 local sounds = {}
 
-function NoPerms(source)
-    exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error')
-end
-
 --- Checks if the source is inside of the target's routingbucket
 --- if not set the source's routingbucket to the target's
 --- @param source string - The player's ID
@@ -15,147 +11,147 @@ function CheckRoutingbucket(source, target)
     if sourceBucket ~= targetBucket then SetPlayerRoutingBucket(source, targetBucket) end
 end
 
-local GeneralOptions = {
-    function(SelectedPlayer) TriggerClientEvent('hospital:client:KillPlayer', SelectedPlayer.id) end,
-    function(SelectedPlayer) TriggerClientEvent('hospital:client:Revive', SelectedPlayer.id) end,
-    function(SelectedPlayer)
-        if isFrozen[SelectedPlayer.id] then
-            FreezeEntityPosition(GetPlayerPed(SelectedPlayer.id), false)
-            isFrozen[SelectedPlayer.id] = false
+local generalOptions = {
+    function(selectedPlayer) TriggerClientEvent('hospital:client:KillPlayer', selectedPlayer.id) end,
+    function(selectedPlayer) TriggerClientEvent('hospital:client:Revive', selectedPlayer.id) end,
+    function(selectedPlayer)
+        if isFrozen[selectedPlayer.id] then
+            FreezeEntityPosition(GetPlayerPed(selectedPlayer.id), false)
+            isFrozen[selectedPlayer.id] = false
         else
-            FreezeEntityPosition(GetPlayerPed(SelectedPlayer.id), true)
-            isFrozen[SelectedPlayer.id] = true
+            FreezeEntityPosition(GetPlayerPed(selectedPlayer.id), true)
+            isFrozen[selectedPlayer.id] = true
         end
     end,
-    function(SelectedPlayer, source)
-        local Coords = GetEntityCoords(GetPlayerPed(SelectedPlayer.id))
-        CheckRoutingbucket(source, SelectedPlayer.id)
-        SetEntityCoords(GetPlayerPed(source), Coords.x, Coords.y, Coords.z, false, false, false, false)
+    function(selectedPlayer, source)
+        local coords = GetEntityCoords(GetPlayerPed(selectedPlayer.id))
+        CheckRoutingbucket(source, selectedPlayer.id)
+        SetEntityCoords(GetPlayerPed(source), coords.x, coords.y, coords.z, false, false, false, false)
     end,
-    function(SelectedPlayer, source)
-        local Coords = GetEntityCoords(GetPlayerPed(source))
-        CheckRoutingbucket(SelectedPlayer.id, source)
-        SetEntityCoords(GetPlayerPed(SelectedPlayer.id), Coords.x, Coords.y, Coords.z, false, false, false, false)
+    function(selectedPlayer, source)
+        local coords = GetEntityCoords(GetPlayerPed(source))
+        CheckRoutingbucket(selectedPlayer.id, source)
+        SetEntityCoords(GetPlayerPed(selectedPlayer.id), coords.x, coords.y, coords.z, false, false, false, false)
     end,
-    function(SelectedPlayer, source)
-        local Vehicle = GetVehiclePedIsIn(GetPlayerPed(SelectedPlayer.id), false)
-        local Seat = -1
-        if Vehicle == 0 then return end
-        for i = 0, 8, 1 do if GetPedInVehicleSeat(Vehicle, i) == 0 then Seat = i break end end
-        if Seat == -1 then return end
-        SetPedIntoVehicle(GetPlayerPed(source), Vehicle, Seat)
+    function(selectedPlayer, source)
+        local vehicle = GetVehiclePedIsIn(GetPlayerPed(selectedPlayer.id), false)
+        local seat = -1
+        if vehicle == 0 then return end
+        for i = 0, 8, 1 do if GetPedInVehicleSeat(vehicle, i) == 0 then seat = i break end end
+        if seat == -1 then return end
+        SetPedIntoVehicle(GetPlayerPed(source), vehicle, seat)
     end,
-    function(SelectedPlayer, _, Input)
-        SetPlayerRoutingBucket(SelectedPlayer.id, Input)
+    function(selectedPlayer, _, input)
+        SetPlayerRoutingBucket(selectedPlayer.id, input)
     end,
 }
-RegisterNetEvent('qbx_admin:server:playerOptionsGeneral', function(Selected, SelectedPlayer, Input)
-    if not exports.qbx_core:HasPermission(source, Config.Events['playeroptionsgeneral']) then NoPerms(source) return end
+RegisterNetEvent('qbx_admin:server:playerOptionsGeneral', function(selected, selectedPlayer, input)
+    if not exports.qbx_core:HasPermission(source, Config.Events['playeroptionsgeneral']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
 
     ---@diagnostic disable-next-line: redundant-parameter
-    GeneralOptions[Selected](SelectedPlayer, source, Input)
+    generalOptions[selected](selectedPlayer, source, input)
 end)
 
-local AdministrationOptions = {
-    function(Source, SelectedPlayer, Input)
-        if not exports.qbx_core:HasPermission(Source, Config.Events['kick']) then NoPerms(Source) return end
-        DropPlayer(SelectedPlayer.id, Input)
+local administrationOptions = {
+    function(source, selectedPlayer, input)
+        if not exports.qbx_core:HasPermission(source, Config.Events['kick']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
+        DropPlayer(selectedPlayer.id, input)
     end,
-    function(Source, SelectedPlayer, Input)
-        if not exports.qbx_core:HasPermission(Source, Config.Events['ban']) then NoPerms(Source) return end
-        local BanDuration = (Input[2] or 0) * 3600 + (Input[3] or 0) * 86400 + (Input[4] or 0) * 2629743
-        DropPlayer(SelectedPlayer.id, Lang:t('player_options.administration.banreason', { reason = Input[1], lenght = os.date('%c', os.time() + BanDuration) }))
+    function(source, selectedPlayer, input)
+        if not exports.qbx_core:HasPermission(source, Config.Events['ban']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
+        local banDuration = (input[2] or 0) * 3600 + (input[3] or 0) * 86400 + (input[4] or 0) * 2629743
+        DropPlayer(selectedPlayer.id, Lang:t('player_options.administration.banreason', { reason = input[1], lenght = os.date('%c', os.time() + banDuration) }))
         MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
-            GetPlayerName(SelectedPlayer.id), GetPlayerIdentifierByType(SelectedPlayer.id, 'license'), GetPlayerIdentifierByType(SelectedPlayer.id, 'discord'),
-            GetPlayerIdentifierByType(SelectedPlayer.id, 'ip'), Input[1], os.time() + BanDuration, GetPlayerName(Source)
+            GetPlayerName(selectedPlayer.id), GetPlayerIdentifierByType(selectedPlayer.id, 'license'), GetPlayerIdentifierByType(selectedPlayer.id, 'discord'),
+            GetPlayerIdentifierByType(selectedPlayer.id, 'ip'), input[1], os.time() + banDuration, GetPlayerName(source)
         })
     end,
-    function(Source, SelectedPlayer, Input)
-        if not exports.qbx_core:HasPermission(Source, Config.Events['changeperms']) then NoPerms(Source) return end
-        if Input == 'remove' then exports.qbx_core:RemovePermission(SelectedPlayer.id) else exports.qbx_core:AddPermission(SelectedPlayer.id, Input) end
+    function(source, selectedPlayer, input)
+        if not exports.qbx_core:HasPermission(source, Config.Events['changeperms']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
+        if input == 'remove' then exports.qbx_core:RemovePermission(selectedPlayer.id) else exports.qbx_core:AddPermission(selectedPlayer.id, input) end
     end,
 }
-RegisterNetEvent('qbx_admin:server:playerAdministration', function(Selected, SelectedPlayer, Input)
-    AdministrationOptions[Selected](source, SelectedPlayer, Input)
+RegisterNetEvent('qbx_admin:server:playerAdministration', function(selected, selectedPlayer, input)
+    administrationOptions[selected](source, selectedPlayer, input)
 end)
 
-local PlayerDataOptions = {
-    name = function(Target, Input)
-        if Input[1] then Target.PlayerData.charinfo.firstname = Input[1] end
-        if Input[2] then Target.PlayerData.charinfo.lastname = Input[2] end
-        Target.Functions.SetPlayerData('charinfo', Target.PlayerData.charinfo)
+local playerDataOptions = {
+    name = function(target, input)
+        if input[1] then target.PlayerData.charinfo.firstname = input[1] end
+        if input[2] then target.PlayerData.charinfo.lastname = input[2] end
+        target.Functions.SetPlayerData('charinfo', target.PlayerData.charinfo)
     end,
-    food = function(Target, Input) Target.Functions.SetMetaData('hunger', Input[1]) end,
-    thirst = function(Target, Input) Target.Functions.SetMetaData('thirst', Input[1]) end,
-    stress = function(Target, Input) Target.Functions.SetMetaData('stress', Input[1]) end,
-    armor = function(Target, Input) Target.Functions.SetMetaData('armor', Input[1]) SetPedArmour(GetPlayerPed(Target.PlayerData.source), Input[1]) end,
-    phone = function(Target, Input)
-        Target.PlayerData.charinfo.phone = Input[1]
-        Target.Functions.SetPlayerData('charinfo', Target.PlayerData.charinfo)
+    food = function(target, input) target.Functions.SetMetaData('hunger', input[1]) end,
+    thirst = function(target, input) target.Functions.SetMetaData('thirst', input[1]) end,
+    stress = function(target, input) target.Functions.SetMetaData('stress', input[1]) end,
+    armor = function(target, input) target.Functions.SetMetaData('armor', input[1]) SetPedArmour(GetPlayerPed(target.PlayerData.source), input[1]) end,
+    phone = function(target, input)
+        target.PlayerData.charinfo.phone = input[1]
+        target.Functions.SetPlayerData('charinfo', target.PlayerData.charinfo)
     end,
-    crafting = function(Target, Input) Target.Functions.SetMetaData('craftingrep', Input[1]) end,
-    dealer = function(Target, Input) Target.Functions.SetMetaData('dealerrep', Input[1]) end,
-    cash = function(Target, Input)
-        Target.PlayerData.moneycash = Input[1]
-        Target.Functions.SetPlayerData('money', Target.PlayerData.money)
+    crafting = function(target, input) target.Functions.SetMetaData('craftingrep', input[1]) end,
+    dealer = function(target, input) target.Functions.SetMetaData('dealerrep', input[1]) end,
+    cash = function(target, input)
+        target.PlayerData.moneycash = input[1]
+        target.Functions.SetPlayerData('money', target.PlayerData.money)
     end,
-    bank = function(Target, Input)
-        Target.PlayerData.moneybank = Input[1]
-        Target.Functions.SetPlayerData('money', Target.PlayerData.money)
+    bank = function(target, input)
+        target.PlayerData.moneybank = input[1]
+        target.Functions.SetPlayerData('money', target.PlayerData.money)
     end,
-    job = function(Target, Input)
-        Target.Functions.SetJob(Input[1], Input[2])
+    job = function(target, input)
+        target.Functions.SetJob(input[1], input[2])
     end,
-    gang = function(Target, Input)
-        Target.Functions.SetGang(Input[1], Input[2])
+    gang = function(target, input)
+        target.Functions.SetGang(input[1], input[2])
     end,
-    radio = function(Target, Input)
-        exports['pma-voice']:setPlayerRadio(Target.PlayerData.source, Input[1])
+    radio = function(target, input)
+        exports['pma-voice']:setPlayerRadio(target.PlayerData.source, input[1])
     end,
 }
-RegisterNetEvent('qbx_admin:server:changePlayerData', function(Selected, SelectedPlayer, Input)
-    local Target = exports.qbx_core:GetPlayer(SelectedPlayer.id)
+RegisterNetEvent('qbx_admin:server:changePlayerData', function(selected, selectedPlayer, input)
+    local target = exports.qbx_core:GetPlayer(selectedPlayer.id)
 
-    if not exports.qbx_core:HasPermission(source, Config.Events['changeplayerdata']) then NoPerms(source) return end
-    if not Target then return end
+    if not exports.qbx_core:HasPermission(source, Config.Events['changeplayerdata']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
+    if not target then return end
 
-    PlayerDataOptions[Selected](Target, Input)
+    playerDataOptions[selected](target, input)
 end)
 
-RegisterNetEvent('qbx_admin:server:giveAllWeapons', function(Weapontype, PlayerID)
-    local src = PlayerID or source
-    local Target = exports.qbx_core:GetPlayer(src)
+RegisterNetEvent('qbx_admin:server:giveAllWeapons', function(weaponType, playerID)
+    local src = playerID or source
+    local target = exports.qbx_core:GetPlayer(src)
 
-    if not exports.qbx_core:HasPermission(source, Config.Events['giveallweapons']) then NoPerms(source) return end
+    if not exports.qbx_core:HasPermission(source, Config.Events['giveallweapons']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
 
-    for i = 1, #Config.Weaponlist[Weapontype], 1 do
-        if not exports.ox_inventory:Items()[Config.Weaponlist[Weapontype][i]] then return end
-        Target.Functions.AddItem(Config.Weaponlist[Weapontype][i], 1)
+    for i = 1, #Config.Weaponlist[weaponType], 1 do
+        if not exports.ox_inventory:Items()[Config.Weaponlist[weaponType][i]] then return end
+        target.Functions.AddItem(Config.Weaponlist[weaponType][i], 1)
     end
 end)
 
-lib.callback.register('qbx_admin:callback:getradiolist', function(source, Frequency)
-    local list = exports['pma-voice']:getPlayersInRadioChannel(tonumber(Frequency))
-    local Players = {}
+lib.callback.register('qbx_admin:callback:getradiolist', function(source, frequency)
+    local list = exports['pma-voice']:getPlayersInRadioChannel(tonumber(frequency))
+    local players = {}
 
-    if not exports.qbx_core:HasPermission(source, Config.Events['getradiolist']) then NoPerms(source) return end
+    if not exports.qbx_core:HasPermission(source, Config.Events['getradiolist']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
 
     for targetSource, _ in pairs(list) do -- cheers Knight who shall not be named
-        local Player = exports.qbx_core:GetPlayer(targetSource)
-        Players[#Players + 1] = {
+        local player = exports.qbx_core:GetPlayer(targetSource)
+        players[#players + 1] = {
             id = targetSource,
-            name = Player.PlayerData.charinfo.firstname .. ' ' .. Player.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(targetSource) .. ')'
+            name = player.PlayerData.charinfo.firstname .. ' ' .. player.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(targetSource) .. ')'
         }
     end
-    return Players, Frequency
+    return players, frequency
 end)
 
 lib.callback.register('qbx_admin:server:getPlayers', function(source)
-    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
+    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
 
-    local Players = {}
+    local players = {}
     for k, v in pairs(exports.qbx_core:GetQBPlayers()) do
-        Players[#Players + 1] = {
+        players[#players + 1] = {
             id = k,
             cid = v.PlayerData.citizenid,
             name = v.PlayerData.charinfo.firstname .. ' ' .. v.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(k) .. ')',
@@ -175,12 +171,12 @@ lib.callback.register('qbx_admin:server:getPlayers', function(source)
             steam = GetPlayerIdentifierByType(k, 'steam') or 'Not Linked',
         }
     end
-    table.sort(Players, function(a, b) return a.id < b.id end)
-    return Players
+    table.sort(players, function(a, b) return a.id < b.id end)
+    return players
 end)
 
 lib.callback.register('qbx_admin:server:getPlayer', function(source, playerToGet)
-    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then NoPerms(source) return end
+    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error') return end
 
     local playerData = exports.qbx_core:GetPlayer(playerToGet).PlayerData
     local player = {
@@ -207,7 +203,7 @@ end)
 
 lib.callback.register('qbx_admin:server:clothingMenu', function(source, target)
     if not exports.qbx_core:HasPermission(source, Config.Events['clothing menu']) then
-        NoPerms(source)
+        exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error')
         return false
     end
 
@@ -218,7 +214,7 @@ end)
 
 lib.callback.register('qbx_admin:server:getSounds', function(source)
     if not exports.qbx_core:HasPermission(source, Config.Events['play sounds']) then
-        NoPerms(source)
+        exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error')
         return
     end
     return sounds
@@ -226,7 +222,7 @@ end)
 
 lib.callback.register('qbx_admin:server:canUseMenu', function(source)
     if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then
-        NoPerms(source)
+        exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error')
         return false
     end
 

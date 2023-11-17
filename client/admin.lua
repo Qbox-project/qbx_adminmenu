@@ -1,26 +1,26 @@
-local Invisible = false
-local Godmode = false
-local InfiniteAmmo = false
-local VehicleGodmode = false
-local Options = {
+local invisible = false
+local godmode = false
+local infiniteAmmo = false
+local vehicleGodmode = false
+local options = {
     function() toggleNoClipMode() end,
     function() TriggerEvent('hospital:client:Revive') end,
     function()
-        Invisible = not Invisible
-        if not Invisible then return end
-        while Invisible do Wait(0) SetEntityVisible(cache.ped, false, false) end
+        invisible = not invisible
+        if not invisible then return end
+        while invisible do Wait(0) SetEntityVisible(cache.ped, false, false) end
         SetEntityVisible(cache.ped, true, false)
     end,
     function()
-        Godmode = not Godmode
-        if Godmode then SetPlayerInvincible(cache.playerId, true) else SetPlayerInvincible(cache.playerId, false) end
+        godmode = not godmode
+        if godmode then SetPlayerInvincible(cache.playerId, true) else SetPlayerInvincible(cache.playerId, false) end
     end,
     function() ExecuteCommand('names') end,
     function() ExecuteCommand('blips') end,
     function()
-        VehicleGodmode = not VehicleGodmode
-        if VehicleGodmode then
-            while VehicleGodmode do
+        vehicleGodmode = not vehicleGodmode
+        if vehicleGodmode then
+            while vehicleGodmode do
                 SetEntityInvincible(cache.vehicle, true)
                 SetEntityCanBeDamaged(cache.vehicle, false)
                 SetVehicleBodyHealth(cache.vehicle, 1000.0)
@@ -33,21 +33,21 @@ local Options = {
             SetEntityCanBeDamaged(cache.vehicle, true)
         end
     end,
-    function(Switch)
-        if Switch == 1 then
-            local Input = lib.inputDialog(Lang:t('admin_options.value8_1'), {Lang:t('admin_options.input8label')})
-            if not Input then return end
-            ExecuteCommand('setmodel ' .. Input)
+    function(switch)
+        if switch == 1 then
+            local input = lib.inputDialog(Lang:t('admin_options.value8_1'), {Lang:t('admin_options.input8label')})
+            if not input then return end
+            ExecuteCommand('setmodel ' .. input)
         else
             ExecuteCommand('refreshskin')
         end
     end,
     function()
-        InfiniteAmmo = not InfiniteAmmo
+        infiniteAmmo = not infiniteAmmo
         local weapon = GetSelectedPedWeapon(cache.ped)
-        if InfiniteAmmo then
+        if infiniteAmmo then
             if GetAmmoInPedWeapon(cache.ped, weapon) < 6 then SetAmmoInClip(cache.ped, weapon, 10) Wait(50) end
-            while InfiniteAmmo do
+            while infiniteAmmo do
                 weapon = GetSelectedPedWeapon(cache.ped)
                 SetPedInfiniteAmmo(cache.ped, true, weapon)
                 RefillAmmoInstantly(cache.ped)
@@ -57,7 +57,7 @@ local Options = {
             SetPedInfiniteAmmo(cache.ped, false, weapon)
         end
     end,
-    function(WeaponType) TriggerServerEvent('qbx_admin:server:giveAllWeapons', WeaponType) end,
+    function(weaponType) TriggerServerEvent('qbx_admin:server:giveAllWeapons', weaponType) end,
     function() TriggerEvent('police:client:GetCuffed', cache.serverId, true) end,
 }
 
@@ -66,7 +66,7 @@ lib.registerMenu({
     title = Lang:t('title.admin_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_admin_menu = selected
@@ -87,16 +87,16 @@ lib.registerMenu({
 }, function(selected, scrollIndex, args)
     if selected == 10 then
         ---@diagnostic disable-next-line: redundant-parameter
-        Options[selected](args[scrollIndex])
+        options[selected](args[scrollIndex])
     else
         ---@diagnostic disable-next-line: redundant-parameter
-        Options[selected](scrollIndex)
+        options[selected](scrollIndex)
     end
 end)
 
-local noClipEnabled = false
+local noclipEnabled = false
 local ent = nil
-local noClipCam = nil
+local noclipCam = nil
 local speed = 1.0
 local maxSpeed = 32.0
 local minY, maxY = -150.0, 160.0
@@ -104,22 +104,20 @@ local inputRotEnabled = false
 
 function toggleNoclip()
     CreateThread(function()
-        local ped = cache.ped
-        local veh = cache.vehicle
         local inVehicle = false
 
-        if veh then
+        if cache.vehicle then
             inVehicle = true
-            ent = veh
+            ent = cache.vehicle
         else
-            ent = ped
+            ent = cache.ped
         end
 
         local pos = GetEntityCoords(ent)
         local rot = GetEntityRotation(ent)
 
-        noClipCam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', pos.x, pos.y, pos.z, 0.0, 0.0, rot.z, 75.0, true, 2)
-        AttachCamToEntity(noClipCam, ent, 0.0, 0.0, 0.0, true)
+        noclipCam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', pos.x, pos.y, pos.z, 0.0, 0.0, rot.z, 75.0, true, 2)
+        AttachCamToEntity(noclipCam, ent, 0.0, 0.0, 0.0, true)
         RenderScriptCams(true, false, 3000, true, false)
 
         local function adjustSpeed()
@@ -130,8 +128,8 @@ function toggleNoclip()
             end
         end
 
-        while noClipEnabled do
-            local _, fv = GetCamMatrix(noClipCam)
+        while noclipEnabled do
+            local _, fv = GetCamMatrix(noclipCam)
             adjustSpeed()
 
             local multiplier = 1.0
@@ -170,16 +168,16 @@ function toggleNoclip()
             SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
 
             if not inVehicle then
-                local pedPos = GetEntityCoords(ped)
-                SetEntityCoordsNoOffset(ped, setpos.x, setpos.y, pedPos.z, false, false, false)
+                local pedPos = GetEntityCoords(cache.ped)
+                SetEntityCoordsNoOffset(cache.ped, setpos.x, setpos.y, pedPos.z, false, false, false)
             end
 
-            local camrot = GetCamRot(noClipCam, 2)
-            SetEntityHeading(ent, (360 + camrot.z) % 360.0)
+            local camRot = GetCamRot(noclipCam, 2)
+            SetEntityHeading(ent, (360 + camRot.z) % 360.0)
             SetEntityVisible(ent, false, false)
 
             if inVehicle then
-                SetEntityVisible(ped, false, false)
+                SetEntityVisible(cache.ped, false, false)
             end
 
             local controlActions = {32, 33, 34, 35, 36, 12, 13, 14, 15, 16, 17}
@@ -191,22 +189,22 @@ function toggleNoclip()
             Wait(0)
         end
 
-        DestroyCam(noClipCam, false)
-        noClipCam = nil
+        DestroyCam(noclipCam, false)
+        noclipCam = nil
         RenderScriptCams(false, false, 3000, true, false)
         FreezeEntityPosition(ent, false)
         SetEntityCollision(ent, true, true)
         ResetEntityAlpha(ent)
-        SetPedCanRagdoll(ped, true)
-        SetEntityVisible(ent, not Invisible, false)
-        ClearPedTasksImmediately(ped)
+        SetPedCanRagdoll(cache.ped, true)
+        SetEntityVisible(ent, not invisible, false)
+        ClearPedTasksImmediately(cache.ped)
 
         if inVehicle then
-            FreezeEntityPosition(ped, false)
-            SetEntityCollision(ped, true, true)
-            ResetEntityAlpha(ped)
-            SetEntityVisible(ped, true, false)
-            SetPedIntoVehicle(ped, ent, -1)
+            FreezeEntityPosition(cache.ped, false)
+            SetEntityCollision(cache.ped, true, true)
+            ResetEntityAlpha(cache.ped)
+            SetEntityVisible(cache.ped, true, false)
+            SetPedIntoVehicle(cache.ped, ent, -1)
         end
     end)
 end
@@ -214,7 +212,7 @@ end
 function checkInputRotation()
     CreateThread(function()
         while inputRotEnabled do
-            while not noClipCam or IsPauseMenuActive() do Wait(0) end
+            while not noclipCam or IsPauseMenuActive() do Wait(0) end
 
             local axisX = GetDisabledControlNormal(0, 1)
             local axisY = GetDisabledControlNormal(0, 2)
@@ -225,16 +223,16 @@ function checkInputRotation()
             end
 
             if math.abs(axisX) > 0 or math.abs(axisY) > 0 then
-                local rotation = GetCamRot(noClipCam, 2)
-                local rotz = rotation.z + (axisX * sensitivity)
+                local rot = GetCamRot(noclipCam, 2)
+                local rotZ = rot.z + (axisX * sensitivity)
                 local yValue = axisY * sensitivity
-                local rotx = rotation.x
+                local rotX = rot.x
 
-                if rotx + yValue > minY and rotx + yValue < maxY then
-                    rotx = rotation.x + yValue
+                if rotX + yValue > minY and rotX + yValue < maxY then
+                    rotX = rot.x + yValue
                 end
 
-                SetCamRot(noClipCam, rotx, rotation.y, rotz, 2)
+                SetCamRot(noclipCam, rotX, rot.y, rotZ, 2)
             end
 
             Wait(0)
@@ -248,95 +246,94 @@ RegisterNetEvent('qbx_admin:client:noclip', function()
 end)
 
 function toggleNoClipMode()
-    noClipEnabled = not noClipEnabled
-    inputRotEnabled = noClipEnabled
+    noclipEnabled = not noclipEnabled
+    inputRotEnabled = noclipEnabled
 
-    if noClipEnabled and inputRotEnabled then
+    if noclipEnabled and inputRotEnabled then
         toggleNoclip()
         checkInputRotation()
     end
 end
 
-local ShowBlips = false
-local ShowNames = false
-local NetCheck1 = false
-local NetCheck2 = false
+local showBlips = false
+local showNames = false
+local netCheck1 = false
+local netCheck2 = false
 
 CreateThread(function()
     while true do
         Wait(1000)
-        if NetCheck1 or NetCheck2 then
+        if netCheck1 or netCheck2 then
             TriggerServerEvent('qbx_admin:server:getPlayersForBlips')
         end
     end
 end)
 
 RegisterNetEvent('qbx_admin:client:blips', function()
-    if not ShowBlips then
-        ShowBlips = true
-        NetCheck1 = true
-        lib.notify({ description = Lang:t('success.blips_activated'), type = 'success' })
+    if not showBlips then
+        showBlips = true
+        netCheck1 = true
+        exports.qbx_core:Notify(Lang:t('success.blips_activated'), 'success')
     else
-        ShowBlips = false
-        lib.notify({ description = Lang:t('error.blips_deactivated'), type = 'error' })
+        showBlips = false
+        exports.qbx_core:Notify(Lang:t('error.blips_deactivated'), 'error')
     end
 end)
 
 RegisterNetEvent('qbx_admin:client:names', function()
-    if not ShowNames then
-        ShowNames = true
-        NetCheck2 = true
-        lib.notify({ description = Lang:t('success.names_activated'), type = 'success' })
+    if not showNames then
+        showNames = true
+        netCheck2 = true
+        exports.qbx_core:Notify(Lang:t('success.names_activated'), 'success')
     else
-        ShowNames = false
-        lib.notify({ description = Lang:t('error.names_deactivated'), type = 'error' })
+        showNames = false
+        exports.qbx_core:Notify(Lang:t('error.names_deactivated'), 'error')
     end
 end)
 
 RegisterNetEvent('qbx_admin:client:Show', function(players)
     for _, player in pairs(players) do
-        local playeridx = GetPlayerFromServerId(player.id)
-        local ped = GetPlayerPed(playeridx)
+        local playerId = GetPlayerFromServerId(player.id)
+        local ped = GetPlayerPed(playerId)
         local blip = GetBlipFromEntity(ped)
         local name = 'ID: '..player.id..' | '..player.name
 
-        local Tag = CreateFakeMpGamerTag(ped, name, false, false, '', 0)
-        SetMpGamerTagAlpha(Tag, 0, 255) -- Sets 'MP_TAG_GAMER_NAME' bar alpha to 100% (not needed just as a fail safe)
-        SetMpGamerTagAlpha(Tag, 2, 255) -- Sets 'MP_TAG_HEALTH_ARMOUR' bar alpha to 100%
-        SetMpGamerTagAlpha(Tag, 4, 255) -- Sets 'MP_TAG_AUDIO_ICON' bar alpha to 100%
-        SetMpGamerTagAlpha(Tag, 6, 255) -- Sets 'MP_TAG_PASSIVE_MODE' bar alpha to 100%
-        SetMpGamerTagHealthBarColour(Tag, 25)  --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
+        local tag = CreateFakeMpGamerTag(ped, name, false, false, '', 0)
+        SetMpGamerTagAlpha(tag, 0, 255) -- Sets 'MP_TAG_GAMER_NAME' bar alpha to 100% (not needed just as a fail safe)
+        SetMpGamerTagAlpha(tag, 2, 255) -- Sets 'MP_TAG_HEALTH_ARMOUR' bar alpha to 100%
+        SetMpGamerTagAlpha(tag, 4, 255) -- Sets 'MP_TAG_AUDIO_ICON' bar alpha to 100%
+        SetMpGamerTagAlpha(tag, 6, 255) -- Sets 'MP_TAG_PASSIVE_MODE' bar alpha to 100%
+        SetMpGamerTagHealthBarColour(tag, 25)  --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
 
-        if ShowNames then
-            SetMpGamerTagVisibility(Tag, 0, true) -- Activates the player ID Char name and FiveM name
-            SetMpGamerTagVisibility(Tag, 2, true) -- Activates the health (and armor if they have it on) bar below the player names
-            if NetworkIsPlayerTalking(playeridx) then
-                SetMpGamerTagVisibility(Tag, 4, true) -- If player is talking a voice icon will show up on the left side of the name
+        if showNames then
+            SetMpGamerTagVisibility(tag, 0, true) -- Activates the player ID Char name and FiveM name
+            SetMpGamerTagVisibility(tag, 2, true) -- Activates the health (and armor if they have it on) bar below the player names
+            if NetworkIsPlayerTalking(playerId) then
+                SetMpGamerTagVisibility(tag, 4, true) -- If player is talking a voice icon will show up on the left side of the name
             else
-                SetMpGamerTagVisibility(Tag, 4, false)
+                SetMpGamerTagVisibility(tag, 4, false)
             end
-            if GetPlayerInvincible(playeridx) then
-                SetMpGamerTagVisibility(Tag, 6, true) -- If player is in godmode a circle with a line through it will show up
+            if GetPlayerInvincible(playerId) then
+                SetMpGamerTagVisibility(tag, 6, true) -- If player is in godmode a circle with a line through it will show up
             else
-                SetMpGamerTagVisibility(Tag, 6, false)
+                SetMpGamerTagVisibility(tag, 6, false)
             end
         else
-            SetMpGamerTagVisibility(Tag, 0, false)
-            SetMpGamerTagVisibility(Tag, 2, false)
-            SetMpGamerTagVisibility(Tag, 4, false)
-            SetMpGamerTagVisibility(Tag, 6, false)
-            RemoveMpGamerTag(Tag) -- Unloads the tags till you activate it again
-            NetCheck2 = false
+            SetMpGamerTagVisibility(tag, 0, false)
+            SetMpGamerTagVisibility(tag, 2, false)
+            SetMpGamerTagVisibility(tag, 4, false)
+            SetMpGamerTagVisibility(tag, 6, false)
+            RemoveMpGamerTag(tag) -- Unloads the tags till you activate it again
+            netCheck2 = false
         end
 
         -- Blips Logic
-        if ShowBlips then
+        if showBlips then
             if not DoesBlipExist(blip) then
                 blip = AddBlipForEntity(ped)
                 SetBlipSprite(blip, 1)
                 ShowHeadingIndicatorOnBlip(blip, true)
             else
-                local veh = GetVehiclePedIsIn(ped, false)
                 local blipSprite = GetBlipSprite(blip)
                 --Payer Death
                 if not GetEntityHealth(ped) then
@@ -345,54 +342,54 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                         ShowHeadingIndicatorOnBlip(blip, false)
                     end
                 --Player in Vehicle
-                elseif veh ~= 0 then
-                    local classveh = GetVehicleClass(veh)
-                    local modelveh = GetEntityModel(veh)
+                elseif cache.vehicle ~= 0 then
+                    local classVeh = GetVehicleClass(cache.vehicle)
+                    local modelVeh = GetEntityModel(cache.vehicle)
                     --MotorCycles (8) or Cycles (13)
-                    if classveh == 8  or classveh == 13 then
+                    if classVeh == 8  or classVeh == 13 then
                         if blipSprite ~= 226 then
                             SetBlipSprite(blip, 226)        --Motorcycle icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --OffRoad (9)
-                    elseif classveh == 9 then
+                    elseif classVeh == 9 then
                         if blipSprite ~= 757 then
                             SetBlipSprite(blip, 757)        --OffRoad icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Industrial (10)
-                    elseif classveh == 10 then
+                    elseif classVeh == 10 then
                         if blipSprite ~= 477 then
                             SetBlipSprite(blip, 477)        --Truck icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Utility (11)
-                    elseif classveh == 11 then
+                    elseif classVeh == 11 then
                         if blipSprite ~= 477 then
                             SetBlipSprite(blip, 477)        --Truck icon despite finding better one
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Vans (12)
-                    elseif classveh == 12 then
+                    elseif classVeh == 12 then
                         if blipSprite ~= 67 then
                             SetBlipSprite(blip, 67)         --Van icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Boats (14)
-                    elseif classveh == 14 then
+                    elseif classVeh == 14 then
                         if blipSprite ~= 427 then
                             SetBlipSprite(blip, 427)        --Boat icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Helicopters (15)
-                    elseif classveh == 15 then
+                    elseif classVeh == 15 then
                         if blipSprite ~= 422 then
                             SetBlipSprite(blip, 422)        --Moving helicopter icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Planes (16)
-                    elseif classveh == 16 then
-                        if modelveh == 'besra' or modelveh == 'hydra' or modelveh == 'lazer' then
+                    elseif classVeh == 16 then
+                        if modelVeh == 'besra' or modelVeh == 'hydra' or modelVeh == 'lazer' then
                             if blipSprite ~= 424 then
                                 SetBlipSprite(blip, 424)    --Jet icon
                                 ShowHeadingIndicatorOnBlip(blip, false)
@@ -402,20 +399,20 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Service (17)
-                    elseif classveh == 17 then
+                    elseif classVeh == 17 then
                         if blipSprite ~= 198 then
                             SetBlipSprite(blip, 198)        --Taxi icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Emergency (18)
-                    elseif classveh == 18 then
+                    elseif classVeh == 18 then
                         if blipSprite ~= 56 then
                             SetBlipSprite(blip, 56)        --Cop icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Military (19)
-                    elseif classveh == 19 then
-                        if modelveh == 'rhino' then
+                    elseif classVeh == 19 then
+                        if modelVeh == 'rhino' then
                             if blipSprite ~= 421 then
                                 SetBlipSprite(blip, 421)    --Tank icon
                                 ShowHeadingIndicatorOnBlip(blip, false)
@@ -425,14 +422,14 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Commercial (20)
-                    elseif classveh == 20 then
+                    elseif classVeh == 20 then
                         if blipSprite ~= 477 then
                             SetBlipSprite(blip, 477)        --Truck icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Every car (0, 1, 2, 3, 4, 5, 6, 7)
                     else
-                        if modelveh == 'insurgent' or modelveh == 'insurgent2' or modelveh == 'limo2' then
+                        if modelVeh == 'insurgent' or modelVeh == 'insurgent2' or modelVeh == 'limo2' then
                             if blipSprite ~= 426 then
                                 SetBlipSprite(blip, 426)    --Armed car icon
                                 ShowHeadingIndicatorOnBlip(blip, false)
@@ -443,9 +440,9 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                         end
                     end
                     -- Show number in case of passangers
-                    local passengers = GetVehicleNumberOfPassengers(veh)
+                    local passengers = GetVehicleNumberOfPassengers(cache.vehicle)
                     if passengers then
-                        if not IsVehicleSeatFree(veh, -1) then
+                        if not IsVehicleSeatFree(cache.vehicle, -1) then
                             passengers = passengers + 1
                         end
                         ShowNumberOnBlip(blip, passengers)
@@ -461,8 +458,8 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                     end
                 end
 
-                SetBlipRotation(blip, math.ceil(GetEntityHeading(veh)))
-                SetBlipNameToPlayerName(blip, playeridx)
+                SetBlipRotation(blip, math.ceil(GetEntityHeading(cache.vehicle)))
+                SetBlipNameToPlayerName(blip, playerId)
                 SetBlipScale(blip, 0.85)
 
                 if IsPauseMenuActive() then
@@ -477,7 +474,7 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
             end
         else
             RemoveBlip(blip)
-            NetCheck1 = false
+            netCheck1 = false
         end
     end
 end)

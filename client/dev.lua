@@ -1,31 +1,32 @@
-local ShowCoords = false
-local VehicleDev = false
-local VehicleTypes = {'Compacts', 'Sedans', 'SUVs', 'Coupes', 'Muscle', 'Sports Classics', 'Sports', 'Super', 'Motorcycles', 'Off-road', 'Industrial', 'Utility', 'Vans', 'Cycles', 'Boats', 'Helicopters', 'Planes', 'Service', 'Emergency', 'Military', 'Commercial', 'Trains', 'Open Wheel'}
-local Options = {
+local showCoords = false
+local vehicleDev = false
+local vehicleTypes = {'Compacts', 'Sedans', 'SUVs', 'Coupes', 'Muscle', 'Sports Classics', 'Sports', 'Super', 'Motorcycles', 'Off-road', 'Industrial', 'Utility', 'Vans', 'Cycles', 'Boats', 'Helicopters', 'Planes', 'Service', 'Emergency', 'Military', 'Commercial', 'Trains', 'Open Wheel'}
+local options = {
     function() CopyToClipboard('coords2') lib.showMenu('qbx_adminmenu_dev_menu', MenuIndexes.qbx_adminmenu_dev_menu) end,
     function() CopyToClipboard('coords3') lib.showMenu('qbx_adminmenu_dev_menu', MenuIndexes.qbx_adminmenu_dev_menu) end,
     function() CopyToClipboard('coords4') lib.showMenu('qbx_adminmenu_dev_menu', MenuIndexes.qbx_adminmenu_dev_menu) end,
     function() CopyToClipboard('heading') lib.showMenu('qbx_adminmenu_dev_menu', MenuIndexes.qbx_adminmenu_dev_menu) end,
     function()
-        ShowCoords = not ShowCoords
-        while ShowCoords do
-            local Coords, Heading = GetEntityCoords(cache.ped), GetEntityHeading(cache.ped)
-            Draw2DText(string.format('~o~vector4~w~(%s, %s, %s, %s)', Round(Coords.x, 2), Round(Coords.y, 2), Round(Coords.z, 2), Round(Heading, 2)), 6, {255, 255, 255}, 0.5, 0.4, 0.025)
+        showCoords = not showCoords
+        while showCoords do
+            local coords, heading = GetEntityCoords(cache.ped), GetEntityHeading(cache.ped)
+            DrawText2D(string.format('~o~vector4~w~(%s, %s, %s, %s)', math.round(coords.x, 2), math.round(coords.y, 2), math.round(coords.z, 2), math.round(heading, 2)), vec2(0.5, 0.020), 1.0, 1.0, 0.5, 6, 255, 255, 255)
             Wait(0)
         end
     end,
     function()
-        VehicleDev = not VehicleDev
-        while VehicleDev do
+        vehicleDev = not vehicleDev
+        while vehicleDev do
             if cache.vehicle then
-                local Clutch, Gear, Rpm, Temperature = GetVehicleClutch(cache.vehicle), GetVehicleCurrentGear(cache.vehicle), GetVehicleCurrentRpm(cache.vehicle), GetVehicleEngineTemperature(cache.vehicle)
-                local Oil, Angle, Body, Class = GetVehicleOilLevel(cache.vehicle), GetVehicleSteeringAngle(cache.vehicle), GetVehicleBodyHealth(cache.vehicle), VehicleTypes[GetVehicleClass(cache.vehicle)]
-                local Dirt, MaxSpeed, NetId, Hash = GetVehicleDirtLevel(cache.vehicle), GetVehicleEstimatedMaxSpeed(cache.vehicle), VehToNet(cache.vehicle), GetEntityModel(cache.vehicle)
-                local Name = GetLabelText(GetDisplayNameFromVehicleModel(Hash))
-                Draw2DText(string.format('~o~Clutch: ~w~ %s | ~o~Gear: ~w~ %s | ~o~Rpm: ~w~ %s | ~o~Temperature: ~w~ %s', Round(Clutch, 4), Gear, Round(Rpm, 4), Temperature), 6, {255, 255, 255}, 0.45, 0.05, 0.100)
-                Draw2DText(string.format('~o~Oil: ~w~ %s | ~o~Steering Angle: ~w~ %s | ~o~Body: ~w~ %s | ~o~Class: ~w~ %s', Round(Oil, 4), Round(Angle, 4), Round(Body, 4), Class), 6, {255, 255, 255}, 0.45, 0.05, 0.125)
-                Draw2DText(string.format('~o~Dirt: ~w~ %s | ~o~Est Max Speed: ~w~ %s | ~o~Net ID: ~w~ %s | ~o~Hash: ~w~ %s', Round(Dirt, 4), Round(MaxSpeed, 4) * 3.6, NetId, Hash), 6, {255, 255, 255}, 0.45, 0.05, 0.150)
-                Draw2DText(string.format('~o~Vehicle Name: ~w~ %s', Name), 6, {255, 255, 255}, 0.45, 0.05, 0.175)
+                local clutch, gear, rpm, temperature = GetVehicleClutch(cache.vehicle), GetVehicleCurrentGear(cache.vehicle), GetVehicleCurrentRpm(cache.vehicle), GetVehicleEngineTemperature(cache.vehicle)
+                local oil, angle, body, class = GetVehicleOilLevel(cache.vehicle), GetVehicleSteeringAngle(cache.vehicle), GetVehicleBodyHealth(cache.vehicle), vehicleTypes[GetVehicleClass(cache.vehicle)]
+                local dirt, maxSpeed, netId, hash = GetVehicleDirtLevel(cache.vehicle), GetVehicleEstimatedMaxSpeed(cache.vehicle), VehToNet(cache.vehicle), GetEntityModel(cache.vehicle)
+                local name = GetLabelText(GetDisplayNameFromVehicleModel(hash))
+                EndTextCommandDisplayText()
+                DrawText2D(string.format('~o~Clutch: ~w~ %s | ~o~Gear: ~w~ %s | ~o~Rpm: ~w~ %s | ~o~Temperature: ~w~ %s', math.round(clutch, 4), gear, math.round(rpm, 4), temperature), vec2(0.5, 0.075), 1.0, 1.0, 0.45, 6, 255, 255, 255)
+                DrawText2D(string.format('~o~Oil: ~w~ %s | ~o~Steering Angle: ~w~ %s | ~o~Body: ~w~ %s | ~o~Class: ~w~ %s', math.round(oil, 4), math.round(angle, 4), math.round(body, 4), class), vec2(0.5, 0.1), 1.0, 1.0, 0.45, 6, 255, 255, 255)
+                DrawText2D(string.format('~o~Dirt: ~w~ %s | ~o~Est Max Speed: ~w~ %s | ~o~Net ID: ~w~ %s | ~o~Hash: ~w~ %s', math.round(dirt, 4), math.round(maxSpeed, 4) * 3.6, netId, hash), vec2(0.5, 0.125), 1.0, 1.0, 0.45, 6, 255, 255, 255)
+                DrawText2D(string.format('~o~Vehicle Name: ~w~ %s', name), vec2(0.5, 0.150), 1.0, 1.0, 0.45, 6, 255, 255, 255)
                 Wait(0)
             else
                 Wait(800)
@@ -39,7 +40,7 @@ lib.registerMenu({
     title = Lang:t('title.dev_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_dev_menu = selected
@@ -53,5 +54,5 @@ lib.registerMenu({
         {label = Lang:t('dev_options.label6'), description = Lang:t('dev_options.desc6'), icon = 'fas fa-car-side', close = false}
     }
 }, function(selected)
-    Options[selected]()
+    options[selected]()
 end)

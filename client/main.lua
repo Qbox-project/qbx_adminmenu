@@ -5,7 +5,7 @@ lib.registerMenu({
     title = Lang:t('title.main_menu'),
     position = 'top-right',
     onClose = function()
-        CloseMenu(true)
+        closeMenu(true)
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_main_menu = selected
@@ -25,24 +25,7 @@ lib.registerMenu({
     end
 end)
 
-function Round(num, numDecimalPlaces)
-    local mult = 10^(numDecimalPlaces or 0)
-    return math.floor(num * mult + 0.5) / mult
-end
-
-function Draw2DText(content, font, colour, scale, x, y)
-    SetTextFont(font)
-    SetTextScale(scale, scale)
-    SetTextColour(colour[1], colour[2], colour[3], 255)
-    BeginTextCommandDisplayText('STRING')
-    SetTextDropShadow()
-    SetTextEdge(4, 0, 0, 0, 255)
-    SetTextOutline()
-    AddTextComponentSubstringPlayerName(content)
-    EndTextCommandDisplayText(x, y)
-end
-
-function CloseMenu(isFullMenuClose, keyPressed, previousMenu)
+function closeMenu(isFullMenuClose, keyPressed, previousMenu)
     if isFullMenuClose or not keyPressed or keyPressed == 'Escape' then
         lib.hideMenu(false)
         return
@@ -59,8 +42,7 @@ RegisterNetEvent('qbx_admin:client:setModel', function(skin)
     local model = joaat(skin)
     SetEntityInvincible(cache.ped, true)
     if IsModelInCdimage(model) and IsModelValid(model) then
-        RequestModel(model)
-        while not HasModelLoaded(model) do Wait(0) end
+        lib.requestModel(model)
         SetPlayerModel(cache.playerId, model)
         SetPedRandomComponentVariation(cache.ped, 1)
         SetModelAsNoLongerNeeded(model)
