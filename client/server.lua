@@ -1,23 +1,23 @@
-local Options = {
-    function(Weather) TriggerServerEvent('qb-weathersync:server:setWeather', Weather) end,
-    function(Time) TriggerServerEvent('qb-weathersync:server:setTime', Time) end,
+local options = {
+    function(weather) TriggerServerEvent('qb-weathersync:server:setWeather', weather) end,
+    function(time) TriggerServerEvent('qb-weathersync:server:setTime', time) end,
     function()
-        local Input = lib.inputDialog(Lang:t('server_options.label3'), {
-            { type = 'number', label = Lang:t('server_options.input3label'), placeholder = '25'}
+        local input = lib.inputDialog(Lang:t('server_options.label3'), {
+            {type = 'number', label = Lang:t('server_options.input3label'), placeholder = '25'}
         })
-        if not Input then return end if not Input[1] then return end
-        lib.callback('qbx_admin:callback:getradiolist', false, function(Players, Frequency)
-            local OptionsList = {}
-            for i = 1, #Players do OptionsList[#OptionsList + 1] = {title = Players[i].name .. ' | ' .. Players[i].id} end
-            lib.registerContext({id = 'frequency_list', title = 'Frequency ' .. Frequency, options = OptionsList })
+        if not input then return end if not input[1] then return end
+        lib.callback('qbx_admin:callback:getradiolist', false, function(players, frequency)
+            local optionsList = {}
+            for i = 1, #players do optionsList[#optionsList + 1] = {title = players[i].name .. ' | ' .. players[i].id} end
+            lib.registerContext({id = 'frequency_list', title = 'Frequency ' .. frequency, options = optionsList })
             lib.showContext('frequency_list')
-        end, Input[1])
+        end, input[1])
     end,
     function()
-        local Input = lib.inputDialog(Lang:t('server_options.label4'), {Lang:t('server_options.input4label')})
-        if not Input then return end if not Input[1] then return end
-        TriggerServerEvent('inventory:server:OpenInventory', 'stash', Input[1])
-        TriggerEvent('inventory:client:SetCurrentStash', Input[1])
+        local input = lib.inputDialog(Lang:t('server_options.label4'), {Lang:t('server_options.input4label')})
+        if not input then return end if not input[1] then return end
+        TriggerServerEvent('inventory:server:OpenInventory', 'stash', input[1])
+        TriggerEvent('inventory:client:SetCurrentStash', input[1])
     end,
 }
 
@@ -26,7 +26,7 @@ lib.registerMenu({
     title = Lang:t('title.server_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_server_menu = selected
@@ -42,8 +42,8 @@ lib.registerMenu({
     }
 }, function(selected, scrollIndex, args)
     if selected == 1 or selected == 2 then
-        Options[selected](args[scrollIndex])
+        options[selected](args[scrollIndex])
     else
-        Options[selected]()
+        options[selected]()
     end
 end)
