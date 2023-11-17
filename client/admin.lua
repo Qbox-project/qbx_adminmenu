@@ -287,7 +287,7 @@ RegisterNetEvent('qbx_admin:client:names', function()
         exports.qbx_core:Notify(Lang:t('success.names_activated'), 'success')
     else
         showNames = false
-        exports.qbx_core:Notify(ang:t('error.names_deactivated'), 'error')
+        exports.qbx_core:Notify(Lang:t('error.names_deactivated'), 'error')
     end
 end)
 
