@@ -8,7 +8,7 @@ local sounds = {}
 function CheckRoutingbucket(source, target)
     local sourceBucket = GetPlayerRoutingBucket(source)
     local targetBucket = GetPlayerRoutingBucket(target)
-    if sourceBucket ~= targetBucket then SetPlayerRoutingBucket(source, targetBucket) end
+    if sourceBucket ~= targetBucket then SetPlayerRoutingBucket(tonumber(source), targetBucket) end
 end
 
 local generalOptions = {
@@ -42,7 +42,7 @@ local generalOptions = {
         SetPedIntoVehicle(GetPlayerPed(source), vehicle, seat)
     end,
     function(selectedPlayer, _, input)
-        SetPlayerRoutingBucket(selectedPlayer.id, input)
+        SetPlayerRoutingBucket(tonumber(selectedPlayer.id), input)
     end,
 }
 RegisterNetEvent('qbx_admin:server:playerOptionsGeneral', function(selected, selectedPlayer, input)
