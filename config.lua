@@ -1,12 +1,5 @@
 Config = {}
 
-if lib.context == 'server' then
-    Config.SoundScriptName = 'interact-sound'
-    Config.SoundPath = '/client/html/sounds'
-end
-
-Config.Linux = false
-
 Config.Commands = {
     ['usemenu'] = 'mod',
     ['noclip'] = 'mod',

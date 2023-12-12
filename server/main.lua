@@ -1,5 +1,4 @@
 local isFrozen = {}
-local sounds = {}
 
 --- Checks if the source is inside of the target's routingbucket
 --- if not set the source's routingbucket to the target's
@@ -212,14 +211,6 @@ lib.callback.register('qbx_admin:server:clothingMenu', function(source, target)
     return true
 end)
 
-lib.callback.register('qbx_admin:server:getSounds', function(source)
-    if not exports.qbx_core:HasPermission(source, Config.Events['play sounds']) then
-        exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error')
-        return
-    end
-    return sounds
-end)
-
 lib.callback.register('qbx_admin:server:canUseMenu', function(source)
     if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then
         exports.qbx_core:Notify(source, Lang:t('error.no_perms'), 'error')
@@ -232,18 +223,4 @@ end)
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     local hash = joaat(model)
     return SpawnVehicle(source, hash, nil, true)
-end)
-
-CreateThread(function()
-    local path = GetResourcePath(Config.SoundScriptName)
-    local directory = ('%s%s'):format(path:gsub('//', '/'), Config.SoundPath)
-    if not Config.Linux then
-        for filename in io.popen(('dir "%s" /b'):format(directory)):lines() do
-            sounds[#sounds + 1] = filename:match('(.+)%..+$')
-        end
-    else
-        for filename in io.popen(('ls "%s" /b'):format(directory)):lines() do
-            sounds[#sounds + 1] = filename:match('(.+)%..+$')
-        end
-    end
 end)
