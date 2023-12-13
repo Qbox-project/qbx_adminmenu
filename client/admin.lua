@@ -8,7 +8,10 @@ local options = {
     function()
         invisible = not invisible
         if not invisible then return end
-        while invisible do Wait(0) SetEntityVisible(cache.ped, false, false) end
+        while invisible do
+            Wait(0)
+            SetEntityVisible(cache.ped, false, false)
+        end
         SetEntityVisible(cache.ped, true, false)
     end,
     function()
@@ -35,7 +38,7 @@ local options = {
     end,
     function(switch)
         if switch == 1 then
-            local input = lib.inputDialog(Lang:t('admin_options.value8_1'), {Lang:t('admin_options.input8label')})
+            local input = lib.inputDialog(Lang:t('admin_options.value8_1'), { Lang:t('admin_options.input8label') })
             if not input then return end
             ExecuteCommand('setmodel ' .. input)
         else
@@ -46,7 +49,10 @@ local options = {
         infiniteAmmo = not infiniteAmmo
         local weapon = GetSelectedPedWeapon(cache.ped)
         if infiniteAmmo then
-            if GetAmmoInPedWeapon(cache.ped, weapon) < 6 then SetAmmoInClip(cache.ped, weapon, 10) Wait(50) end
+            if GetAmmoInPedWeapon(cache.ped, weapon) < 6 then
+                SetAmmoInClip(cache.ped, weapon, 10)
+                Wait(50)
+            end
             while infiniteAmmo do
                 weapon = GetSelectedPedWeapon(cache.ped)
                 SetPedInfiniteAmmo(cache.ped, true, weapon)
@@ -72,17 +78,17 @@ lib.registerMenu({
         MenuIndexes.qbx_adminmenu_admin_menu = selected
     end,
     options = {
-        {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
-        {label = Lang:t('admin_options.label2'), description = Lang:t('admin_options.desc2'), icon = 'fas fa-hospital', close = false},
-        {label = Lang:t('admin_options.label3'), description = Lang:t('admin_options.desc3'), icon = 'fas fa-ghost', close = false},
-        {label = Lang:t('admin_options.label4'), description = Lang:t('admin_options.desc4'), icon = 'fas fa-bolt', close = false},
-        {label = Lang:t('admin_options.label5'), description = Lang:t('admin_options.desc5'), icon = 'fas fa-clipboard-list', close = false},
-        {label = Lang:t('admin_options.label6'), description = Lang:t('admin_options.desc6'), icon = 'fas fa-map-pin', close = false},
-        {label = Lang:t('admin_options.label7'), description = Lang:t('admin_options.desc7'), icon = 'fas fa-car-on', close = false},
-        {label = Lang:t('admin_options.label8'), description = Lang:t('admin_options.desc8'), icon = 'fas fa-person-half-dress', values = {Lang:t('admin_options.value8_1'), Lang:t('admin_options.value8_2')}},
-        {label = Lang:t('admin_options.label9'), description = Lang:t('admin_options.desc9'), icon = 'fas fa-bullseye', close = false},
-        {label = Lang:t('admin_options.label10'), description = Lang:t('admin_options.desc10'), icon = 'fas fa-gun', values = {Lang:t('admin_options.value10_1'), Lang:t('admin_options.value10_2'), Lang:t('admin_options.value10_3'), Lang:t('admin_options.value10_4'), Lang:t('admin_options.value10_5'), Lang:t('admin_options.value10_6'), Lang:t('admin_options.value10_7')}, args = {'pistol', 'smg', 'shotgun', 'assault', 'lmg', 'sniper', 'heavy'}, close = false},
-        {label = Lang:t('admin_options.label11'), description = Lang:t('admin_options.desc11'), icon = 'fas fa-handcuffs', close = false},
+        { label = Lang:t('admin_options.label1'),  description = Lang:t('admin_options.desc1'),  icon = 'fab fa-fly',               close = false },
+        { label = Lang:t('admin_options.label2'),  description = Lang:t('admin_options.desc2'),  icon = 'fas fa-hospital',          close = false },
+        { label = Lang:t('admin_options.label3'),  description = Lang:t('admin_options.desc3'),  icon = 'fas fa-ghost',             close = false },
+        { label = Lang:t('admin_options.label4'),  description = Lang:t('admin_options.desc4'),  icon = 'fas fa-bolt',              close = false },
+        { label = Lang:t('admin_options.label5'),  description = Lang:t('admin_options.desc5'),  icon = 'fas fa-clipboard-list',    close = false },
+        { label = Lang:t('admin_options.label6'),  description = Lang:t('admin_options.desc6'),  icon = 'fas fa-map-pin',           close = false },
+        { label = Lang:t('admin_options.label7'),  description = Lang:t('admin_options.desc7'),  icon = 'fas fa-car-on',            close = false },
+        { label = Lang:t('admin_options.label8'),  description = Lang:t('admin_options.desc8'),  icon = 'fas fa-person-half-dress', values = { Lang:t('admin_options.value8_1'), Lang:t('admin_options.value8_2') } },
+        { label = Lang:t('admin_options.label9'),  description = Lang:t('admin_options.desc9'),  icon = 'fas fa-bullseye',          close = false },
+        { label = Lang:t('admin_options.label10'), description = Lang:t('admin_options.desc10'), icon = 'fas fa-gun',               values = { Lang:t('admin_options.value10_1'), Lang:t('admin_options.value10_2'), Lang:t('admin_options.value10_3'), Lang:t('admin_options.value10_4'), Lang:t('admin_options.value10_5'), Lang:t('admin_options.value10_6'), Lang:t('admin_options.value10_7') }, args = { 'pistol', 'smg', 'shotgun', 'assault', 'lmg', 'sniper', 'heavy' }, close = false },
+        { label = Lang:t('admin_options.label11'), description = Lang:t('admin_options.desc11'), icon = 'fas fa-handcuffs',         close = false },
     }
 }, function(selected, scrollIndex, args)
     if selected == 10 then
@@ -121,7 +127,7 @@ function toggleNoclip()
         RenderScriptCams(true, false, 3000, true, false)
 
         local function adjustSpeed()
-            if IsDisabledControlPressed(2, 17) then -- MWheelUp
+            if IsDisabledControlPressed(2, 17) then     -- MWheelUp
                 speed = math.min(speed + 0.1, maxSpeed)
             elseif IsDisabledControlPressed(2, 16) then -- MWheelDown
                 speed = math.max(0.1, speed - 0.1)
@@ -164,7 +170,8 @@ function toggleNoclip()
                 verticalMovement = multiplier * -speed / 2
             end
 
-            local setpos = GetEntityCoords(ent) + forwardMovement + vector3(horizontalMovement.x, horizontalMovement.y, verticalMovement)
+            local setpos = GetEntityCoords(ent) + forwardMovement +
+            vector3(horizontalMovement.x, horizontalMovement.y, verticalMovement)
             SetEntityCoordsNoOffset(ent, setpos.x, setpos.y, setpos.z, false, false, false)
 
             if not inVehicle then
@@ -180,7 +187,7 @@ function toggleNoclip()
                 SetEntityVisible(cache.ped, false, false)
             end
 
-            local controlActions = {32, 33, 34, 35, 36, 12, 13, 14, 15, 16, 17}
+            local controlActions = { 32, 33, 34, 35, 36, 12, 13, 14, 15, 16, 17 }
             for _, controlAction in ipairs(controlActions) do
                 DisableControlAction(2, controlAction, true)
             end
@@ -260,15 +267,6 @@ local showNames = false
 local netCheck1 = false
 local netCheck2 = false
 
-CreateThread(function()
-    while true do
-        Wait(1000)
-        if netCheck1 or netCheck2 then
-            TriggerServerEvent('qbx_admin:server:getPlayersForBlips')
-        end
-    end
-end)
-
 RegisterNetEvent('qbx_admin:client:blips', function()
     if not showBlips then
         showBlips = true
@@ -291,23 +289,24 @@ RegisterNetEvent('qbx_admin:client:names', function()
     end
 end)
 
-RegisterNetEvent('qbx_admin:client:Show', function(players)
+RegisterNetEvent('qbx_admin:client:Show', function()
+    local players = lib.callback.await('qbx_admin:server:getPlayers', false)
     for _, player in pairs(players) do
         local playerId = GetPlayerFromServerId(player.id)
         local ped = GetPlayerPed(playerId)
         local blip = GetBlipFromEntity(ped)
-        local name = 'ID: '..player.id..' | '..player.name
+        local name = 'ID: ' .. player.id .. ' | ' .. player.name
 
         local tag = CreateFakeMpGamerTag(ped, name, false, false, '', 0)
-        SetMpGamerTagAlpha(tag, 0, 255) -- Sets 'MP_TAG_GAMER_NAME' bar alpha to 100% (not needed just as a fail safe)
-        SetMpGamerTagAlpha(tag, 2, 255) -- Sets 'MP_TAG_HEALTH_ARMOUR' bar alpha to 100%
-        SetMpGamerTagAlpha(tag, 4, 255) -- Sets 'MP_TAG_AUDIO_ICON' bar alpha to 100%
-        SetMpGamerTagAlpha(tag, 6, 255) -- Sets 'MP_TAG_PASSIVE_MODE' bar alpha to 100%
-        SetMpGamerTagHealthBarColour(tag, 25)  --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
+        SetMpGamerTagAlpha(tag, 0, 255)       -- Sets 'MP_TAG_GAMER_NAME' bar alpha to 100% (not needed just as a fail safe)
+        SetMpGamerTagAlpha(tag, 2, 255)       -- Sets 'MP_TAG_HEALTH_ARMOUR' bar alpha to 100%
+        SetMpGamerTagAlpha(tag, 4, 255)       -- Sets 'MP_TAG_AUDIO_ICON' bar alpha to 100%
+        SetMpGamerTagAlpha(tag, 6, 255)       -- Sets 'MP_TAG_PASSIVE_MODE' bar alpha to 100%
+        SetMpGamerTagHealthBarColour(tag, 25) --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
 
         if showNames then
-            SetMpGamerTagVisibility(tag, 0, true) -- Activates the player ID Char name and FiveM name
-            SetMpGamerTagVisibility(tag, 2, true) -- Activates the health (and armor if they have it on) bar below the player names
+            SetMpGamerTagVisibility(tag, 0, true)     -- Activates the player ID Char name and FiveM name
+            SetMpGamerTagVisibility(tag, 2, true)     -- Activates the health (and armor if they have it on) bar below the player names
             if NetworkIsPlayerTalking(playerId) then
                 SetMpGamerTagVisibility(tag, 4, true) -- If player is talking a voice icon will show up on the left side of the name
             else
@@ -338,104 +337,104 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                 --Payer Death
                 if not GetEntityHealth(ped) then
                     if blipSprite ~= 274 then
-                        SetBlipSprite(blip, 274)            --Dead icon
+                        SetBlipSprite(blip, 274) --Dead icon
                         ShowHeadingIndicatorOnBlip(blip, false)
                     end
-                --Player in Vehicle
+                    --Player in Vehicle
                 elseif cache.vehicle ~= 0 then
                     local classVeh = GetVehicleClass(cache.vehicle)
                     local modelVeh = GetEntityModel(cache.vehicle)
                     --MotorCycles (8) or Cycles (13)
-                    if classVeh == 8  or classVeh == 13 then
+                    if classVeh == 8 or classVeh == 13 then
                         if blipSprite ~= 226 then
-                            SetBlipSprite(blip, 226)        --Motorcycle icon
+                            SetBlipSprite(blip, 226) --Motorcycle icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --OffRoad (9)
+                        --OffRoad (9)
                     elseif classVeh == 9 then
                         if blipSprite ~= 757 then
-                            SetBlipSprite(blip, 757)        --OffRoad icon
+                            SetBlipSprite(blip, 757) --OffRoad icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Industrial (10)
+                        --Industrial (10)
                     elseif classVeh == 10 then
                         if blipSprite ~= 477 then
-                            SetBlipSprite(blip, 477)        --Truck icon
+                            SetBlipSprite(blip, 477) --Truck icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Utility (11)
+                        --Utility (11)
                     elseif classVeh == 11 then
                         if blipSprite ~= 477 then
-                            SetBlipSprite(blip, 477)        --Truck icon despite finding better one
+                            SetBlipSprite(blip, 477) --Truck icon despite finding better one
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Vans (12)
+                        --Vans (12)
                     elseif classVeh == 12 then
                         if blipSprite ~= 67 then
-                            SetBlipSprite(blip, 67)         --Van icon
+                            SetBlipSprite(blip, 67) --Van icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Boats (14)
+                        --Boats (14)
                     elseif classVeh == 14 then
                         if blipSprite ~= 427 then
-                            SetBlipSprite(blip, 427)        --Boat icon
+                            SetBlipSprite(blip, 427) --Boat icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Helicopters (15)
+                        --Helicopters (15)
                     elseif classVeh == 15 then
                         if blipSprite ~= 422 then
-                            SetBlipSprite(blip, 422)        --Moving helicopter icon
+                            SetBlipSprite(blip, 422) --Moving helicopter icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Planes (16)
+                        --Planes (16)
                     elseif classVeh == 16 then
                         if modelVeh == 'besra' or modelVeh == 'hydra' or modelVeh == 'lazer' then
                             if blipSprite ~= 424 then
-                                SetBlipSprite(blip, 424)    --Jet icon
+                                SetBlipSprite(blip, 424) --Jet icon
                                 ShowHeadingIndicatorOnBlip(blip, false)
                             end
                         elseif blipSprite ~= 423 then
-                            SetBlipSprite(blip, 423)        --Plane icon
+                            SetBlipSprite(blip, 423) --Plane icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Service (17)
+                        --Service (17)
                     elseif classVeh == 17 then
                         if blipSprite ~= 198 then
-                            SetBlipSprite(blip, 198)        --Taxi icon
+                            SetBlipSprite(blip, 198) --Taxi icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Emergency (18)
+                        --Emergency (18)
                     elseif classVeh == 18 then
                         if blipSprite ~= 56 then
-                            SetBlipSprite(blip, 56)        --Cop icon
+                            SetBlipSprite(blip, 56) --Cop icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Military (19)
+                        --Military (19)
                     elseif classVeh == 19 then
                         if modelVeh == 'rhino' then
                             if blipSprite ~= 421 then
-                                SetBlipSprite(blip, 421)    --Tank icon
+                                SetBlipSprite(blip, 421) --Tank icon
                                 ShowHeadingIndicatorOnBlip(blip, false)
                             end
                         elseif blipSprite ~= 750 then
-                            SetBlipSprite(blip, 750)        --Military truck icon
+                            SetBlipSprite(blip, 750) --Military truck icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Commercial (20)
+                        --Commercial (20)
                     elseif classVeh == 20 then
                         if blipSprite ~= 477 then
-                            SetBlipSprite(blip, 477)        --Truck icon
+                            SetBlipSprite(blip, 477) --Truck icon
                             ShowHeadingIndicatorOnBlip(blip, false)
                         end
-                    --Every car (0, 1, 2, 3, 4, 5, 6, 7)
+                        --Every car (0, 1, 2, 3, 4, 5, 6, 7)
                     else
                         if modelVeh == 'insurgent' or modelVeh == 'insurgent2' or modelVeh == 'limo2' then
                             if blipSprite ~= 426 then
-                                SetBlipSprite(blip, 426)    --Armed car icon
+                                SetBlipSprite(blip, 426) --Armed car icon
                                 ShowHeadingIndicatorOnBlip(blip, false)
                             end
                         elseif blipSprite ~= 225 then
-                            SetBlipSprite(blip, 225)        --Car icon
+                            SetBlipSprite(blip, 225) --Car icon
                             ShowHeadingIndicatorOnBlip(blip, true)
                         end
                     end
@@ -449,7 +448,7 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                     else
                         HideNumberOnBlip(blip)
                     end
-                --Player on Foot
+                    --Player on Foot
                 else
                     HideNumberOnBlip(blip)
                     if blipSprite ~= 1 then
@@ -467,7 +466,8 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
                 else
                     local x1, y1 = table.unpack(GetEntityCoords(cache.ped, true))
                     local x2, y2 = table.unpack(GetEntityCoords(ped, true))
-                    local distance = (math.floor(math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))) / -1)) + 900
+                    local distance = (math.floor(math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))) / -1)) +
+                    900
                     distance = distance < 0 and 0 or distance > 255 and 255 or distance
                     SetBlipAlpha(blip, distance)
                 end
@@ -475,6 +475,15 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
         else
             RemoveBlip(blip)
             netCheck1 = false
+        end
+    end
+end)
+
+CreateThread(function()
+    while true do
+        Wait(1000)
+        if netCheck1 or netCheck2 then
+            TriggerEvent('qbx_admin:client:Show')
         end
     end
 end)
