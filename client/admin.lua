@@ -260,15 +260,6 @@ local showNames = false
 local netCheck1 = false
 local netCheck2 = false
 
-CreateThread(function()
-    while true do
-        Wait(1000)
-        if netCheck1 or netCheck2 then
-            TriggerServerEvent('qbx_admin:server:getPlayersForBlips')
-        end
-    end
-end)
-
 RegisterNetEvent('qbx_admin:client:blips', function()
     if not showBlips then
         showBlips = true
@@ -291,7 +282,8 @@ RegisterNetEvent('qbx_admin:client:names', function()
     end
 end)
 
-RegisterNetEvent('qbx_admin:client:Show', function(players)
+RegisterNetEvent('qbx_admin:client:Show', function()
+    local players = lib.callback.await('qbx_admin:server:getPlayers', false)
     for _, player in pairs(players) do
         local playerId = GetPlayerFromServerId(player.id)
         local ped = GetPlayerPed(playerId)
@@ -475,6 +467,15 @@ RegisterNetEvent('qbx_admin:client:Show', function(players)
         else
             RemoveBlip(blip)
             netCheck1 = false
+        end
+    end
+end)
+
+CreateThread(function()
+    while true do
+        Wait(1000)
+        if netCheck1 or netCheck2 then
+            TriggerEvent('qbx_admin:client:Show')
         end
     end
 end)
