@@ -152,6 +152,7 @@ local Translations = {
         blips_deactivated = 'Blips deaktiveret',
         names_deactivated = 'Navne deaktiveret',
     }
+}
     
 Lang = Lang or Locale:new({
     phrases = Translations,
