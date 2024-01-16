@@ -4,7 +4,7 @@ local infiniteAmmo = false
 local vehicleGodmode = false
 local options = {
     function() toggleNoClipMode() end,
-    function() TriggerEvent('hospital:client:Revive') end,
+    function() TriggerEvent('qbx_medical:client:playerRevived') end,
     function()
         invisible = not invisible
         if not invisible then return end
