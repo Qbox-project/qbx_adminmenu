@@ -1,8 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
+description 'qbx_adminmenu'
+repository 'https://github.com/Qbox-project/qbx_adminmenu'
 version '1.0.0'
-description 'https://github.com/Qbox-project'
 
 shared_scripts {
     '@ox_lib/init.lua',
@@ -10,7 +11,6 @@ shared_scripts {
     '@qbx_core/shared/locale.lua',
     'locales/en.lua',
     'locales/*.lua',
-    'config.lua',
 }
 
 server_scripts {
