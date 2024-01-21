@@ -98,7 +98,7 @@ local noclipEnabled = false
 local cam = 0
 local ped
 local speed = 1
-local maxSpeed = 32.0
+local maxSpeed = 32
 
 local function DisableControls()
     local disabledControls = {0, 1, 2}
