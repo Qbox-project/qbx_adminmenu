@@ -178,7 +178,7 @@ local function ToggleBehavior(enable)
     end
 end
 
-local function StopNoclip()
+local function stopNoclip()
     DestroyCustomCamera()
     TeleportToGround()
     ToggleBehavior(false)
@@ -240,7 +240,7 @@ local function UpdateMovement()
     end
 end
 
-local function ToggleNoclip()
+local function toggleNoclip()
     noclipEnabled = not noclipEnabled
 
     if cache.vehicle then
@@ -261,7 +261,7 @@ local function ToggleNoclip()
             UpdateMovement()
         end
     else
-        StopNoclip()
+        stopNoclip()
     end
 end
 
@@ -272,7 +272,7 @@ end)
 
 function toggleNoclipMode()
     noclipEnabled = not noclipEnabled
-    if noclipEnabled then ToggleNoclip() end
+    if noclipEnabled then toggleNoclip() end
 end
 
 local showBlips = false
