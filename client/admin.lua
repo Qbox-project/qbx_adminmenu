@@ -100,15 +100,19 @@ local ped
 local speed = 1
 local maxSpeed = 32.0
 
-local function DisabledControls()
+local function DisableControls()
+    local disabledControls = {0, 1, 2}
+
+    for _, controlGroup in ipairs(disabledControls) do
+        DisableAllControlActions(controlGroup)
+        EnableControlAction(controlGroup, 220, true)
+        EnableControlAction(controlGroup, 221, true)
+        EnableControlAction(controlGroup, 245, true)
+    end
+
     HudWeaponWheelIgnoreSelection()
-    DisableAllControlActions(0)
-    DisableAllControlActions(1)
-    DisableAllControlActions(2)
-    EnableControlAction(0, 220, true)
-    EnableControlAction(0, 221, true)
-    EnableControlAction(0, 245, true)
 end
+
 
 local function SetupCam()
     local rotation = GetEntityRotation(ped)
