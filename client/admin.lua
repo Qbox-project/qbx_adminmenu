@@ -289,9 +289,9 @@ end)
 
 function toggleNoclipMode()
     noclipEnabled = not noclipEnabled
-
     if noclipEnabled then
         toggleNoclip()
+    end
 end
 
 local showBlips = false
