@@ -1,4 +1,4 @@
-local config = 'config.server'.commandPerms
+local config = require 'config.server'.commandPerms
 
 lib.addCommand('admin', {
     help = 'Opens Adminmenu',

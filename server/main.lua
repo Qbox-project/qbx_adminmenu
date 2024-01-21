@@ -1,4 +1,4 @@
-local config = 'config.server'
+local config = require 'config.server'
 local isFrozen = {}
 
 --- Checks if the source is inside of the target's routingbucket
