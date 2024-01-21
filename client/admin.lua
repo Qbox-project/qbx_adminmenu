@@ -95,15 +95,13 @@ lib.registerMenu({
 end)
 
 local noclipEnabled = false
-local cam = 0
-local ped
-local speed = 1
-local maxSpeed = 32
+local cam, ped, speed, maxSpeed = 0, 0, 1, 32.0
+local noclipAlpha = 200
 
 local function DisableControls()
-    local disabledControls = {0, 1, 2}
+    local disabledControlGroups = {0, 1, 2}
 
-    for _, controlGroup in ipairs(disabledControls) do
+    for _, controlGroup in ipairs(disabledControlGroups) do
         DisableAllControlActions(controlGroup)
         EnableControlAction(controlGroup, 220, true)
         EnableControlAction(controlGroup, 221, true)
@@ -113,8 +111,7 @@ local function DisableControls()
     HudWeaponWheelIgnoreSelection()
 end
 
-
-local function SetupCam()
+local function CreateCustomCamera()
     local rotation = GetEntityRotation(ped)
     local coords = GetEntityCoords(ped)
 
@@ -124,7 +121,7 @@ local function SetupCam()
     AttachCamToEntity(cam, ped, 0.0, 0.0, 1.0, true)
 end
 
-local function DestoryCam()
+local function DestroyCustomCamera()
     Wait(100)
     SetGameplayCamRelativeHeading(0)
     RenderScriptCams(false, true, 1000, true, true)
@@ -133,27 +130,25 @@ local function DestoryCam()
     DestroyCam(cam, true)
 end
 
-local IsControlAlwaysPressed = function(inputGroup, control)
+local function IsControlAlwaysPressed(inputGroup, control)
     return IsControlPressed(inputGroup, control) or IsDisabledControlPressed(inputGroup, control)
 end
 
 local function UpdateCameraRotation()
-    local rightAxisX = GetControlNormal(0, 220)
-    local rightAxisY = GetControlNormal(0, 221)
+    local rightAxisX, rightAxisY = GetControlNormal(0, 220), GetControlNormal(0, 221)
     local rotation = GetCamRot(cam, 2)
     local yValue = rightAxisY * -5
-    local newX
-    local newZ = rotation.z + (rightAxisX * -10)
+    local newX, newZ
 
-    if (rotation.x + yValue > -89.0) and (rotation.x + yValue < 89.0) then
+    if rotation.x + yValue > -89.0 and rotation.x + yValue < 89.0 then
         newX = rotation.x + yValue
     end
 
-    if newX ~= nil and newZ ~= nil then
+    if newX and newZ then
         SetCamRot(cam, vector3(newX, rotation.y, newZ), 2)
     end
 
-    SetEntityHeading(ped, math.max(0, (rotation.z % 360)))
+    SetEntityHeading(ped, math.max(0, rotation.z % 360))
 end
 
 local function TeleportToGround()
@@ -161,49 +156,39 @@ local function TeleportToGround()
     local rayCast = StartShapeTestRay(coords.x, coords.y, coords.z, coords.x, coords.y, -10000.0, 1, 0)
     local _, hit, hitCoords = GetShapeTestResult(rayCast)
 
-    if hit == 1 then
-        SetEntityCoords(ped, hitCoords.x, hitCoords.y, hitCoords.z)
-    else
-        SetEntityCoords(ped, coords.x, coords.y, coords.z)
-    end
+    SetEntityCoords(ped, hit and hitCoords.x or coords.x, hit and hitCoords.y or coords.y, hit and hitCoords.z or coords.z)
 end
 
-local function ToggleBehavior(bool)
+local function ToggleBehavior(enable)
     local coords = GetEntityCoords(ped)
 
     RequestCollisionAtCoord(coords.x, coords.y, coords.z)
-    FreezeEntityPosition(ped, bool)
-    SetEntityCollision(ped, not bool, not bool)
-    SetEntityVisible(ped, not bool, not bool)
-    SetEntityInvincible(ped, bool)
-    SetEntityAlpha(ped, bool and noclipAlpha or 255, false)
+    FreezeEntityPosition(ped, enable)
+    SetEntityCollision(ped, not enable, not enable)
+    SetEntityVisible(ped, not enable, not enable)
+    SetEntityInvincible(ped, enable)
+    SetEntityAlpha(ped, enable and noclipAlpha or 255, false)
     SetLocalPlayerVisibleLocally(true)
-    SetEveryoneIgnorePlayer(ped, bool)
-    SetPoliceIgnorePlayer(ped, bool)
+    SetEveryoneIgnorePlayer(ped, enable)
+    SetPoliceIgnorePlayer(ped, enable)
 
     local vehicle = GetVehiclePedIsIn(ped, false)
     if vehicle ~= 0 then
-        SetEntityAlpha(vehicle, bool and noclipAlpha or 255, false)
+        SetEntityAlpha(vehicle, enable and noclipAlpha or 255, false)
     end
 end
 
 local function StopNoclip()
-    DestoryCam()
+    DestroyCustomCamera()
     TeleportToGround()
     ToggleBehavior(false)
 end
 
 local function UpdateSpeed()
     if IsControlAlwaysPressed(2, 14) then
-        speed = speed - 0.5
-        if speed < 0.5 then
-            speed = 0.5
-        end
+        speed = math.max(speed - 0.5, 0.5)
     elseif IsControlAlwaysPressed(2, 15) then
-        speed = speed + 0.5
-        if speed > maxSpeed then
-            speed = maxSpeed
-        end
+        speed = math.min(speed + 0.5, maxSpeed)
     elseif IsDisabledControlJustReleased(0, 348) then
         speed = 1
     end
@@ -211,6 +196,7 @@ end
 
 local function UpdateMovement()
     local multi = 1.0
+
     if IsControlAlwaysPressed(0, 21) then
         multi = 2
     elseif IsControlAlwaysPressed(0, 19) then
@@ -262,7 +248,7 @@ local function UpdateMovement()
     end
 end
 
-local function toggleNoclip()
+local function ToggleNoclip()
     noclipEnabled = not noclipEnabled
 
     if cache.vehicle then
@@ -272,12 +258,13 @@ local function toggleNoclip()
     end
 
     if noclipEnabled then
-        SetupCam()
+        CreateCustomCamera()
         ToggleBehavior(true)
+
         while noclipEnabled do
             Wait(0)
             UpdateCameraRotation()
-            DisabledControls()
+            DisableControls()
             UpdateSpeed()
             UpdateMovement()
         end
@@ -287,15 +274,13 @@ local function toggleNoclip()
 end
 
 RegisterNetEvent('qbx_admin:client:noclip', function()
-    if GetInvokingResource() then return end -- Safety to make sure it is only called from the server
-    toggleNoclipMode()
+    if GetInvokingResource() then return end
+    ToggleNoclip()
 end)
 
 function toggleNoclipMode()
     noclipEnabled = not noclipEnabled
-    if noclipEnabled then
-        toggleNoclip()
-    end
+    if noclipEnabled then ToggleNoclip() end
 end
 
 local showBlips = false
