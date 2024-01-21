@@ -3,7 +3,7 @@ local godmode = false
 local infiniteAmmo = false
 local vehicleGodmode = false
 local options = {
-    function() toggleNoClipMode() end,
+    function() toggleNoclipMode() end,
     function() TriggerEvent('qbx_medical:client:playerRevived') end,
     function()
         invisible = not invisible
@@ -275,7 +275,7 @@ end
 
 RegisterNetEvent('qbx_admin:client:noclip', function()
     if GetInvokingResource() then return end
-    ToggleNoclip()
+    toggleNoclipMode()
 end)
 
 function toggleNoclipMode()
