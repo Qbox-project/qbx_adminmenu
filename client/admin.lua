@@ -138,9 +138,9 @@ local function UpdateCameraRotation()
     local rightAxisX, rightAxisY = GetControlNormal(0, 220), GetControlNormal(0, 221)
     local rotation = GetCamRot(cam, 2)
     local yValue = rightAxisY * -5
-    local newX, newZ
+    local newX, newZ = rotation.x + yValue, rotation.z + (rightAxisX * -10)
 
-    if rotation.x + yValue > -89.0 and rotation.x + yValue < 89.0 then
+    if (rotation.x + yValue > -89.0) and (rotation.x + yValue < 89.0) then
         newX = rotation.x + yValue
     end
 
@@ -148,7 +148,7 @@ local function UpdateCameraRotation()
         SetCamRot(cam, vector3(newX, rotation.y, newZ), 2)
     end
 
-    SetEntityHeading(ped, math.max(0, rotation.z % 360))
+    SetEntityHeading(ped, math.max(0, (rotation.z % 360)))
 end
 
 local function TeleportToGround()
@@ -207,44 +207,36 @@ local function UpdateMovement()
 
     if IsControlAlwaysPressed(0, 32) then
         local pitch = GetCamRot(cam, 0)
+        local offsetY = 0.5 * (speed * multi)
+        local offsetZ = (pitch.x * ((speed / 2) * multi)) / 89
 
         if pitch.x >= 0 then
-            SetEntityCoordsNoOffset(ped,
-                GetOffsetFromEntityInWorldCoords(ped, 0.0, 0.5 * (speed * multi),
-                    (pitch.x * ((speed / 2) * multi)) / 89))
+            SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.0, offsetY, offsetZ))
         else
-            SetEntityCoordsNoOffset(ped,
-                GetOffsetFromEntityInWorldCoords(ped, 0.0, 0.5 * (speed * multi),
-                    -1 * ((math.abs(pitch.x) * ((speed / 2) * multi)) / 89)))
+            SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.0, offsetY, -1 * (math.abs(pitch.x) * offsetZ)))
         end
     elseif IsControlAlwaysPressed(0, 33) then
         local pitch = GetCamRot(cam, 2)
+        local offsetY = -0.5 * (speed * multi)
+        local offsetZ = -1 * (pitch.x * ((speed / 2) * multi)) / 89
 
         if pitch.x >= 0 then
-            SetEntityCoordsNoOffset(ped,
-                GetOffsetFromEntityInWorldCoords(ped, 0.0, -0.5 * (speed * multi),
-                    -1 * (pitch.x * ((speed / 2) * multi)) / 89))
+            SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.0, offsetY, offsetZ))
         else
-            SetEntityCoordsNoOffset(ped,
-                GetOffsetFromEntityInWorldCoords(ped, 0.0, -0.5 * (speed * multi),
-                    ((math.abs(pitch.x) * ((speed / 2) * multi)) / 89)))
+            SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.0, offsetY, (math.abs(pitch.x) * offsetZ)))
         end
     end
 
     if IsControlAlwaysPressed(0, 34) then
-        SetEntityCoordsNoOffset(ped,
-            GetOffsetFromEntityInWorldCoords(ped, -0.5 * (speed * multi), 0.0, 0.0))
+        SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, -0.5 * (speed * multi), 0.0, 0.0))
     elseif IsControlAlwaysPressed(0, 35) then
-        SetEntityCoordsNoOffset(ped,
-            GetOffsetFromEntityInWorldCoords(ped, 0.5 * (speed * multi), 0.0, 0.0))
+        SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.5 * (speed * multi), 0.0, 0.0))
     end
 
     if IsControlAlwaysPressed(0, 44) then
-        SetEntityCoordsNoOffset(ped,
-            GetOffsetFromEntityInWorldCoords(ped, 0.0, 0.0, 0.5 * (speed * multi)))
+        SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.0, 0.0, 0.5 * (speed * multi)))
     elseif IsControlAlwaysPressed(0, 46) then
-        SetEntityCoordsNoOffset(ped,
-            GetOffsetFromEntityInWorldCoords(ped, 0.0, 0.0, -0.5 * (speed * multi)))
+        SetEntityCoordsNoOffset(ped, GetOffsetFromEntityInWorldCoords(ped, 0.0, 0.0, -0.5 * (speed * multi)))
     end
 end
 
