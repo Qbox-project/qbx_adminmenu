@@ -59,7 +59,7 @@ local administrationOptions = {
     function(source, selectedPlayer, input)
         if not exports.qbx_core:HasPermission(source, Config.Events['ban']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
         local banDuration = (input[2] or 0) * 3600 + (input[3] or 0) * 86400 + (input[4] or 0) * 2629743
-        DropPlayer(selectedPlayer.id, locale('player_options.administration.banreason', { reason = input[1], lenght = os.date('%c', os.time() + banDuration) }))
+        DropPlayer(selectedPlayer.id, locale('player_options.administration.banreason', input[1], os.date('%c', os.time() + banDuration)))
         MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
             GetPlayerName(selectedPlayer.id), GetPlayerIdentifierByType(selectedPlayer.id, 'license'), GetPlayerIdentifierByType(selectedPlayer.id, 'discord'),
             GetPlayerIdentifierByType(selectedPlayer.id, 'ip'), input[1], os.time() + banDuration, GetPlayerName(source)
