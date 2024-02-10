@@ -1,8 +1,8 @@
 function CopyToClipboard(dataType)
     local coords = GetEntityCoords(cache.ped)
-    local x, y, z = math.round(coords.x, 2), math.round(coords.y, 2), math.round(coords.z, 2)
+    local x, y, z = qbx.math.round(coords.x, 2), qbx.math.round(coords.y, 2), qbx.math.round(coords.z, 2)
     local heading = GetEntityHeading(cache.ped)
-    local h = math.round(heading, 2)
+    local h = qbx.math.round(heading, 2)
 
     local data
     local message

@@ -222,5 +222,5 @@ end)
 
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     local hash = joaat(model)
-    return SpawnVehicle(source, hash, nil, true)
+    return qbx.spawnVehicle(source, hash, nil, true)
 end)
