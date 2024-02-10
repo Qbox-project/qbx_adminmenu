@@ -10,7 +10,7 @@ local options = {
         showCoords = not showCoords
         while showCoords do
             local coords, heading = GetEntityCoords(cache.ped), GetEntityHeading(cache.ped)
-            qbx.drawText2d(string.format('~o~vector4~w~(%s, %s, %s, %s)', qbx.qbx.math.round(coords.x, 2), qbx.math.round(coords.y, 2), qbx.math.round(coords.z, 2), qbx.math.round(heading, 2)), vec2(1.0, 0.5), 1.0, 1.0, 0.5, 6, 255, 255, 255)
+            qbx.drawText2d(string.format('~o~vector4~w~(%s, %s, %s, %s)', qbx.math.round(coords.x, 2), qbx.math.round(coords.y, 2), qbx.math.round(coords.z, 2), qbx.math.round(heading, 2)), vec2(1.0, 0.5), 1.0, 1.0, 0.5, 6, 255, 255, 255)
             Wait(0)
         end
     end,
