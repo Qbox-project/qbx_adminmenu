@@ -94,10 +94,10 @@ lib.registerMenu({
     end
 end)
 
-local noClipEnabled = false
+local noclipEnabled = false
 local ent
 local Invisible = nil
-local noClipCam = nil
+local noclipCam = nil
 local speed = 1.0
 local maxSpeed = 32.0
 local minY, maxY = -150.0, 160.0
@@ -115,8 +115,8 @@ function toggleNoclip()
         end
         local pos = GetEntityCoords(ent)
         local rot = GetEntityRotation(ent)
-        noClipCam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', pos, 0.0, 0.0, rot.z, 75.0, true, 2)
-        AttachCamToEntity(noClipCam, ent, 0.0, 0.0, 0.0, true)
+        noclipCam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', pos, 0.0, 0.0, rot.z, 75.0, true, 2)
+        AttachCamToEntity(noclipCam, ent, 0.0, 0.0, 0.0, true)
         RenderScriptCams(true, false, 3000, true, false)
         FreezeEntityPosition(ent, true)
         SetEntityCollision(ent, false, false)
@@ -132,9 +132,9 @@ function toggleNoclip()
             SetEntityAlpha(cache.ped, 0)
             SetEntityVisible(cache.ped, false)
         end
-        while noClipEnabled do
+        while noclipEnabled do
             Wait(0)
-            local _, fv, _, _ = GetCamMatrix(noClipCam)
+            local _, fv, _, _ = GetCamMatrix(noclipCam)
             if IsDisabledControlPressed(2, 17) then
                 speed = math.min(speed + 0.1, maxSpeed)
             elseif IsDisabledControlPressed(2, 16) then
@@ -187,7 +187,7 @@ function toggleNoclip()
                     SetEntityCoordsNoOffset(cache.ped, setpos)
                 end
             end
-            local camrot = GetCamRot(noClipCam, 2)
+            local camrot = GetCamRot(noclipCam, 2)
             SetEntityHeading(ent, (360 + camrot.z) % 360.0)
             SetEntityVisible(ent, false)
             if inVehicle then
@@ -199,8 +199,8 @@ function toggleNoclip()
             end
             DisablePlayerFiring(cache.playerId, true)
         end
-        DestroyCam(noClipCam, false)
-        noClipCam = nil
+        DestroyCam(noclipCam, false)
+        noclipCam = nil
         RenderScriptCams(false, false, 3000, true, false)
         FreezeEntityPosition(ent, false)
         SetEntityCollision(ent, true, true)
@@ -221,7 +221,7 @@ end
 function checkInputRotation()
     CreateThread(function()
         while inputRotEnabled do
-            while not noClipCam or IsPauseMenuActive() do Wait(0) end
+            while not noclipCam or IsPauseMenuActive() do Wait(0) end
             local axisX = GetDisabledControlNormal(0, 1)
             local axisY = GetDisabledControlNormal(0, 2)
             local sensitivity = GetProfileSetting(14) * 2
@@ -229,14 +229,14 @@ function checkInputRotation()
                 sensitivity = -sensitivity
             end
             if (math.abs(axisX) > 0) or (math.abs(axisY) > 0) then
-                local rotation = GetCamRot(noClipCam, 2)
+                local rotation = GetCamRot(noclipCam, 2)
                 local rotz = rotation.z + (axisX * sensitivity)
                 local yValue = (axisY * sensitivity)
                 local rotx = rotation.x
                 if rotx + yValue > minY and rotx + yValue < maxY then
                     rotx = rotation.x + yValue
                 end
-                SetCamRot(noClipCam, rotx, rotation.y, rotz, 2)
+                SetCamRot(noclipCam, rotx, rotation.y, rotz, 2)
             end
             Wait(0)
         end
@@ -245,13 +245,13 @@ end
 
 function toggleNoClipMode(forceMode)
     if forceMode ~= nil then
-        noClipEnabled = forceMode
-        inputRotEnabled = noClipEnabled
+        noclipEnabled = forceMode
+        inputRotEnabled = noclipEnabled
     else
-        noClipEnabled = not noClipEnabled
-        inputRotEnabled = noClipEnabled
+        noclipEnabled = not noclipEnabled
+        inputRotEnabled = noclipEnabled
     end
-    if noClipEnabled and inputRotEnabled then
+    if noclipEnabled and inputRotEnabled then
         toggleNoclip()
         checkInputRotation()
     end
