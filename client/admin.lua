@@ -35,7 +35,7 @@ local options = {
     end,
     function(switch)
         if switch == 1 then
-            local input = lib.inputDialog(Lang:t('admin_options.value8_1'), {Lang:t('admin_options.input8label')})
+            local input = lib.inputDialog(locale('admin_options.value8_1'), {locale('admin_options.input8label')})
             if not input then return end
             ExecuteCommand('setmodel ' .. input)
         else
@@ -63,7 +63,7 @@ local options = {
 
 lib.registerMenu({
     id = 'qbx_adminmenu_admin_menu',
-    title = Lang:t('title.admin_menu'),
+    title = locale('title.admin_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
         closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
@@ -72,17 +72,17 @@ lib.registerMenu({
         MenuIndexes.qbx_adminmenu_admin_menu = selected
     end,
     options = {
-        {label = Lang:t('admin_options.label1'), description = Lang:t('admin_options.desc1'), icon = 'fab fa-fly', close = false},
-        {label = Lang:t('admin_options.label2'), description = Lang:t('admin_options.desc2'), icon = 'fas fa-hospital', close = false},
-        {label = Lang:t('admin_options.label3'), description = Lang:t('admin_options.desc3'), icon = 'fas fa-ghost', close = false},
-        {label = Lang:t('admin_options.label4'), description = Lang:t('admin_options.desc4'), icon = 'fas fa-bolt', close = false},
-        {label = Lang:t('admin_options.label5'), description = Lang:t('admin_options.desc5'), icon = 'fas fa-clipboard-list', close = false},
-        {label = Lang:t('admin_options.label6'), description = Lang:t('admin_options.desc6'), icon = 'fas fa-map-pin', close = false},
-        {label = Lang:t('admin_options.label7'), description = Lang:t('admin_options.desc7'), icon = 'fas fa-car-on', close = false},
-        {label = Lang:t('admin_options.label8'), description = Lang:t('admin_options.desc8'), icon = 'fas fa-person-half-dress', values = {Lang:t('admin_options.value8_1'), Lang:t('admin_options.value8_2')}},
-        {label = Lang:t('admin_options.label9'), description = Lang:t('admin_options.desc9'), icon = 'fas fa-bullseye', close = false},
-        {label = Lang:t('admin_options.label10'), description = Lang:t('admin_options.desc10'), icon = 'fas fa-gun', values = {Lang:t('admin_options.value10_1'), Lang:t('admin_options.value10_2'), Lang:t('admin_options.value10_3'), Lang:t('admin_options.value10_4'), Lang:t('admin_options.value10_5'), Lang:t('admin_options.value10_6'), Lang:t('admin_options.value10_7')}, args = {'pistol', 'smg', 'shotgun', 'assault', 'lmg', 'sniper', 'heavy'}, close = false},
-        {label = Lang:t('admin_options.label11'), description = Lang:t('admin_options.desc11'), icon = 'fas fa-handcuffs', close = false},
+        {label = locale('admin_options.label1'), description = locale('admin_options.desc1'), icon = 'fab fa-fly', close = false},
+        {label = locale('admin_options.label2'), description = locale('admin_options.desc2'), icon = 'fas fa-hospital', close = false},
+        {label = locale('admin_options.label3'), description = locale('admin_options.desc3'), icon = 'fas fa-ghost', close = false},
+        {label = locale('admin_options.label4'), description = locale('admin_options.desc4'), icon = 'fas fa-bolt', close = false},
+        {label = locale('admin_options.label5'), description = locale('admin_options.desc5'), icon = 'fas fa-clipboard-list', close = false},
+        {label = locale('admin_options.label6'), description = locale('admin_options.desc6'), icon = 'fas fa-map-pin', close = false},
+        {label = locale('admin_options.label7'), description = locale('admin_options.desc7'), icon = 'fas fa-car-on', close = false},
+        {label = locale('admin_options.label8'), description = locale('admin_options.desc8'), icon = 'fas fa-person-half-dress', values = {locale('admin_options.value8_1'), locale('admin_options.value8_2')}},
+        {label = locale('admin_options.label9'), description = locale('admin_options.desc9'), icon = 'fas fa-bullseye', close = false},
+        {label = locale('admin_options.label10'), description = locale('admin_options.desc10'), icon = 'fas fa-gun', values = {locale('admin_options.value10_1'), locale('admin_options.value10_2'), locale('admin_options.value10_3'), locale('admin_options.value10_4'), locale('admin_options.value10_5'), locale('admin_options.value10_6'), locale('admin_options.value10_7')}, args = {'pistol', 'smg', 'shotgun', 'assault', 'lmg', 'sniper', 'heavy'}, close = false},
+        {label = locale('admin_options.label11'), description = locale('admin_options.desc11'), icon = 'fas fa-handcuffs', close = false},
     }
 }, function(selected, scrollIndex, args)
     if selected == 10 then
@@ -271,10 +271,10 @@ RegisterNetEvent('qbx_admin:client:blips', function()
     if not showBlips then
         showBlips = true
         netCheck1 = true
-        exports.qbx_core:Notify(Lang:t('success.blips_activated'), 'success')
+        exports.qbx_core:Notify(locale('success.blips_activated'), 'success')
     else
         showBlips = false
-        exports.qbx_core:Notify(Lang:t('error.blips_deactivated'), 'error')
+        exports.qbx_core:Notify(locale('error.blips_deactivated'), 'error')
     end
 end)
 
@@ -282,10 +282,10 @@ RegisterNetEvent('qbx_admin:client:names', function()
     if not showNames then
         showNames = true
         netCheck2 = true
-        exports.qbx_core:Notify(Lang:t('success.names_activated'), 'success')
+        exports.qbx_core:Notify(locale('success.names_activated'), 'success')
     else
         showNames = false
-        exports.qbx_core:Notify(Lang:t('error.names_deactivated'), 'error')
+        exports.qbx_core:Notify(locale('error.names_deactivated'), 'error')
     end
 end)
 

@@ -36,7 +36,7 @@ local options = {
 
 lib.registerMenu({
     id = 'qbx_adminmenu_dev_menu',
-    title = Lang:t('title.dev_menu'),
+    title = locale('title.dev_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
         closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
@@ -45,12 +45,12 @@ lib.registerMenu({
         MenuIndexes.qbx_adminmenu_dev_menu = selected
     end,
     options = {
-        {label = Lang:t('dev_options.label1'), description = Lang:t('dev_options.desc1'), icon = 'fas fa-compass'},
-        {label = Lang:t('dev_options.label2'), description = Lang:t('dev_options.desc2'), icon = 'fas fa-compass'},
-        {label = Lang:t('dev_options.label3'), description = Lang:t('dev_options.desc3'), icon = 'fas fa-compass'},
-        {label = Lang:t('dev_options.label4'), description = Lang:t('dev_options.desc4'), icon = 'fas fa-compass'},
-        {label = Lang:t('dev_options.label5'), description = Lang:t('dev_options.desc5'), icon = 'fas fa-compass-drafting', close = false},
-        {label = Lang:t('dev_options.label6'), description = Lang:t('dev_options.desc6'), icon = 'fas fa-car-side', close = false}
+        {label = locale('dev_options.label1'), description = locale('dev_options.desc1'), icon = 'fas fa-compass'},
+        {label = locale('dev_options.label2'), description = locale('dev_options.desc2'), icon = 'fas fa-compass'},
+        {label = locale('dev_options.label3'), description = locale('dev_options.desc3'), icon = 'fas fa-compass'},
+        {label = locale('dev_options.label4'), description = locale('dev_options.desc4'), icon = 'fas fa-compass'},
+        {label = locale('dev_options.label5'), description = locale('dev_options.desc5'), icon = 'fas fa-compass-drafting', close = false},
+        {label = locale('dev_options.label6'), description = locale('dev_options.desc6'), icon = 'fas fa-car-side', close = false}
     }
 }, function(selected)
     options[selected]()

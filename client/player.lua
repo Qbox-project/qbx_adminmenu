@@ -140,7 +140,7 @@ function GeneratePlayersMenu()
     end
     lib.registerMenu({
         id = 'qbx_adminmenu_players_menu',
-        title = Lang:t('title.players_menu'),
+        title = locale('title.players_menu'),
         position = 'top-right',
         onClose = function(keyPressed)
             closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
@@ -166,9 +166,9 @@ function GeneratePlayersMenu()
                 MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(args[1].id)] = selected
             end,
             options = {
-                {label = Lang:t('player_options.label1'), description = Lang:t('player_options.desc1'), icon = 'fas fa-wrench'},
-                {label = Lang:t('player_options.label2'), description = Lang:t('player_options.desc2'), icon = 'fas fa-file-invoice'},
-                {label = Lang:t('player_options.label3'), description = Lang:t('player_options.desc3'), icon = 'fas fa-gamepad'},
+                {label = locale('player_options.label1'), description = locale('player_options.desc1'), icon = 'fas fa-wrench'},
+                {label = locale('player_options.label2'), description = locale('player_options.desc2'), icon = 'fas fa-file-invoice'},
+                {label = locale('player_options.label3'), description = locale('player_options.desc3'), icon = 'fas fa-gamepad'},
                 {label = string.format('Name: %s', player.name)},
                 {label = string.format('Food: %s', player.food)},
                 {label = string.format('Water: %s', player.water)},
@@ -197,7 +197,7 @@ end
 
 lib.registerMenu({
     id = 'qbx_adminmenu_player_general_menu',
-    title = Lang:t('player_options.label1'),
+    title = locale('player_options.label1'),
     position = 'top-right',
     onClose = function(keyPressed)
         closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
@@ -206,18 +206,18 @@ lib.registerMenu({
         MenuIndexes.qbx_adminmenu_player_general_menu = selected
     end,
     options = {
-        {label = Lang:t('player_options.general.labelkill'), description = Lang:t('player_options.general.desckill'), icon = 'fas fa-skull', close = false},
-        {label = Lang:t('player_options.general.labelrevive'), description = Lang:t('player_options.general.descrevive'), icon = 'fas fa-cross', close = false},
-        {label = Lang:t('player_options.general.labelfreeze'), description = Lang:t('player_options.general.descfreeze'), icon = 'fas fa-icicles', close = false},
-        {label = Lang:t('player_options.general.labelgoto'), description = Lang:t('player_options.general.descgoto'), icon = 'fas fa-arrow-right-long', close = false},
-        {label = Lang:t('player_options.general.labelbring'), description = Lang:t('player_options.general.descbring'), icon = 'fas fa-arrow-left-long', close = false},
-        {label = Lang:t('player_options.general.labelsitinveh'), description = Lang:t('player_options.general.descsitinveh'), icon = 'fas fa-chair', close = false},
-        {label = Lang:t('player_options.general.labelrouting'), description = Lang:t('player_options.general.descrouting'), icon = 'fas fa-bucket'},
+        {label = locale('player_options.general.labelkill'), description = locale('player_options.general.desckill'), icon = 'fas fa-skull', close = false},
+        {label = locale('player_options.general.labelrevive'), description = locale('player_options.general.descrevive'), icon = 'fas fa-cross', close = false},
+        {label = locale('player_options.general.labelfreeze'), description = locale('player_options.general.descfreeze'), icon = 'fas fa-icicles', close = false},
+        {label = locale('player_options.general.labelgoto'), description = locale('player_options.general.descgoto'), icon = 'fas fa-arrow-right-long', close = false},
+        {label = locale('player_options.general.labelbring'), description = locale('player_options.general.descbring'), icon = 'fas fa-arrow-left-long', close = false},
+        {label = locale('player_options.general.labelsitinveh'), description = locale('player_options.general.descsitinveh'), icon = 'fas fa-chair', close = false},
+        {label = locale('player_options.general.labelrouting'), description = locale('player_options.general.descrouting'), icon = 'fas fa-bucket'},
     }
 }, function(selected)
     if selected == 7 then
         local input = lib.inputDialog(selectedPlayer.name, {
-            {type = 'number', label = Lang:t('player_options.general.labelrouting'), placeholder = '25'}
+            {type = 'number', label = locale('player_options.general.labelrouting'), placeholder = '25'}
         })
         if not input then return end if not input[1] then return end
         TriggerServerEvent('qbx_admin:server:playerOptionsGeneral', selected, selectedPlayer, input[1])
@@ -229,7 +229,7 @@ end)
 
 lib.registerMenu({
     id = 'qbx_adminmenu_player_administration_menu',
-    title = Lang:t('player_options.label2'),
+    title = locale('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
         closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
@@ -238,23 +238,23 @@ lib.registerMenu({
         MenuIndexes.qbx_adminmenu_player_administration_menu = selected
     end,
     options = {
-        {label = Lang:t('player_options.administration.labelkick'), description = Lang:t('player_options.administration.desckick'), icon = 'fas fa-plane-departure'},
-        {label = Lang:t('player_options.administration.labelban'), description = Lang:t('player_options.administration.descban'), icon = 'fas fa-gavel'},
-        {label = Lang:t('player_options.administration.labelperm'), description = Lang:t('player_options.administration.descperm'), values = {Lang:t('player_options.administration.permvalue1'),
-        Lang:t('player_options.administration.permvalue2'), Lang:t('player_options.administration.permvalue3'), Lang:t('player_options.administration.permvalue4')}, args = {'remove', 'mod', 'admin', 'god'}, icon = 'fas fa-book-bookmark'},
+        {label = locale('player_options.administration.labelkick'), description = locale('player_options.administration.desckick'), icon = 'fas fa-plane-departure'},
+        {label = locale('player_options.administration.labelban'), description = locale('player_options.administration.descban'), icon = 'fas fa-gavel'},
+        {label = locale('player_options.administration.labelperm'), description = locale('player_options.administration.descperm'), values = {locale('player_options.administration.permvalue1'),
+        locale('player_options.administration.permvalue2'), locale('player_options.administration.permvalue3'), locale('player_options.administration.permvalue4')}, args = {'remove', 'mod', 'admin', 'god'}, icon = 'fas fa-book-bookmark'},
     }
 }, function(selected, scrollIndex, args)
     if selected == 1 then
-        local input = lib.inputDialog(selectedPlayer.name, {Lang:t('player_options.administration.inputkick')})
+        local input = lib.inputDialog(selectedPlayer.name, {locale('player_options.administration.inputkick')})
         if not input then lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_administration_menu) return end if not input[1] then return end
         TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, input[1])
         lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_administration_menu)
     elseif selected == 2 then
         local input = lib.inputDialog(selectedPlayer.name, {
-            { type = 'input', label = Lang:t('player_options.administration.inputkick'), placeholder = 'VDM'},
-            { type = 'number', label = Lang:t('player_options.administration.input1ban')},
-            { type = 'number', label = Lang:t('player_options.administration.input2ban')},
-            { type = 'number', label = Lang:t('player_options.administration.input3ban')}
+            { type = 'input', label = locale('player_options.administration.inputkick'), placeholder = 'VDM'},
+            { type = 'number', label = locale('player_options.administration.input1ban')},
+            { type = 'number', label = locale('player_options.administration.input2ban')},
+            { type = 'number', label = locale('player_options.administration.input3ban')}
         })
         if not input then lib.showMenu('qbx_adminmenu_player_administration_menu', MenuIndexes.qbx_adminmenu_player_general_menu) return end if not input[1] or not input[2] and not input[3] and not input[4] then return end
         TriggerServerEvent('qbx_admin:server:playerAdministration', selected, selectedPlayer, input)
@@ -267,7 +267,7 @@ end)
 
 lib.registerMenu({
     id = 'qbx_adminmenu_player_extra_menu',
-    title = Lang:t('player_options.label2'),
+    title = locale('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
         closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
