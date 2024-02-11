@@ -4,12 +4,11 @@ game 'gta5'
 version '1.0.0'
 description 'https://github.com/Qbox-project'
 
+ox_lib 'locale'
+
 shared_scripts {
     '@ox_lib/init.lua',
     '@qbx_core/modules/utils.lua',
-    '@qbx_core/shared/locale.lua',
-    'locales/en.lua',
-    'locales/*.lua',
     'config.lua',
 }
 
@@ -20,6 +19,10 @@ server_scripts {
 
 client_scripts {
     'client/*.lua',
+}
+
+files {
+    'locales/*.json',
 }
 
 lua54 'yes'
