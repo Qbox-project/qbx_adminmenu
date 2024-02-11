@@ -9,16 +9,16 @@ function CopyToClipboard(dataType)
 
     if dataType == 'coords2' then
         data = string.format('vec2(%s, %s)', x, y)
-        message = Lang:t('success.coords_copied')
+        message = locale('success.coords_copied')
     elseif dataType == 'coords3' then
         data = string.format('vec3(%s, %s, %s)', x, y, z)
-        message = Lang:t('success.coords_copied')
+        message = locale('success.coords_copied')
     elseif dataType == 'coords4' then
         data = string.format('vec4(%s, %s, %s, %s)', x, y, z, h)
-        message = Lang:t('success.coords_copied')
+        message = locale('success.coords_copied')
     elseif dataType == 'heading' then
         data = tostring(h)
-        message = Lang:t('success.heading_copied')
+        message = locale('success.heading_copied')
     end
 
     lib.setClipboard(data)
