@@ -1,8 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
+description 'qbx_adminmenu'
+repository 'https://github.com/Qbox-project/qbx_adminmenu'
 version '1.0.0'
-description 'https://github.com/Qbox-project'
 
 ox_lib 'locale'
 

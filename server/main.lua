@@ -1,3 +1,4 @@
+local config = require 'config.server'
 local isFrozen = {}
 
 --- Checks if the source is inside of the target's routingbucket
@@ -45,7 +46,7 @@ local generalOptions = {
     end,
 }
 RegisterNetEvent('qbx_admin:server:playerOptionsGeneral', function(selected, selectedPlayer, input)
-    if not exports.qbx_core:HasPermission(source, Config.Events['playeroptionsgeneral']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.playerOptionsGeneral) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
     ---@diagnostic disable-next-line: redundant-parameter
     generalOptions[selected](selectedPlayer, source, input)
@@ -53,20 +54,20 @@ end)
 
 local administrationOptions = {
     function(source, selectedPlayer, input)
-        if not exports.qbx_core:HasPermission(source, Config.Events['kick']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+        if not exports.qbx_core:HasPermission(source, config.eventPerms.kick) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
         DropPlayer(selectedPlayer.id, input)
     end,
     function(source, selectedPlayer, input)
-        if not exports.qbx_core:HasPermission(source, Config.Events['ban']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+        if not exports.qbx_core:HasPermission(source, config.eventPerms.ban) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
         local banDuration = (input[2] or 0) * 3600 + (input[3] or 0) * 86400 + (input[4] or 0) * 2629743
-        DropPlayer(selectedPlayer.id, locale('player_options.administration.banreason', { reason = input[1], lenght = os.date('%c', os.time() + banDuration) }))
+        DropPlayer(selectedPlayer.id, locale('player_options.administration.banreason', input[1], os.date('%c', os.time() + banDuration)))
         MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
             GetPlayerName(selectedPlayer.id), GetPlayerIdentifierByType(selectedPlayer.id, 'license'), GetPlayerIdentifierByType(selectedPlayer.id, 'discord'),
             GetPlayerIdentifierByType(selectedPlayer.id, 'ip'), input[1], os.time() + banDuration, GetPlayerName(source)
         })
     end,
     function(source, selectedPlayer, input)
-        if not exports.qbx_core:HasPermission(source, Config.Events['changeperms']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+        if not exports.qbx_core:HasPermission(source, config.eventPerms.changePerms) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
         if input == 'remove' then exports.qbx_core:RemovePermission(selectedPlayer.id) else exports.qbx_core:AddPermission(selectedPlayer.id, input) end
     end,
 }
@@ -111,7 +112,7 @@ local playerDataOptions = {
 RegisterNetEvent('qbx_admin:server:changePlayerData', function(selected, selectedPlayer, input)
     local target = exports.qbx_core:GetPlayer(selectedPlayer.id)
 
-    if not exports.qbx_core:HasPermission(source, Config.Events['changeplayerdata']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.changePlayerData) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
     if not target then return end
 
     playerDataOptions[selected](target, input)
@@ -121,11 +122,11 @@ RegisterNetEvent('qbx_admin:server:giveAllWeapons', function(weaponType, playerI
     local src = playerID or source
     local target = exports.qbx_core:GetPlayer(src)
 
-    if not exports.qbx_core:HasPermission(source, Config.Events['giveallweapons']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.giveAllWeapons) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
-    for i = 1, #Config.Weaponlist[weaponType], 1 do
-        if not exports.ox_inventory:Items()[Config.Weaponlist[weaponType][i]] then return end
-        target.Functions.AddItem(Config.Weaponlist[weaponType][i], 1)
+    for i = 1, #config.weaponList[weaponType], 1 do
+        if not exports.ox_inventory:Items()[config.weaponList[weaponType][i]] then return end
+        target.Functions.AddItem(config.weaponList[weaponType][i], 1)
     end
 end)
 
@@ -133,7 +134,7 @@ lib.callback.register('qbx_admin:callback:getradiolist', function(source, freque
     local list = exports['pma-voice']:getPlayersInRadioChannel(tonumber(frequency))
     local players = {}
 
-    if not exports.qbx_core:HasPermission(source, Config.Events['getradiolist']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.getRadioList) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
     for targetSource, _ in pairs(list) do -- cheers Knight who shall not be named
         local player = exports.qbx_core:GetPlayer(targetSource)
@@ -146,7 +147,7 @@ lib.callback.register('qbx_admin:callback:getradiolist', function(source, freque
 end)
 
 lib.callback.register('qbx_admin:server:getPlayers', function(source)
-    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.useMenu) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
     local players = {}
     for k, v in pairs(exports.qbx_core:GetQBPlayers()) do
@@ -175,7 +176,7 @@ lib.callback.register('qbx_admin:server:getPlayers', function(source)
 end)
 
 lib.callback.register('qbx_admin:server:getPlayer', function(source, playerToGet)
-    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.useMenu) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
     local playerData = exports.qbx_core:GetPlayer(playerToGet).PlayerData
     local player = {
@@ -201,7 +202,7 @@ lib.callback.register('qbx_admin:server:getPlayer', function(source, playerToGet
 end)
 
 lib.callback.register('qbx_admin:server:clothingMenu', function(source, target)
-    if not exports.qbx_core:HasPermission(source, Config.Events['clothing menu']) then
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.clothingMenu) then
         exports.qbx_core:Notify(source, locale('error.no_perms'), 'error')
         return false
     end
@@ -212,7 +213,7 @@ lib.callback.register('qbx_admin:server:clothingMenu', function(source, target)
 end)
 
 lib.callback.register('qbx_admin:server:canUseMenu', function(source)
-    if not exports.qbx_core:HasPermission(source, Config.Events['usemenu']) then
+    if not exports.qbx_core:HasPermission(source, config.eventPerms.useMenu) then
         exports.qbx_core:Notify(source, locale('error.no_perms'), 'error')
         return false
     end
@@ -222,5 +223,5 @@ end)
 
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     local hash = joaat(model)
-    return qbx.spawnVehicle(source, hash, nil, true)
+    return SpawnVehicle(source, hash, nil, true)
 end)
