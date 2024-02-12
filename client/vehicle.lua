@@ -42,7 +42,6 @@ function GenerateVehiclesSpawnMenu()
             end,
             options = {}
         }, function(_, _, args)
-            local plate = qbx.getVehiclePlate(cache.vehicle)
             local vehNetId = lib.callback.await('qbx_admin:server:spawnVehicle', false, args[1])
             if not vehNetId then return end
             local veh
@@ -50,7 +49,7 @@ function GenerateVehiclesSpawnMenu()
                 veh = NetToVeh(vehNetId)
                 Wait(100)
             until DoesEntityExist(veh)
-            TriggerEvent('qb-vehiclekeys:client:AddKeys', plate(veh))
+            TriggerEvent('qb-vehiclekeys:client:AddKeys', GetPlate(veh))
             SetVehicleNeedsToBeHotwired(veh, false)
             SetVehicleHasBeenOwnedByPlayer(veh, true)
             SetEntityAsMissionEntity(veh, true, false)
