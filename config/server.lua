@@ -1,23 +1,23 @@
 return {
     commandPerms = {
-        useMenu = 'mod',
-        noclip = 'mod',
-        names = 'mod',
-        blips = 'mod',
-        setModel = 'admin',
-        dev = 'admin',
+        useMenu = 'group.mod',
+        noclip = 'group.mod',
+        names = 'group.mod',
+        blips = 'group.mod',
+        setModel = 'group.admin',
+        dev = 'group.admin',
     },
 
     eventPerms = {
-        playerOptionsGeneral = 'mod',
-        kick = 'mod',
-        ban = 'admin',
-        changePerms = 'admin',
-        changePlayerData = 'admin',
-        giveAllWeapons = 'admin',
-        getRadioList = 'mod',
-        useMenu = 'mod',
-        clothingMenu = 'admin',
+        playerOptionsGeneral = 'group.mod',
+        kick = 'group.mod',
+        ban = 'group.admin',
+        changePerms = 'group.admin',
+        changePlayerData = 'group.admin',
+        giveAllWeapons = 'group.admin',
+        getRadioList = 'group.mod',
+        useMenu = 'group.mod',
+        clothingMenu = 'group.admin',
     },
 
     weaponList = {
