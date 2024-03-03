@@ -26,7 +26,7 @@ lib.registerMenu({
     title = locale('title.server_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_server_menu = selected

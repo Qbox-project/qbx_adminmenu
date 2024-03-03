@@ -28,14 +28,14 @@ function GenerateVehiclesSpawnMenu()
     end)
 
     for i = 1, #categories do
-        lib.setMenuOptions('qbx_adminmenu_spawn_vehicles_menu', {label = string.firstToUpper(categories[i]), args = {('qbx_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}}, i)
+        lib.setMenuOptions('qbx_adminmenu_spawn_vehicles_menu', {label = qbx.string.capitalize(categories[i]), args = {('qbx_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])}}, i)
 
         lib.registerMenu({
             id = ('qbx_adminmenu_spawn_vehicles_menu_%s'):format(categories[i]),
             title = categories[i],
             position = 'top-right',
             onClose = function(keyPressed)
-                closeMenu(false, keyPressed, 'qbx_adminmenu_spawn_vehicles_menu')
+                CloseMenu(false, keyPressed, 'qbx_adminmenu_spawn_vehicles_menu')
             end,
             onSelected = function(selected)
                 MenuIndexes[('qbx_adminmenu_spawn_vehicles_menu_%s'):format(categories[i])] = selected
@@ -49,7 +49,7 @@ function GenerateVehiclesSpawnMenu()
                 veh = NetToVeh(vehNetId)
                 Wait(100)
             until DoesEntityExist(veh)
-            TriggerEvent('qb-vehiclekeys:client:AddKeys', GetPlate(veh))
+            TriggerEvent('qb-vehiclekeys:client:AddKeys', qbx.getVehiclePlate(veh))
             SetVehicleNeedsToBeHotwired(veh, false)
             SetVehicleHasBeenOwnedByPlayer(veh, true)
             SetEntityAsMissionEntity(veh, true, false)
@@ -86,7 +86,7 @@ lib.registerMenu({
     title = 'Vehicles',
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_vehicles_menu = selected
@@ -165,7 +165,7 @@ lib.registerMenu({
     title = 'Spawn Vehicle',
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_spawn_vehicles_menu = selected

@@ -5,7 +5,7 @@ lib.registerMenu({
     title = locale('title.main_menu'),
     position = 'top-right',
     onClose = function()
-        closeMenu(true)
+        CloseMenu(true)
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_main_menu = selected
@@ -25,7 +25,7 @@ lib.registerMenu({
     end
 end)
 
-function closeMenu(isFullMenuClose, keyPressed, previousMenu)
+function CloseMenu(isFullMenuClose, keyPressed, previousMenu)
     if isFullMenuClose or not keyPressed or keyPressed == 'Escape' then
         lib.hideMenu(false)
         return
