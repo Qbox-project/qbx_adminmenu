@@ -143,7 +143,7 @@ function GeneratePlayersMenu()
         title = locale('title.players_menu'),
         position = 'top-right',
         onClose = function(keyPressed)
-            closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+            CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
         end,
         onSelected = function(selected)
             MenuIndexes.qbx_adminmenu_players_menu = selected
@@ -160,7 +160,7 @@ function GeneratePlayersMenu()
             title = player.name,
             position = 'top-right',
             onClose = function(keyPressed)
-                closeMenu(false, keyPressed, 'qbx_adminmenu_players_menu')
+                CloseMenu(false, keyPressed, 'qbx_adminmenu_players_menu')
             end,
             onSelected = function(selected)
                 MenuIndexes[('qbx_adminmenu_player_menu_%s'):format(args[1].id)] = selected
@@ -200,7 +200,7 @@ lib.registerMenu({
     title = locale('player_options.label1'),
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
+        CloseMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_player_general_menu = selected
@@ -232,7 +232,7 @@ lib.registerMenu({
     title = locale('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
+        CloseMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_player_administration_menu = selected
@@ -270,7 +270,7 @@ lib.registerMenu({
     title = locale('player_options.label2'),
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
+        CloseMenu(false, keyPressed, ('qbx_adminmenu_player_menu_%s'):format(selectedPlayer?.id))
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_player_extra_menu = selected

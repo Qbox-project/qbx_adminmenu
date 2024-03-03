@@ -10,7 +10,14 @@ local options = {
         showCoords = not showCoords
         while showCoords do
             local coords, heading = GetEntityCoords(cache.ped), GetEntityHeading(cache.ped)
-            DrawText2D(string.format('~o~vector4~w~(%s, %s, %s, %s)', math.round(coords.x, 2), math.round(coords.y, 2), math.round(coords.z, 2), math.round(heading, 2)), vec2(1.0, 0.5), 1.0, 1.0, 0.5, 6, 255, 255, 255)
+
+            qbx.drawText2d({
+                text = ('~o~vector4~w~(%s, %s, %s, %s)'):format(qbx.math.round(coords.x, 2), qbx.math.round(coords.y, 2), qbx.math.round(coords.z, 2), qbx.math.round(heading, 2)),
+                coords = vec2(1.0, 0.5),
+                scale = 0.5,
+                font = 6
+            })
+
             Wait(0)
         end
     end,
@@ -22,10 +29,30 @@ local options = {
                 local oil, angle, body, class = GetVehicleOilLevel(cache.vehicle), GetVehicleSteeringAngle(cache.vehicle), GetVehicleBodyHealth(cache.vehicle), vehicleTypes[GetVehicleClass(cache.vehicle)]
                 local dirt, maxSpeed, netId, hash = GetVehicleDirtLevel(cache.vehicle), GetVehicleEstimatedMaxSpeed(cache.vehicle), VehToNet(cache.vehicle), GetEntityModel(cache.vehicle)
                 local name = GetLabelText(GetDisplayNameFromVehicleModel(hash))
-                DrawText2D(string.format('~o~Clutch: ~w~ %s | ~o~Gear: ~w~ %s | ~o~Rpm: ~w~ %s | ~o~Temperature: ~w~ %s', math.round(clutch, 4), gear, math.round(rpm, 4), temperature), vec2(1.0, 0.575), 1.0, 1.0, 0.45, 6, 255, 255, 255)
-                DrawText2D(string.format('~o~Oil: ~w~ %s | ~o~Steering Angle: ~w~ %s | ~o~Body: ~w~ %s | ~o~Class: ~w~ %s', math.round(oil, 4), math.round(angle, 4), math.round(body, 4), class), vec2(1.0, 0.600), 1.0, 1.0, 0.45, 6, 255, 255, 255)
-                DrawText2D(string.format('~o~Dirt: ~w~ %s | ~o~Est Max Speed: ~w~ %s | ~o~Net ID: ~w~ %s | ~o~Hash: ~w~ %s', math.round(dirt, 4), math.round(maxSpeed, 4) * 3.6, netId, hash), vec2(1.0, 0.625), 1.0, 1.0, 0.45, 6, 255, 255, 255)
-                DrawText2D(string.format('~o~Vehicle Name: ~w~ %s', name), vec2(1.0, 0.650), 1.0, 1.0, 0.45, 6, 255, 255, 255)
+                qbx.drawText2d({
+                    text = ('~o~Clutch: ~w~ %s | ~o~Gear: ~w~ %s | ~o~Rpm: ~w~ %s | ~o~Temperature: ~w~ %s'):format(qbx.math.round(clutch, 4), gear, qbx.math.round(rpm, 4), temperature),
+                    coords = vec2(1.0, 0.575),
+                    scale = 0.45,
+                    font = 6
+                })
+                qbx.drawText2d({
+                    text = ('~o~Oil: ~w~ %s | ~o~Steering Angle: ~w~ %s | ~o~Body: ~w~ %s | ~o~Class: ~w~ %s'):format(qbx.math.round(oil, 4), qbx.math.round(angle, 4), qbx.math.round(body, 4), class),
+                    coords = vec2(1.0, 0.600),
+                    scale = 0.45,
+                    font = 6
+                })
+                qbx.drawText2d({
+                    text = ('~o~Dirt: ~w~ %s | ~o~Est Max Speed: ~w~ %s | ~o~Net ID: ~w~ %s | ~o~Hash: ~w~ %s'):format(qbx.math.round(dirt, 4), qbx.math.round(maxSpeed, 4) * 3.6, netId, hash),
+                    coords = vec2(1.0, 0.625),
+                    scale = 0.45,
+                    font = 6
+                })
+                qbx.drawText2d({
+                    text = ('~o~Vehicle Name: ~w~ %s'):format(name),
+                    coords = vec2(1.0, 0.650),
+                    scale = 0.45,
+                    font = 6
+                })
                 Wait(0)
             else
                 Wait(800)
@@ -39,7 +66,7 @@ lib.registerMenu({
     title = locale('title.dev_menu'),
     position = 'top-right',
     onClose = function(keyPressed)
-        closeMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
+        CloseMenu(false, keyPressed, 'qbx_adminmenu_main_menu')
     end,
     onSelected = function(selected)
         MenuIndexes.qbx_adminmenu_dev_menu = selected

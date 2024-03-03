@@ -222,6 +222,15 @@ lib.callback.register('qbx_admin:server:canUseMenu', function(source)
 end)
 
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
-    local hash = joaat(model)
-    return SpawnVehicle(source, hash, nil, true)
+    local ped = GetPlayerPed(source)
+    local netId = qbx.spawnVehicle({
+        model = model,
+        spawnSource = ped,
+        warp = true,
+    })
+
+    local plate = qbx.getVehiclePlate(NetworkGetEntityFromNetworkId(netId))
+
+    exports.qbx_vehiclekeys:GiveKeys(source, plate)
+    return netId
 end)
