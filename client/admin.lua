@@ -49,28 +49,28 @@ local function toggleNoclip()
         while noclipEnabled do
             Wait(0)
             local _, fv = GetCamMatrix(noclipCam)
-            if IsDisabledControlPressed(2, 17) then
+            if IsDisabledControlPressed(2, 17) then -- Scroll Wheel Up
                 speed = math.min(speed + 0.1, maxSpeed)
-            elseif IsDisabledControlPressed(2, 16) then
+            elseif IsDisabledControlPressed(2, 16) then -- Scroll Wheel Down
                 speed = math.max(0.1, speed - 0.1)
             end
 
             local multiplier = 1.0
-            if IsDisabledControlPressed(2, 209) then
+            if IsDisabledControlPressed(2, 209) then -- Left Shift
                 multiplier = 2.0
-            elseif IsDisabledControlPressed(2, 19) then
+            elseif IsDisabledControlPressed(2, 19) then -- Left Alt
                 multiplier = 4.0
-            elseif IsDisabledControlPressed(2, 36) then
+            elseif IsDisabledControlPressed(2, 36) then -- Left CTRL
                 multiplier = 0.25
             end
 
-            if IsDisabledControlPressed(2, 32) then
+            if IsDisabledControlPressed(2, 32) then -- W
                 local setPos = GetEntityCoords(ent) + fv * (speed * multiplier)
                 SetEntityCoordsNoOffset(ent, setPos.x, setPos.y, setPos.z, false, false, false)
                 if not inVehicle then
                     SetEntityCoordsNoOffset(cache.ped, setPos.x, setPos.y, setPos.z, false, false, false)
                 end
-            elseif IsDisabledControlPressed(2, 33) then
+            elseif IsDisabledControlPressed(2, 33) then -- S
                 local setPos = GetEntityCoords(ent) - fv * (speed * multiplier)
                 SetEntityCoordsNoOffset(ent, setPos.x, setPos.y, setPos.z, false, false, false)
                 if not inVehicle then
@@ -78,13 +78,13 @@ local function toggleNoclip()
                 end
             end
 
-            if IsDisabledControlPressed(2, 34) then
+            if IsDisabledControlPressed(2, 34) then -- A
                 local setPos = GetOffsetFromEntityInWorldCoords(ent, -speed * multiplier, 0.0, 0.0)
                 SetEntityCoordsNoOffset(ent, setPos.x, setPos.y, setPos.z, false, false, false)
                 if not inVehicle then
                     SetEntityCoordsNoOffset(cache.ped, setPos.x, setPos.y, setPos.z, false, false, false)
                 end
-            elseif IsDisabledControlPressed(2, 35) then
+            elseif IsDisabledControlPressed(2, 35) then -- D
                 local setPos = GetOffsetFromEntityInWorldCoords(ent, speed * multiplier, 0.0, 0.0)
                 SetEntityCoordsNoOffset(ent, setPos.x, setPos.y, setPos.z, false, false, false)
                 if not inVehicle then
@@ -92,14 +92,14 @@ local function toggleNoclip()
                 end
             end
 
-            if IsDisabledControlPressed(2, 22) then
+            if IsDisabledControlPressed(2, 51) then -- E
                 local setPos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * speed / 2)
                 SetEntityCoordsNoOffset(ent, setPos.x, setPos.y, setPos.z, false, false, false)
                 if not inVehicle then
                     SetEntityCoordsNoOffset(cache.ped, setPos.x, setPos.y, setPos.z, false, false, false)
                 end
-            elseif IsDisabledControlPressed(2, 52) then
-                local setPos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * -speed / 2) -- Q
+            elseif IsDisabledControlPressed(2, 52) then -- Q
+                local setPos = GetOffsetFromEntityInWorldCoords(ent, 0.0, 0.0, multiplier * -speed / 2)
                 SetEntityCoordsNoOffset(ent, setPos.x, setPos.y, setPos.z, false, false, false)
                 if not inVehicle then
                     SetEntityCoordsNoOffset(cache.ped, setPos.x, setPos.y, setPos.z, false, false, false)
