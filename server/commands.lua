@@ -37,7 +37,7 @@ lib.addCommand('admincar', {
     local vehicles = exports.qbx_core:GetVehiclesByName()
     local vehModel, vehicle, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', src)
 
-    if vehicle == 0 then
+    if not vehicle then
         return exports.qbx_core:Notify(src, "You have to be in a vehicle, to use this", 'error')
     end
 
@@ -45,21 +45,19 @@ lib.addCommand('admincar', {
         return exports.qbx_core:Notify(src, "Unknown vehicle, please contact your developer to register it.", 'error')
     end
 
-    local isVehicleOwned = MySQL.scalar.await('SELECT count(*) from player_vehicles WHERE plate = ?', {props.plate})
-    
-    if isVehicleOwned > 0 then
+    local isVehicleOwned = exports.qbx_vehicles:DoesEntityPlateExist(props.plate)
+
+    if isVehicleOwned then
         return exports.qbx_core:Notify(src, "This vehicle is already owned.", 'error')
     end
 
-    MySQL.insert(
-        'INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, ?)', {
-            player.PlayerData.license,
-            player.PlayerData.citizenid, vehModel,
-            GetHashKey(vehModel),
-            json.encode(props),
-            props.plate,
-            0
-        })
+    exports.qbx_vehicles:CreateVehicleEntity({
+        citizenId = player.PlayerData.citizenid, 
+        model = vehModel,
+        mods = props,
+        plate = props.plate
+    })
+
     exports.qbx_core:Notify(src, "This vehicle is now yours.", 'success')
 end)
 
