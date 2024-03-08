@@ -52,7 +52,7 @@ lib.addCommand('admincar', {
     end
 
     exports.qbx_vehicles:CreateVehicleEntity({
-        citizenId = player.PlayerData.citizenid, 
+        citizenId = player.PlayerData.citizenid,
         model = vehModel,
         mods = props,
         plate = props.plate
