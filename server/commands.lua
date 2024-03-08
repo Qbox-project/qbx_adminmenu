@@ -48,7 +48,16 @@ lib.addCommand('admincar', {
     local isVehicleOwned = exports.qbx_vehicles:DoesEntityPlateExist(props.plate)
 
     if isVehicleOwned then
-        return exports.qbx_core:Notify(src, "This vehicle is already owned.", 'error')
+        local response = lib.callback.await('qbx_admin:client:SaveCarDialog', src)
+
+        if response == 'confirm' then
+            exports.qbx_vehicles:SetVehicleEntityOwner({
+                citizenId = player.PlayerData.citizenid,
+                plate = props.plate
+            })
+            goto done
+        end
+        return exports.qbx_core:Notify(src, "Canceled.", 'inform')
     end
 
     exports.qbx_vehicles:CreateVehicleEntity({
@@ -57,7 +66,7 @@ lib.addCommand('admincar', {
         mods = props,
         plate = props.plate
     })
-
+    ::done::
     exports.qbx_core:Notify(src, "This vehicle is now yours.", 'success')
 end)
 
