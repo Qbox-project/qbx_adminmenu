@@ -4,6 +4,7 @@ return {
         noclip = 'group.mod',
         names = 'group.mod',
         blips = 'group.mod',
+        saveVehicle = 'group.admin',
         setModel = 'group.admin',
         dev = 'group.admin',
     },

@@ -28,6 +28,41 @@ lib.addCommand('blips', {
     TriggerClientEvent('qbx_admin:client:blips', source)
 end)
 
+lib.addCommand('admincar', {
+    help = 'Buy Vehicle',
+    restricted = config.saveVeh,
+}, function(source)
+    local src = source
+    local player = exports.qbx_core:GetPlayer(src)
+    local vehicles = exports.qbx_core:GetVehiclesByName()
+    local vehModel, vehicle, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', src)
+
+    if vehicle == 0 then
+        return exports.qbx_core:Notify(src, "You have to be in a vehicle, to use this", 'error')
+    end
+
+    if vehicles[vehModel] == nil then
+        return exports.qbx_core:Notify(src, "Unknown vehicle, please contact your developer to register it.", 'error')
+    end
+
+    local isVehicleOwned = MySQL.scalar.await('SELECT count(*) from player_vehicles WHERE plate = ?', {props.plate})
+    
+    if isVehicleOwned > 0 then
+        return exports.qbx_core:Notify(src, "This vehicle is already owned.", 'error')
+    end
+
+    MySQL.insert(
+        'INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, ?)', {
+            player.PlayerData.license,
+            player.PlayerData.citizenid, vehModel,
+            GetHashKey(vehModel),
+            json.encode(props),
+            props.plate,
+            0
+        })
+    exports.qbx_core:Notify(src, "This vehicle is now yours.", 'success')
+end)
+
 lib.addCommand('setmodel', {
     help = 'Sets your model to the given model',
     restricted = config.setModel,
