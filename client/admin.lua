@@ -500,7 +500,7 @@ RegisterNetEvent('qbx_admin:client:Show', function()
 end)
 
 lib.callback.register('qbx_admin:client:GetVehicleInfo', function()
-    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+    local vehicle = cache.vehicle
     local vehName = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))
     local props = lib.getVehicleProperties(vehicle)
 
