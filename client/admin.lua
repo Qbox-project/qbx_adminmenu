@@ -510,7 +510,7 @@ lib.callback.register('qbx_admin:client:SaveCarDialog', function()
             cancel = 'No'
         }
     })
-    return response == 'confirm' and true or false
+    return response == 'confirm'
 end)
 
 lib.callback.register('qbx_admin:client:GetVehicleInfo', function()
