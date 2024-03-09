@@ -32,8 +32,7 @@ lib.addCommand('admincar', {
     help = 'Buy Vehicle',
     restricted = config.saveVeh,
 }, function(source)
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(source))
-
+    local vehicle = GetVehiclePedIsIn(GetPlayerPed(source), false)
     if not vehicle then
         return exports.qbx_core:Notify(source, "You have to be in a vehicle, to use this", 'error')
     end
@@ -43,7 +42,7 @@ lib.addCommand('admincar', {
     if not exports.qbx_core:GetVehiclesByHash()[vehModel] then
         return exports.qbx_core:Notify(source, "Unknown vehicle, please contact your developer to register it.", 'error')
     end
-    
+
     local playerData = exports.qbx_core:GetPlayer(source).PlayerData
     local vehName, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', source)
     if exports.qbx_vehicles:DoesEntityPlateExist(props.plate) then
