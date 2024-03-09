@@ -32,23 +32,22 @@ lib.addCommand('admincar', {
     help = 'Buy Vehicle',
     restricted = config.saveVeh,
 }, function(source)
-    local src = source
-    local player = exports.qbx_core:GetPlayer(src)
+    local player = exports.qbx_core:GetPlayer(source)
     local vehicles = exports.qbx_core:GetVehiclesByName()
-    local vehModel, vehicle, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', src)
+    local vehModel, vehicle, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', source)
 
     if not vehicle then
-        return exports.qbx_core:Notify(src, "You have to be in a vehicle, to use this", 'error')
+        return exports.qbx_core:Notify(source, "You have to be in a vehicle, to use this", 'error')
     end
 
     if vehicles[vehModel] == nil then
-        return exports.qbx_core:Notify(src, "Unknown vehicle, please contact your developer to register it.", 'error')
+        return exports.qbx_core:Notify(source, "Unknown vehicle, please contact your developer to register it.", 'error')
     end
 
     local isVehicleOwned = exports.qbx_vehicles:DoesEntityPlateExist(props.plate)
 
     if isVehicleOwned then
-        local response = lib.callback.await('qbx_admin:client:SaveCarDialog', src)
+        local response = lib.callback.await('qbx_admin:client:SaveCarDialog', source)
 
         if response == 'confirm' then
             exports.qbx_vehicles:SetVehicleEntityOwner({
@@ -57,7 +56,7 @@ lib.addCommand('admincar', {
             })
             goto done
         end
-        return exports.qbx_core:Notify(src, "Canceled.", 'inform')
+        return exports.qbx_core:Notify(source, "Canceled.", 'inform')
     end
 
     exports.qbx_vehicles:CreateVehicleEntity({
@@ -67,7 +66,7 @@ lib.addCommand('admincar', {
         plate = props.plate
     })
     ::done::
-    exports.qbx_core:Notify(src, "This vehicle is now yours.", 'success')
+    exports.qbx_core:Notify(source, "This vehicle is now yours.", 'success')
 end)
 
 lib.addCommand('setmodel', {
