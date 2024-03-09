@@ -100,7 +100,7 @@ end)
 
 RegisterNetEvent('qbx_admin:client:ToggleNoClip', function()
     if GetInvokingResource() then return end
-    toggleNoClipMode()
+    ExecuteCommand('txAdmin:menu:noClipToggle')
 end)
 
 local showBlips = false
