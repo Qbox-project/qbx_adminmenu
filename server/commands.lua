@@ -66,7 +66,6 @@ lib.addCommand('admincar', {
     end
     exports.qbx_core:Notify(source, "This vehicle is now yours.", 'success')
 end)
-end)
 
 lib.addCommand('setmodel', {
     help = 'Sets your model to the given model',
