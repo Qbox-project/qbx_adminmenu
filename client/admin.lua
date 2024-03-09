@@ -98,11 +98,6 @@ lib.registerMenu({
     end
 end)
 
-RegisterNetEvent('qbx_admin:client:ToggleNoClip', function()
-    if GetInvokingResource() then return end
-    ExecuteCommand('txAdmin:menu:noClipToggle')
-end)
-
 local showBlips = false
 local showNames = false
 local netCheck1 = false
