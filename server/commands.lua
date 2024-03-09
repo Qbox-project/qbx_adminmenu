@@ -32,41 +32,40 @@ lib.addCommand('admincar', {
     help = 'Buy Vehicle',
     restricted = config.saveVeh,
 }, function(source)
-    local player = exports.qbx_core:GetPlayer(source)
-    local vehicles = exports.qbx_core:GetVehiclesByName()
-    local vehModel, vehicle, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', source)
+    local vehicle = GetVehiclePedIsIn(GetPlayerPed(source))
 
     if not vehicle then
         return exports.qbx_core:Notify(source, "You have to be in a vehicle, to use this", 'error')
     end
 
-    if vehicles[vehModel] == nil then
+    local vehModel = GetEntityModel(vehicle)
+
+    if not exports.qbx_core:GetVehiclesByHash()[vehModel] then
         return exports.qbx_core:Notify(source, "Unknown vehicle, please contact your developer to register it.", 'error')
     end
-
-    local isVehicleOwned = exports.qbx_vehicles:DoesEntityPlateExist(props.plate)
-
-    if isVehicleOwned then
+    
+    local playerData = exports.qbx_core:GetPlayer(source).PlayerData
+    local vehName, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', source)
+    if exports.qbx_vehicles:DoesEntityPlateExist(props.plate) then
         local response = lib.callback.await('qbx_admin:client:SaveCarDialog', source)
 
-        if response == 'confirm' then
-            exports.qbx_vehicles:SetVehicleEntityOwner({
-                citizenId = player.PlayerData.citizenid,
-                plate = props.plate
-            })
-            goto done
+        if not response then
+            return exports.qbx_core:Notify(source, "Canceled.", 'inform')
         end
-        return exports.qbx_core:Notify(source, "Canceled.", 'inform')
+        exports.qbx_vehicles:SetVehicleEntityOwner({
+            citizenId = playerData.citizenid,
+            plate = props.plate
+        })
+    else
+        exports.qbx_vehicles:CreateVehicleEntity({
+            citizenId = playerData.citizenid,
+            model = vehName,
+            mods = props,
+            plate = props.plate
+        })
     end
-
-    exports.qbx_vehicles:CreateVehicleEntity({
-        citizenId = player.PlayerData.citizenid,
-        model = vehModel,
-        mods = props,
-        plate = props.plate
-    })
-    ::done::
     exports.qbx_core:Notify(source, "This vehicle is now yours.", 'success')
+end)
 end)
 
 lib.addCommand('setmodel', {
