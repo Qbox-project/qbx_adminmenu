@@ -510,15 +510,11 @@ lib.callback.register('qbx_admin:client:SaveCarDialog', function()
             cancel = 'No'
         }
     })
-    return response
+    return response == 'confirm' and true or false
 end)
 
 lib.callback.register('qbx_admin:client:GetVehicleInfo', function()
-    local vehicle = cache.vehicle
-    local vehName = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))
-    local props = lib.getVehicleProperties(vehicle)
-
-    return vehName:lower(), vehicle, props
+    return GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)):lower(), lib.getVehicleProperties(cache.vehicle)
 end)
 
 CreateThread(function()
