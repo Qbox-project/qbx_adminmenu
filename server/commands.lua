@@ -33,7 +33,7 @@ lib.addCommand('admincar', {
     restricted = config.saveVeh,
 }, function(source)
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(source), false)
-    if not vehicle then
+    if vehicle == 0 then
         return exports.qbx_core:Notify(source, 'You have to be in a vehicle, to use this', 'error')
     end
 
