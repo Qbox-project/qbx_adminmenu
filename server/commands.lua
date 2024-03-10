@@ -34,13 +34,13 @@ lib.addCommand('admincar', {
 }, function(source)
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(source), false)
     if not vehicle then
-        return exports.qbx_core:Notify(source, "You have to be in a vehicle, to use this", 'error')
+        return exports.qbx_core:Notify(source, 'You have to be in a vehicle, to use this', 'error')
     end
 
     local vehModel = GetEntityModel(vehicle)
 
     if not exports.qbx_core:GetVehiclesByHash()[vehModel] then
-        return exports.qbx_core:Notify(source, "Unknown vehicle, please contact your developer to register it.", 'error')
+        return exports.qbx_core:Notify(source, 'Unknown vehicle, please contact your developer to register it.', 'error')
     end
 
     local playerData = exports.qbx_core:GetPlayer(source).PlayerData
@@ -49,7 +49,7 @@ lib.addCommand('admincar', {
         local response = lib.callback.await('qbx_admin:client:SaveCarDialog', source)
 
         if not response then
-            return exports.qbx_core:Notify(source, "Canceled.", 'inform')
+            return exports.qbx_core:Notify(source, 'Canceled.', 'inform')
         end
         exports.qbx_vehicles:SetVehicleEntityOwner({
             citizenId = playerData.citizenid,
@@ -63,7 +63,7 @@ lib.addCommand('admincar', {
             plate = props.plate
         })
     end
-    exports.qbx_core:Notify(source, "This vehicle is now yours.", 'success')
+    exports.qbx_core:Notify(source, 'This vehicle is now yours.', 'success')
 end)
 
 lib.addCommand('setmodel', {
