@@ -94,7 +94,7 @@ lib.registerMenu({
     options = {
         {label = 'Spawn Vehicle'},
         {label = 'Fix Vehicle', close = false},
-        {label = 'Buy Vehicle', close = false},
+        {label = 'Buy Vehicle', close = true},
         {label = 'Remove Vehicle', close = false},
         {label = 'Tune Vehicle'},
         {label = 'Change Plate'}

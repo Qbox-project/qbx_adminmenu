@@ -28,6 +28,44 @@ lib.addCommand('blips', {
     TriggerClientEvent('qbx_admin:client:blips', source)
 end)
 
+lib.addCommand('admincar', {
+    help = 'Buy Vehicle',
+    restricted = config.saveVeh,
+}, function(source)
+    local vehicle = GetVehiclePedIsIn(GetPlayerPed(source), false)
+    if vehicle == 0 then
+        return exports.qbx_core:Notify(source, 'You have to be in a vehicle, to use this', 'error')
+    end
+
+    local vehModel = GetEntityModel(vehicle)
+
+    if not exports.qbx_core:GetVehiclesByHash()[vehModel] then
+        return exports.qbx_core:Notify(source, 'Unknown vehicle, please contact your developer to register it.', 'error')
+    end
+
+    local playerData = exports.qbx_core:GetPlayer(source).PlayerData
+    local vehName, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', source)
+    if exports.qbx_vehicles:DoesEntityPlateExist(props.plate) then
+        local response = lib.callback.await('qbx_admin:client:SaveCarDialog', source)
+
+        if not response then
+            return exports.qbx_core:Notify(source, 'Canceled.', 'inform')
+        end
+        exports.qbx_vehicles:SetVehicleEntityOwner({
+            citizenId = playerData.citizenid,
+            plate = props.plate
+        })
+    else
+        exports.qbx_vehicles:CreateVehicleEntity({
+            citizenId = playerData.citizenid,
+            model = vehName,
+            mods = props,
+            plate = props.plate
+        })
+    end
+    exports.qbx_core:Notify(source, 'This vehicle is now yours.', 'success')
+end)
+
 lib.addCommand('setmodel', {
     help = 'Sets your model to the given model',
     restricted = config.setModel,
