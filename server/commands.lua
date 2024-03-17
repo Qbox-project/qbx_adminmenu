@@ -11,7 +11,7 @@ lib.addCommand('noclip', {
     help = 'Toggle NoClip',
     restricted = config.noclip,
 }, function(source)
-    TriggerClientEvent('qbx_admin:client:noclip', source)
+    TriggerClientEvent('qbx_admin:client:ToggleNoClip', source)
 end)
 
 lib.addCommand('names', {
