@@ -187,7 +187,6 @@ RegisterNetEvent('qbx_admin:server:giveAllWeapons', function(weaponType, playerI
     if not IsPlayerAceAllowed(source, config.eventPerms.giveAllWeapons) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
     for i = 1, #config.weaponList[weaponType], 1 do
-        if not exports.ox_inventory:Items()[config.weaponList[weaponType][i]] then return end
         target.Functions.AddItem(config.weaponList[weaponType][i], 1)
     end
 end)
