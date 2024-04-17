@@ -154,12 +154,10 @@ local playerDataOptions = {
     crafting = function(target, input) target.Functions.SetMetaData('craftingrep', input[1]) end,
     dealer = function(target, input) target.Functions.SetMetaData('dealerrep', input[1]) end,
     cash = function(target, input)
-        target.PlayerData.moneycash = input[1]
-        target.Functions.SetPlayerData('money', target.PlayerData.money)
+        target.Functions.SetMoney('cash', input[1], 'qbx_adminmenu')
     end,
     bank = function(target, input)
-        target.PlayerData.moneybank = input[1]
-        target.Functions.SetPlayerData('money', target.PlayerData.money)
+        target.Functions.SetMoney('bank', input[1], 'qbx_adminmenu')
     end,
     job = function(target, input)
         target.Functions.SetJob(input[1], input[2])
