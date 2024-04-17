@@ -302,3 +302,7 @@ lib.registerMenu({
         exports['pma-voice']:toggleMutePlayer(selectedPlayer.id)
     end
 end)
+
+RegisterNetEvent('qbx_admin:client:killPlayer', function()
+    SetEntityHealth(cache.ped, 0)
+end)

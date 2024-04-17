@@ -74,8 +74,8 @@ RegisterNetEvent('qbx_admin:server:deleteReport', function(report)
 end)
 
 local generalOptions = {
-    function(selectedPlayer) TriggerClientEvent('hospital:client:KillPlayer', selectedPlayer.id) end,
-    function(selectedPlayer) TriggerClientEvent('hospital:client:Revive', selectedPlayer.id) end,
+    function(selectedPlayer) TriggerClientEvent('qbx_admin:client:killPlayer', selectedPlayer.id) end,
+    function(selectedPlayer) TriggerClientEvent('qbx_medical:client:playerRevived', selectedPlayer.id) end,
     function(selectedPlayer)
         if isFrozen[selectedPlayer.id] then
             FreezeEntityPosition(GetPlayerPed(selectedPlayer.id), false)
