@@ -123,6 +123,7 @@ lib.registerMenu({
             lib.showMenu('qbx_adminmenu_vehicles_menu', MenuIndexes.qbx_adminmenu_vehicles_menu)
             return
         end
+
         local dialog = lib.inputDialog('Custom License Plate (Max. 8 characters)',  {'License Plate'})
 
         if not dialog or not dialog[1] or dialog[1] == '' then
@@ -139,6 +140,7 @@ lib.registerMenu({
         end
 
         SetVehicleNumberPlateText(cache.vehicle, dialog[1])
+        TriggerEvent('qb-vehiclekeys:client:AddKeys', dialog[1])
     end
 end)
 
