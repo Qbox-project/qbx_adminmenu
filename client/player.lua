@@ -283,7 +283,7 @@ lib.registerMenu({
     }
 }, function(selected)
     if selected == 1 then
-        ExecuteCommand(('viewinv %s'):format(selectedPlayer.id))
+        exports.ox_inventory:openInventory('player', selectedPlayer.id)
     elseif selected == 2 then
         local succeeded = lib.callback.await('qbx_admin:server:clothingMenu', false, selectedPlayer.id)
         if succeeded then return end
