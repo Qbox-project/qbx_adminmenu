@@ -4,7 +4,8 @@
     "dev_menu": "Developer Options",
     "main_menu": "Admin Menu",
     "players_menu": "Online Players",
-    "server_menu": "Manage Server"
+    "server_menu": "Manage Server",
+    "reports_menu": "Reports"
   },
   "main_options": {
     "label1": "Admin Options",
@@ -16,7 +17,9 @@
     "label4": "Vehicles",
     "desc4": "All about vehicles here",
     "label5": "Developer Options",
-    "desc5": "Options that are handy for a developer"
+    "desc5": "Options that are handy for a developer",
+    "label6": "Pending Reports",
+    "desc6": "Someone needs to do it :("
   },
   "admin_options": {
     "label1": "Noclip",
@@ -141,15 +144,22 @@
 
     }
   },
+  "report_options": {
+    "desc1": "Click to view report options"
+  },
   "success": {
     "blips_activated": "Blips activated",
     "names_activated": "Names activated",
     "coords_copied": "Coordinates copied to clipboard",
-    "heading_copied": "Heading copied to clipboard"
+    "heading_copied": "Heading copied to clipboard",
+    "report_sent": "Report has been sent",
+    "new_report": "A new report has been received",
+    "sent_report_reply": "Your reply has been sent"
   },
   "error": {
     "no_perms": "You don't have permission to do this",
     "blips_deactivated": "Blips deactivated",
-    "names_deactivated": "Names deactivated"
+    "names_deactivated": "Names deactivated",
+    "no_report_reply": "Reply failed to send due to no message"
   }
 }
