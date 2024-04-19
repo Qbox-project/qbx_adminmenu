@@ -1,6 +1,42 @@
 local config = require 'config.server'
 local isFrozen = {}
 
+REPORTS = {}
+
+--- Trigger something on players who have the passed permission
+--- @param permission string - The required permission
+--- @param cb function - The function, will return player object as parameter
+function OnAdmin(permission, cb)
+    for k, v in pairs(exports.qbx_core:GetQBPlayers()) do
+        if IsPlayerAceAllowed(k, permission) then
+            cb(v)
+        end
+    end
+end
+
+--- Sends a report to online staff members
+--- @param source string - The player's ID
+--- @param message string - Message for the report
+function SendReport(source, message)
+    local reportId = #REPORTS + 1
+
+    REPORTS[reportId] = {
+        id = reportId,
+        senderId = source,
+        senderName = GetPlayerName(source),
+        message = message,
+        claimed = 'Nobody'
+    }
+
+    table.sort(REPORTS, function(a, b) return a.id < b.id end)
+
+    exports.qbx_core:Notify(source, locale('success.report_sent'), 'success')
+
+    OnAdmin(config.commandPerms.reportReply, function(target)
+        exports.qbx_core:Notify(target.PlayerData.source, locale('success.new_report'), 'success')
+    end)
+end
+
 --- Checks if the source is inside of the target's routingbucket
 --- if not set the source's routingbucket to the target's
 --- @param source string - The player's ID
@@ -11,9 +47,35 @@ function CheckRoutingbucket(source, target)
     if sourceBucket ~= targetBucket then SetPlayerRoutingBucket(source, targetBucket) end
 end
 
+RegisterNetEvent('qbx_admin:server:sendReply', function(report, message)
+    if not IsPlayerAceAllowed(source, config.commandPerms.reportReply) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+
+    if REPORTS[report.id] then
+        local name = GetPlayerName(source)
+
+        TriggerClientEvent('chatMessage', report.senderId, "", {255, 0, 0}, string.format('[REPORT #%s] [%s] ^7%s', report.id, name, message))
+
+        exports.qbx_core:Notify(source, locale('success.sent_report_reply'), 'success')
+
+        if REPORTS[report.id].claimed == 'Nobody' then
+            REPORTS[report.id].claimed = name
+
+            OnAdmin(config.commandPerms.reportReply, function(target)
+                exports.qbx_core:Notify(target.PlayerData.source, string.format('Report #%s was claimed by %s', report.id, name), 'success')
+            end)
+        end
+    end
+end)
+
+RegisterNetEvent('qbx_admin:server:deleteReport', function(report)
+    if not IsPlayerAceAllowed(source, config.commandPerms.reportReply) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+
+    REPORTS[report.id] = nil
+end)
+
 local generalOptions = {
-    function(selectedPlayer) TriggerClientEvent('hospital:client:KillPlayer', selectedPlayer.id) end,
-    function(selectedPlayer) TriggerClientEvent('hospital:client:Revive', selectedPlayer.id) end,
+    function(selectedPlayer) TriggerClientEvent('qbx_admin:client:killPlayer', selectedPlayer.id) end,
+    function(selectedPlayer) TriggerClientEvent('qbx_medical:client:playerRevived', selectedPlayer.id) end,
     function(selectedPlayer)
         if isFrozen[selectedPlayer.id] then
             FreezeEntityPosition(GetPlayerPed(selectedPlayer.id), false)
@@ -92,12 +154,10 @@ local playerDataOptions = {
     crafting = function(target, input) target.Functions.SetMetaData('craftingrep', input[1]) end,
     dealer = function(target, input) target.Functions.SetMetaData('dealerrep', input[1]) end,
     cash = function(target, input)
-        target.PlayerData.moneycash = input[1]
-        target.Functions.SetPlayerData('money', target.PlayerData.money)
+        target.Functions.SetMoney('cash', input[1], 'qbx_adminmenu')
     end,
     bank = function(target, input)
-        target.PlayerData.moneybank = input[1]
-        target.Functions.SetPlayerData('money', target.PlayerData.money)
+        target.Functions.SetMoney('bank', input[1], 'qbx_adminmenu')
     end,
     job = function(target, input)
         target.Functions.SetJob(input[1], input[2])
@@ -125,7 +185,6 @@ RegisterNetEvent('qbx_admin:server:giveAllWeapons', function(weaponType, playerI
     if not IsPlayerAceAllowed(source, config.eventPerms.giveAllWeapons) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
     for i = 1, #config.weaponList[weaponType], 1 do
-        if not exports.ox_inventory:Items()[config.weaponList[weaponType][i]] then return end
         target.Functions.AddItem(config.weaponList[weaponType][i], 1)
     end
 end)
@@ -233,4 +292,10 @@ lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
 
     exports.qbx_vehiclekeys:GiveKeys(source, plate)
     return netId
+end)
+
+lib.callback.register('qbx_admin:server:getReports', function(source)
+    if not IsPlayerAceAllowed(source, config.commandPerms.reportReply) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+
+    return REPORTS
 end)
