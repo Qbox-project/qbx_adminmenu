@@ -1,46 +1,46 @@
 local config = require 'config.server'.commandPerms
 
 lib.addCommand('admin', {
-    help = 'Opens Adminmenu',
+    help = 'Abre adminmenu',
     restricted = config.useMenu,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:openMenu', source)
 end)
 
 lib.addCommand('noclip', {
-    help = 'Toggle NoClip',
+    help = 'Alternar o noclip',
     restricted = config.noclip,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:ToggleNoClip', source)
 end)
 
 lib.addCommand('names', {
-    help = 'Toggle Player Names',
+    help = 'Alternar os nomes dos jogadores',
     restricted = config.names,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:names', source)
 end)
 
 lib.addCommand('blips', {
-    help = 'Toggle Player Blips',
+    help = 'Alternar os blips do jogador',
     restricted = config.blips,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:blips', source)
 end)
 
 lib.addCommand('admincar', {
-    help = 'Buy Vehicle',
+    help = 'Compre veículo',
     restricted = config.saveVeh,
 }, function(source)
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(source), false)
     if vehicle == 0 then
-        return exports.qbx_core:Notify(source, 'You have to be in a vehicle, to use this', 'error')
+        return exports.qbx_core:Notify(source, 'Você precisa estar em um veículo.', 'error')
     end
 
     local vehModel = GetEntityModel(vehicle)
 
     if not exports.qbx_core:GetVehiclesByHash()[vehModel] then
-        return exports.qbx_core:Notify(source, 'Unknown vehicle, please contact your developer to register it.', 'error')
+        return exports.qbx_core:Notify(source, 'Veículo desconhecido, entre em contato com seu desenvolvedor para registrá -lo.', 'error')
     end
 
     local playerData = exports.qbx_core:GetPlayer(source).PlayerData
@@ -49,7 +49,7 @@ lib.addCommand('admincar', {
         local response = lib.callback.await('qbx_admin:client:SaveCarDialog', source)
 
         if not response then
-            return exports.qbx_core:Notify(source, 'Canceled.', 'inform')
+            return exports.qbx_core:Notify(source, 'Cancelado.', 'inform')
         end
         exports.qbx_vehicles:SetVehicleEntityOwner({
             citizenId = playerData.citizenid,
@@ -63,11 +63,11 @@ lib.addCommand('admincar', {
             plate = props.plate
         })
     end
-    exports.qbx_core:Notify(source, 'This vehicle is now yours.', 'success')
+    exports.qbx_core:Notify(source, 'Este veículo é seu agora.', 'success')
 end)
 
 lib.addCommand('setmodel', {
-    help = 'Sets your model to the given model',
+    help = 'Define seu modelo para o modelo especificado',
     restricted = config.setModel,
     params = {
         {name = 'model', help = 'NPC Model', type = 'string'},
@@ -82,28 +82,28 @@ lib.addCommand('setmodel', {
 end)
 
 lib.addCommand('vec2', {
-    help = 'Copy vector2 to clipboard (Admin only)',
+    help = 'Copie o Vector2 para a área de transferência (somente administrador)',
     restricted = config.dev,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'coords2')
 end)
 
 lib.addCommand('vec3', {
-    help = 'Copy vector3 to clipboard (Admin only)',
+    help = 'Copie o Vector3 para a área de transferência (somente administrador)',
     restricted = config.dev,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'coords3')
 end)
 
 lib.addCommand('vec4', {
-    help = 'Copy vector4 to clipboard (Admin only)',
+    help = 'Copie o Vector4 para a área de transferência (somente administrador)',
     restricted = config.dev,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'coords4')
 end)
 
 lib.addCommand('heading', {
-    help = 'Copy heading to clipboard (Admin only)',
+    help = 'Copie o caminho para a área de transferência (somente administrador)',
     restricted = config.dev,
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'heading')
