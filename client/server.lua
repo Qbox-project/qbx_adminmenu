@@ -3,7 +3,7 @@ local options = {
     function(time) TriggerServerEvent('qb-weathersync:server:setTime', time) end,
     function()
         local input = lib.inputDialog(locale('server_options.label3'), {
-            {type = 'number', label = locale('server_options.input3label'), placeholder = '25'}
+            {type = 'number', label = locale('server_options.input3label'), min = 0, max = 1000}
         })
         if not input then return end if not input[1] then return end
         lib.callback('qbx_admin:callback:getradiolist', false, function(players, frequency)
