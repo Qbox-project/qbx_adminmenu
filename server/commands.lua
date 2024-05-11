@@ -119,7 +119,7 @@ lib.addCommand('heading', {
 end)
 
 local function getVehicleKeysParams(source, args)
-    local playerId = args.id
+    local playerId = args.target
     local plate = args.plate
 
     if not playerId then
@@ -143,8 +143,8 @@ local vehiclekeysArgs = {
         optional = true
     },
     {
-        name = 'id',
-        type = 'number',
+        name = 'target',
+        type = 'playerId',
         help = locale('commands.vehiclekeys.help_id'),
         optional = true
     }
