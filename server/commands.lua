@@ -117,3 +117,63 @@ lib.addCommand('heading', {
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'heading')
 end)
+
+local function getVehicleKeysParams(source, args)
+    local playerId = args.id
+    local plate = args.plate
+
+    if not playerId then
+        playerId = source
+    end
+
+    if not plate then
+        local ped = GetPlayerPed(source)
+        local vehicle = GetVehiclePedIsIn(ped, false);
+        plate = GetVehicleNumberPlateText(vehicle)
+    end
+
+    return playerId, plate
+end
+
+local vehiclekeysArgs = {
+    {
+        name = 'plate',
+        type = 'string',
+        help = locale("commands.vehiclekeys.help_plate"),
+        optional = true
+    },
+    {
+        name = 'id',
+        type = 'number',
+        help = locale('commands.vehiclekeys.help_id'),
+        optional = true
+    }
+}
+
+lib.addCommand('addkeys', {
+    help = locale('commands.vehiclekeys.help_addkeys'),
+    params = vehiclekeysArgs,
+    restricted = config.dev
+}, function (source, args)
+    local playerId, plate = getVehicleKeysParams(source, args)
+
+    if not playerId or plate == 0 then
+        return exports.qbx_core:Notify(source, locale('commands.vehiclekeys.error'), 'error')
+    end
+
+    TriggerEvent('qbx_vehiclekeys:server:giveKeys', playerId, plate)
+end)
+
+lib.addCommand('removekeys', {
+    help = locale('commands.vehiclekeys.help_removekeys'),
+    params = vehiclekeysArgs,
+    restricted = config.dev
+}, function (source, args)
+    local playerId, plate = getVehicleKeysParams(source, args)
+
+    if not playerId or not plate == 0  then
+        return exports.qbx_core:Notify(source, locale('commands.vehiclekeys.error'), 'error')
+    end
+
+    TriggerEvent('qbx_vehiclekeys:server:removeKeys', playerId, plate)
+end)

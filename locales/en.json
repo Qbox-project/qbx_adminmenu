@@ -161,5 +161,14 @@
     "blips_deactivated": "Blips deactivated",
     "names_deactivated": "Names deactivated",
     "no_report_reply": "Reply failed to send due to no message"
+  },
+  "commands": {
+    "vehiclekeys": {
+      "help_addkeys": "Adds keys to a vehicle for someone.",
+      "help_removekeys": "Remove keys to a vehicle for someone.",
+      "help_id": "Player ID (admin id on nil)",
+      "help_plate": "Plate (current vehicle on nil)",
+      "error": "Fill out the player ID and Plate arguments"
+    }
   }
 }
