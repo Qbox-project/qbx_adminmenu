@@ -171,7 +171,7 @@ lib.addCommand('removekeys', {
 }, function (source, args)
     local playerId, plate = getVehicleKeysParams(source, args)
 
-    if not playerId or not plate == 0  then
+    if not playerId or plate == 0 then
         return exports.qbx_core:Notify(source, locale('commands.vehiclekeys.error'), 'error')
     end
 
