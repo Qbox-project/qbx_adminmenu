@@ -117,3 +117,33 @@ lib.addCommand('heading', {
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'heading')
 end)
+
+local consumablesArgs = {
+    {
+        name = 'amount',
+        type = 'number',
+        help = locale("commands.consumables.help_amount")
+    },
+    {
+        name = 'target',
+        type = 'playerId',
+        help = locale('commands.consumables.help_id'),
+        optional = true
+    }
+}
+
+lib.addCommand('thirst', {
+    help = locale('commands.consumables.help_setthirst'),
+    params = consumablesArgs,
+    restricted = config.dev
+}, function (source, args, raw)
+    TriggerEvent('consumables:server:setThirst', args.amount, args.target or source)
+end)
+
+lib.addCommand('hunger', {
+    help = locale('commands.consumables.help_sethunger'),
+    params = consumablesArgs,
+    restricted = config.dev,
+}, function (source, args)
+    TriggerEvent('consumables:server:setHunger', args.amount, args.target or source)
+end)
