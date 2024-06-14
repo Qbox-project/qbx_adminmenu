@@ -54,14 +54,14 @@ lib.addCommand('admincar', {
 
     local playerData = exports.qbx_core:GetPlayer(source).PlayerData
     local vehName, props = lib.callback.await('qbx_admin:client:GetVehicleInfo', source)
-    local vehicleId = Entity(vehicle).state.vehicleid
-    if vehicleId then
+    local existingVehicleId = Entity(vehicle).state.vehicleid
+    if existingVehicleId then
         local response = lib.callback.await('qbx_admin:client:SaveCarDialog', source)
 
         if not response then
             return exports.qbx_core:Notify(source, 'Canceled.', 'inform')
         end
-        local success, err = exports.qbx_vehicles:SetPlayerVehicleOwner(vehicleId, playerData.citizenid)
+        local success, err = exports.qbx_vehicles:SetPlayerVehicleOwner(existingVehicleId, playerData.citizenid)
         if not success then error(err) end
     else
         local vehicleId, err = exports.qbx_vehicles:CreatePlayerVehicle({
