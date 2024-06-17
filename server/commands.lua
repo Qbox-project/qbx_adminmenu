@@ -66,7 +66,7 @@ lib.addCommand('admincar', {
     else
         local vehicleId, err = exports.qbx_vehicles:CreatePlayerVehicle({
             model = vehName,
-            citizenId = playerData.citizenid,
+            citizenid = playerData.citizenid,
             props = props,
         })
         if err then error(err) end
