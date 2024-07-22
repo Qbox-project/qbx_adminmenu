@@ -104,7 +104,7 @@ local generalOptions = {
         SetPedIntoVehicle(GetPlayerPed(source), vehicle, seat)
     end,
     function(selectedPlayer, _, input)
-        SetPlayerRoutingBucket(selectedPlayer.id, input)
+        exports.qbx_core:SetPlayerBucket(selectedPlayer.id, input)
     end,
 }
 RegisterNetEvent('qbx_admin:server:playerOptionsGeneral', function(selected, selectedPlayer, input)
