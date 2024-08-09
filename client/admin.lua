@@ -1,3 +1,4 @@
+local VEHICLES_HASH = exports.qbx_core:GetVehiclesByHash()
 local optionInvisible = false
 local godmode = false
 local infiniteAmmo = false
@@ -514,7 +515,7 @@ lib.callback.register('qbx_admin:client:SaveCarDialog', function()
 end)
 
 lib.callback.register('qbx_admin:client:GetVehicleInfo', function()
-    return GetDisplayNameFromVehicleModel(GetEntityModel(cache.vehicle)):lower(), lib.getVehicleProperties(cache.vehicle)
+    return VEHICLES_HASH[GetEntityModel(cache.vehicle)].model, lib.getVehicleProperties(cache.vehicle)
 end)
 
 CreateThread(function()
