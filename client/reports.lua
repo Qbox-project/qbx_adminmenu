@@ -1,8 +1,8 @@
 local function reportAction(selected, report)
     if selected == 1 then
         lib.alertDialog({
-            header = string.format('Report ID: %s | Sender: %s', report.id, report.senderName),
-            content = string.format('message: %s', report.message),
+            header = ('Report ID: %s | Sender: %s'):format(report.id, report.senderName),
+            content = ('message: %s'):format(report.message),
             centered = true,
             cancel = false,
             size = 'lg',
@@ -13,7 +13,7 @@ local function reportAction(selected, report)
 
         lib.showMenu(('qbx_adminmenu_reports_menu_%s'):format(report.id), MenuIndexes[('qbx_adminmenu_reports_menu_%s'):format(report.id)])
     elseif selected == 2 then
-        local input = lib.inputDialog(string.format('Report ID: %s | Sender: %s', report.id, report.senderName), {
+        local input = lib.inputDialog(('Report ID: %s | Sender: %s'):format(report.id, report.senderName), {
             {type = 'input', label = 'Reply'}
         })
         if input[1] == '' then
@@ -38,12 +38,12 @@ function GenerateReportMenu()
         exports.qbx_core:Notify(locale('error.no_reports'), 'error')
         return lib.showMenu('qbx_adminmenu_main_menu', MenuIndexes.qbx_adminmenu_main_menu)
     else
-        exports.qbx_core:Notify(string.format(locale('success.report_load'), #reports), 'success')
+        exports.qbx_core:Notify(locale('success.report_load'):format(#reports), 'success')
     end
 
     local reportsList = {}
     for i = 1, #reports do
-        reportsList[i] = {label = string.format(locale('report_options.label1'), reports[i].id, reports[i].senderName), description = locale('report_options.desc1'), args = {reports[i]}}
+        reportsList[i] = {label = locale('report_options.label1'):format(reports[i].id, reports[i].senderName), description = locale('report_options.desc1'), args = {reports[i]}}
     end
 
     lib.registerMenu({
@@ -62,7 +62,7 @@ function GenerateReportMenu()
 
         lib.registerMenu({
             id = ('qbx_adminmenu_reports_menu_%s'):format(report.id),
-            title = string.format('Report ID: %s | Sender: %s', report.id, report.senderName),
+            title = ('Report ID: %s | Sender: %s'):format(report.id, report.senderName),
             position = 'top-right',
             onClose = function(keyPressed)
                 CloseMenu(false, keyPressed, 'qbx_adminmenu_reports_menu')
@@ -74,10 +74,10 @@ function GenerateReportMenu()
                 {label = 'View Message', icon = 'fas fa-message'},
                 {label = 'Send Message', icon = 'fas fa-reply'},
                 {label = 'Close Report', icon = 'fas fa-trash'},
-                {label = string.format('Claimed By: %s', report.claimed)},
-                {label = string.format('Report ID: %s', report.id)},
-                {label = string.format('Sender ID: %s', report.senderId)},
-                {label = string.format('Sender Name: %s', report.senderName)}
+                {label = ('Claimed By: %s'):format(report.claimed)},
+                {label = ('Report ID: %s'):format(report.id)},
+                {label = ('Sender ID: %s'):format(report.senderId)},
+                {label = ('Sender Name: %s'):format(report.senderName)}
             }
         }, function(selected)
             reportAction(selected, report)

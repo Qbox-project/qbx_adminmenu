@@ -303,6 +303,6 @@ end)
 
 lib.callback.register('qbx_admin:server:getReports', function(source)
     if not IsPlayerAceAllowed(source, config.commandPerms.reportReply) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
-    
+
     return REPORTS
 end)
