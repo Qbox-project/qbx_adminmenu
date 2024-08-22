@@ -19,7 +19,7 @@
     "label5": "Developer Options",
     "desc5": "Options that are handy for a developer",
     "label6": "Pending Reports",
-    "desc6": "Someone needs to do it :("
+    "desc6": "Manage pending reports"
   },
   "admin_options": {
     "label1": "Noclip",
@@ -145,6 +145,7 @@
     }
   },
   "report_options": {
+    "label1": "Report ID: %s | Sender: %s",
     "desc1": "Click to view report options"
   },
   "success": {
@@ -154,12 +155,15 @@
     "heading_copied": "Heading copied to clipboard",
     "report_sent": "Report has been sent",
     "new_report": "A new report has been received",
-    "sent_report_reply": "Your reply has been sent"
+    "sent_report_reply": "Your reply has been sent",
+    "report_load": "%s report(s) loaded",
+    "report_claimed_by": "Report #%s was claimed by %s"
   },
   "error": {
     "no_perms": "You don't have permission to do this",
     "blips_deactivated": "Blips deactivated",
     "names_deactivated": "Names deactivated",
-    "no_report_reply": "Reply failed to send due to no message"
+    "no_report_reply": "Reply failed to send due to no message",
+    "no_reports": "no pending reports to load"
   }
 }

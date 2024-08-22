@@ -1,8 +1,8 @@
-local reportOptions = {
-    function(report)
+local function reportAction(selected, report)
+    if selected == 1 then
         lib.alertDialog({
             header = string.format('Report ID: %s | Sender: %s', report.id, report.senderName),
-            content = report.message,
+            content = string.format('message: %s', report.message),
             centered = true,
             cancel = false,
             size = 'lg',
@@ -12,39 +12,38 @@ local reportOptions = {
         })
 
         lib.showMenu(('qbx_adminmenu_reports_menu_%s'):format(report.id), MenuIndexes[('qbx_adminmenu_reports_menu_%s'):format(report.id)])
-    end,
-    function(report)
+    elseif selected == 2 then
         local input = lib.inputDialog(string.format('Report ID: %s | Sender: %s', report.id, report.senderName), {
             {type = 'input', label = 'Reply'}
         })
-        
-        if not input then
+        if input[1] == '' then
             exports.qbx_core:Notify(locale('error.no_report_reply'), 'error')
         else
             TriggerServerEvent('qbx_admin:server:sendReply', report, input[1])
         end
 
         lib.showMenu(('qbx_adminmenu_reports_menu_%s'):format(report.id), MenuIndexes[('qbx_adminmenu_reports_menu_%s'):format(report.id)])
-    end,
-    function(report)
+    elseif selected == 3 then
         TriggerServerEvent('qbx_admin:server:deleteReport', report)
-
         GenerateReportMenu()
+    else
+        return lib.showMenu(('qbx_adminmenu_reports_menu_%s'):format(report.id), MenuIndexes[('qbx_adminmenu_reports_menu_%s'):format(report.id)])
     end
-}
+end
 
 function GenerateReportMenu()
     local reports = lib.callback.await('qbx_admin:server:getReports', false)
 
     if not reports or #reports < 1 then
-        lib.showMenu('qbx_adminmenu_main_menu', MenuIndexes.qbx_adminmenu_main_menu)
-        return
+        exports.qbx_core:Notify(locale('error.no_reports'), 'error')
+        return lib.showMenu('qbx_adminmenu_main_menu', MenuIndexes.qbx_adminmenu_main_menu)
+    else
+        exports.qbx_core:Notify(string.format(locale('success.report_load'), #reports), 'success')
     end
 
-    local optionsList = {}
-
+    local reportsList = {}
     for i = 1, #reports do
-        optionsList[#optionsList + 1] = {label = string.format('Report ID: %s | Sender: %s', reports[i].id, reports[i].senderName), description = locale('report_options.desc1'), args = {reports[i]}}
+        reportsList[i] = {label = string.format(locale('report_options.label1'), reports[i].id, reports[i].senderName), description = locale('report_options.desc1'), args = {reports[i]}}
     end
 
     lib.registerMenu({
@@ -57,7 +56,7 @@ function GenerateReportMenu()
         onSelected = function(selected)
             MenuIndexes.qbx_adminmenu_reports_menu = selected
         end,
-        options = optionsList
+        options = reportsList
     }, function(_, _, args)
         local report = args[1]
 
@@ -81,16 +80,8 @@ function GenerateReportMenu()
                 {label = string.format('Sender Name: %s', report.senderName)}
             }
         }, function(selected)
-            local reportOption = reportOptions[selected]
-
-            if not reportOption then
-                lib.showMenu(('qbx_adminmenu_reports_menu_%s'):format(report.id), MenuIndexes[('qbx_adminmenu_reports_menu_%s'):format(report.id)])
-                return
-            end
-
-            reportOption(report)
+            reportAction(selected, report)
         end)
-
         lib.showMenu(('qbx_adminmenu_reports_menu_%s'):format(report.id), MenuIndexes[('qbx_adminmenu_reports_menu_%s'):format(report.id)])
     end)
 
