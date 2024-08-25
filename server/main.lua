@@ -1,5 +1,6 @@
 local config = require 'config.server'
 local isFrozen = {}
+local reportsCount = 0
 
 REPORTS = {}
 
@@ -19,9 +20,10 @@ end
 --- @param message string - Message for the report
 function SendReport(source, message)
     local reportId = #REPORTS + 1
+    reportsCount += 1
 
     REPORTS[reportId] = {
-        id = reportId,
+        id = reportsCount,
         senderId = source,
         senderName = GetPlayerName(source),
         message = message,
@@ -50,19 +52,20 @@ end
 RegisterNetEvent('qbx_admin:server:sendReply', function(report, message)
     if not IsPlayerAceAllowed(source, config.commandPerms.reportReply) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
-    if REPORTS[report.id] then
-        local name = GetPlayerName(source)
+    for k, v in pairs(REPORTS) do
+        if v.id == report.id then
+            local name = GetPlayerName(source)
 
-        TriggerClientEvent('chatMessage', report.senderId, "", {255, 0, 0}, string.format('[REPORT #%s] [%s] ^7%s', report.id, name, message))
-
-        exports.qbx_core:Notify(source, locale('success.sent_report_reply'), 'success')
-
-        if REPORTS[report.id].claimed == 'Nobody' then
-            REPORTS[report.id].claimed = name
-
-            OnAdmin(config.commandPerms.reportReply, function(target)
-                exports.qbx_core:Notify(target.PlayerData.source, string.format('Report #%s was claimed by %s', report.id, name), 'success')
-            end)
+            TriggerClientEvent('chatMessage', report.senderId, "", {255, 0, 0}, string.format('[REPORT #%s] [%s] ^7%s', report.id, name, message))
+            
+            exports.qbx_core:Notify(source, locale('success.sent_report_reply'), 'success')
+            if REPORTS[k].claimed == 'Nobody' then
+                REPORTS[k].claimed = name
+                OnAdmin(config.commandPerms.reportReply, function(target)
+                    exports.qbx_core:Notify(target.PlayerData.source, string.format(locale('success.report_claimed_by'), report.id, name), 'success')
+                end)
+            end
+            return
         end
     end
 end)
@@ -70,7 +73,11 @@ end)
 RegisterNetEvent('qbx_admin:server:deleteReport', function(report)
     if not IsPlayerAceAllowed(source, config.commandPerms.reportReply) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
 
-    REPORTS[report.id] = nil
+    for k, v in pairs(REPORTS) do
+        if v.id == report.id then
+            return table.remove(REPORTS, k)
+        end
+    end
 end)
 
 local generalOptions = {
