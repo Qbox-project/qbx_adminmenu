@@ -39,7 +39,7 @@ end)
 
 lib.addCommand('admincar', {
     help = 'Buy Vehicle',
-    restricted = config.saveVeh,
+    restricted = config.saveVehicle,
 }, function(source)
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(source), false)
     if vehicle == 0 then
