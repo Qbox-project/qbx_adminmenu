@@ -57,7 +57,7 @@ RegisterNetEvent('qbx_admin:server:sendReply', function(report, message)
             local name = GetPlayerName(source)
 
             TriggerClientEvent('chatMessage', report.senderId, "", {255, 0, 0}, string.format('[REPORT #%s] [%s] ^7%s', report.id, name, message))
-            
+
             exports.qbx_core:Notify(source, locale('success.sent_report_reply'), 'success')
             if REPORTS[k].claimed == 'Nobody' then
                 REPORTS[k].claimed = name
@@ -289,13 +289,13 @@ end)
 
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     local ped = GetPlayerPed(source)
-    local netId = qbx.spawnVehicle({
+    local netId, vehicle = qbx.spawnVehicle({
         model = model,
         spawnSource = ped,
         warp = true,
     })
 
-    exports.qbx_vehiclekeys:GiveKeys(source, NetworkGetEntityFromNetworkId(netId))
+    exports.qbx_vehiclekeys:GiveKeys(source, vehicle)
     return netId
 end)
 
