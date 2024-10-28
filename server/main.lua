@@ -1,3 +1,5 @@
+lib.versionCheck('Qbox-project/qbx_adminmenu')
+
 local config = require 'config.server'
 local isFrozen = {}
 local reportsCount = 0
