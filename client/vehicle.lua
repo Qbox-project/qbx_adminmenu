@@ -115,8 +115,8 @@ lib.registerMenu({
             return
         end
         
-        -- New customs needs a way to open it from other resources
-        exports.qbx_core:Notify('Currently no support for new customs', 'error')
+        -- New way to open the customs menu
+        exports.qbx_customs:OpenMenu(true)
     elseif selected == 6 then
         if not cache.vehicle then
             exports.qbx_core:Notify('You have to be in a vehicle, to use this', 'error')
