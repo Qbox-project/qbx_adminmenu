@@ -11,10 +11,10 @@ function CopyToClipboard(dataType)
         data = string.format('vec2(%s, %s)', x, y)
         message = locale('success.coords_copied')
     elseif dataType == 'coords3' then
-        data = string.format('vec3(%s, %s, %s)', x, y, z)
+        data = string.format('vec3(%s, %s, %s)', x, y, z - 1.0)
         message = locale('success.coords_copied')
     elseif dataType == 'coords4' then
-        data = string.format('vec4(%s, %s, %s, %s)', x, y, z, h)
+        data = string.format('vec4(%s, %s, %s, %s)', x, y, z - 1.0, h)
         message = locale('success.coords_copied')
     elseif dataType == 'heading' then
         data = tostring(h)
