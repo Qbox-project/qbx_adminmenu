@@ -164,6 +164,7 @@
     "blips_deactivated": "Blips deactivated",
     "names_deactivated": "Names deactivated",
     "no_report_reply": "Reply failed to send due to no message",
-    "no_reports": "no pending reports to load"
+    "no_reports": "no pending reports to load",
+    "not_optin": "You are not opted in."
   }
 }
