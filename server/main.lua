@@ -302,6 +302,10 @@ end)
 
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     local ped = GetPlayerPed(source)
+    local currentVehicle = GetVehiclePedIsIn(ped, false)
+    if currentVehicle and currentVehicle ~= 0 then
+        DeleteEntity(currentVehicle)
+    end
     local netId, vehicle = qbx.spawnVehicle({
         model = model,
         spawnSource = ped,
