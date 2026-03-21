@@ -5,6 +5,7 @@ return {
         noclip = 'mod',
         names = 'mod',
         blips = 'mod',
+        spawnVehicle = 'admin',
         saveVehicle = 'admin',
         setModel = 'admin',
         dev = 'admin',

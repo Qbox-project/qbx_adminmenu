@@ -301,6 +301,9 @@ lib.callback.register('qbx_admin:server:canUseMenu', function(source)
 end)
 
 lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
+    if not IsPlayerAceAllowed(source, config.commandPerms.spawnVehicle) then exports.qbx_core:Notify(source, locale('error.no_perms'), 'error') return end
+    if not exports.qbx_core:IsOptin(source) then exports.qbx_core:Notify(source, locale('error.not_optin'), 'error') return end
+
     local ped = GetPlayerPed(source)
     local netId, vehicle = qbx.spawnVehicle({
         model = model,
