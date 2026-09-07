@@ -22,7 +22,7 @@
         "desc6": "Beheer openstaande rapporten"
     },
     "admin_options": {
-        "label1": "Geen clip",
+        "label1": "Noclip",
         "desc1": "Ga door muren heen alsof je een geest bent 👻",
         "label2": "Herleven",
         "desc2": "Zorg dat je weer in actie komt",
@@ -32,7 +32,7 @@
         "desc4": "Sterke spieren",
         "label5": "Namen",
         "desc5": "Kijk wat de namen van spelers zijn",
-        "label6": "Bliepjes",
+        "label6": "Kaartmarkeringen",
         "desc6": "Bekijk de locaties van alle spelers op de kaart",
         "label7": "Voertuig Godmodus",
         "desc7": "Verpletter uw voertuig zonder dat het beschadigd of vernield wordt",
@@ -49,29 +49,29 @@
         "value10_1": "Pistolen",
         "value10_2": "Smg",
         "value10_3": "Jachtgeweer",
-        "value10_4": "Assualt",
+        "value10_4": "Aanvalsgeweren",
         "value10_5": "Lmg",
         "value10_6": "Sluipschutter",
         "value10_7": "Zwaar",
-        "label11": "Un/manchet",
+        "label11": "Boeien omdoen/afdoen",
         "desc11": "Doe jezelf de boeien om of maak de boeien los"
     },
     "server_options": {
         "label1": "Verander het weer",
         "desc1": "Verandert het weer naar wat momenteel is gemarkeerd",
         "value1_1": "Extra zonnig",
-        "value1_2": "Duidelijk",
-        "value1_3": "Neutrale",
+        "value1_2": "Helder",
+        "value1_3": "Neutraal",
         "value1_4": "Smog",
         "value1_5": "Mistig",
         "value1_6": "Bewolkt",
         "value1_7": "Wolken",
-        "value1_8": "Opruimen",
+        "value1_8": "Opklarend",
         "value1_9": "Regen",
         "value1_10": "Donder",
         "value1_11": "Sneeuw",
         "value1_12": "Sneeuwstorm",
-        "value1_13": "Sneeuwlicht",
+        "value1_13": "Lichte sneeuw",
         "value1_14": "Kerstmis",
         "value1_15": "Halloween",
         "label2": "Verander tijd",
@@ -79,7 +79,7 @@
         "label3": "Radiolijst ophalen",
         "desc3": "Ontvang een volledige lijst met spelers op de gegeven radiofrequentie",
         "input3label": "Radiofrequentie",
-        "label4": "Trek aan Stash",
+        "label4": "Opslag openen",
         "desc4": "Open een voorraad met de opgegeven naam",
         "input4label": "Naam van de voorraad"
     },
@@ -90,8 +90,8 @@
         "desc2": "Kopieer uw huidige vector 3-coördinaten naar uw klembord",
         "label3": "Kopieervector 4",
         "desc3": "Kopieer uw huidige vector 4-coördinaten naar uw klembord",
-        "label4": "Kop kopiëren",
-        "desc4": "Kopieer uw huidige koerscoördinaten naar uw klembord",
+        "label4": "Kijkrichting kopiëren",
+        "desc4": "Kopieer uw huidige kijkrichting naar uw klembord",
         "label5": "Coördinaten weergeven",
         "desc5": "Toont uw huidige coördinaten",
         "label6": "Voertuiginformatie weergeven",
@@ -101,7 +101,7 @@
         "label1": "Algemene opties",
         "desc1": "Dezelfde opties vind je onder beheerdersopties, maar deze zijn van invloed op de gekozen speler",
         "label2": "Administratie",
-        "desc2": "Schop | Verbod | Machtigingen",
+        "desc2": "Verwijderen | Verbannen | Rechten",
         "label3": "Extra Opties",
         "desc3": "Enkele leuke diverse opties",
         "general": {
@@ -121,15 +121,15 @@
             "descrouting": "Routingbucket de momenteel geselecteerde speler"
         },
         "administration": {
-            "labelkick": "Trap",
-            "desckick": "Nog deze speler van de server",
+            "labelkick": "Verwijderen",
+            "desckick": "Verwijder deze speler van de server",
             "inputkick": "Reden",
-            "labelban": "Verbod",
-            "descban": "Laat deze speler van de server verwijderen",
+            "labelban": "Verbannen",
+            "descban": "Verban deze speler van de server",
             "input1ban": "Uur",
             "input2ban": "Dagen",
             "input3ban": "Maanden",
-            "banreason": "Reden:%s, tot%s",
+            "banreason": "Reden: %s, tot %s",
             "labelperm": "Toestemming",
             "descperm": "Wijzig iemands toestemmingsniveau",
             "permvalue1": "Verwijderen",
@@ -141,19 +141,19 @@
         "extra": {}
     },
     "report_options": {
-        "label1": "Rapport-ID:%s| Afzender:%s",
+        "label1": "Rapport-ID: %s | Afzender: %s",
         "desc1": "Klik om rapportopties te bekijken"
     },
     "success": {
         "blips_activated": "Blips geactiveerd",
         "names_activated": "Namen geactiveerd",
         "coords_copied": "Coördinaten gekopieerd naar klembord",
-        "heading_copied": "Kop gekopieerd naar klembord",
+        "heading_copied": "Kijkrichting gekopieerd naar klembord",
         "report_sent": "Rapport is verzonden",
         "new_report": "Er is een nieuw rapport ontvangen",
         "sent_report_reply": "Uw antwoord is verzonden",
         "report_load": "%s-rapport(en) geladen",
-        "report_claimed_by": "Rapportnummer%sis geclaimd door%s"
+        "report_claimed_by": "Rapportnummer %s is geclaimd door %s"
     },
     "error": {
         "no_perms": "U heeft hiervoor geen toestemming",
@@ -161,6 +161,6 @@
         "names_deactivated": "Namen gedeactiveerd",
         "no_report_reply": "Het antwoord kon niet worden verzonden omdat er geen bericht was",
         "no_reports": "geen openstaande rapporten om te laden",
-        "not_optin": "U bent niet aangemeld voor administratieve taken. (/kies om te schakelen)"
+        "not_optin": "U bent niet aangemeld voor administratieve taken. (/optin om te schakelen)"
     }
 }
