@@ -93,7 +93,7 @@ end)
 
 local generalOptions = {
     function(selectedPlayer) TriggerClientEvent('qbx_admin:client:killPlayer', selectedPlayer.id) end,
-    function(selectedPlayer) TriggerClientEvent('qbx_medical:client:playerRevived', selectedPlayer.id) end,
+    function(selectedPlayer) exports.qbx_medical:Revive(selectedPlayer.id) end,
     function(selectedPlayer)
         if isFrozen[selectedPlayer.id] then
             FreezeEntityPosition(GetPlayerPed(selectedPlayer.id), false)
@@ -158,10 +158,12 @@ local administrationOptions = {
         local hours = tonumber(input[2]) or 0
         local days = tonumber(input[3]) or 0
         local months = tonumber(input[4]) or 0
-        if hours < 0 or days < 0 or months < 0 then return end
+        if hours ~= hours or days ~= days or months ~= months or hours < 0 or days < 0 or months < 0 then return end
 
         local reason = input[1]:sub(1, 500)
         local banDuration = hours * 3600 + days * 86400 + months * 2629743
+        if banDuration > 3155760000 then return end
+        banDuration = math.floor(banDuration)
         DropPlayer(selectedPlayer.id, locale('player_options.administration.banreason', reason, os.date('%c', os.time() + banDuration)))
         MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
             GetPlayerName(selectedPlayer.id), GetPlayerIdentifierByType(selectedPlayer.id, 'license'), GetPlayerIdentifierByType(selectedPlayer.id, 'discord'),
@@ -251,7 +253,7 @@ lib.callback.register('qbx_admin:callback:getradiolist', function(source, freque
     if not exports.qbx_core:IsOptin(source) then exports.qbx_core:Notify(source, locale('error.not_optin'), 'error') return end
 
     frequency = tonumber(frequency)
-    if not frequency or frequency < 0 or frequency > 1000 then return end
+    if not frequency or frequency ~= frequency or frequency < 0 or frequency > 1000 then return end
 
     local list = exports['pma-voice']:getPlayersInRadioChannel(frequency)
     local players = {}
