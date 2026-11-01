@@ -221,10 +221,12 @@ local options = {
     function(switch)
         if switch == 1 then
             local input = lib.inputDialog(locale('admin_options.value8_1'), {locale('admin_options.input8label')})
-            if not input then return end
-            ExecuteCommand('setmodel ' .. input)
+
+            if not input or not input[1] or input[1] == '' then return end
+
+            ExecuteCommand('setmodel ' .. input[1])
         else
-            ExecuteCommand('refreshskin')
+            ExecuteCommand('reloadskin')
         end
     end,
     function()
